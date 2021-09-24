@@ -1,24 +1,3 @@
-// import React from 'react'
-// import FullCalendar from '@fullcalendar/react'
-// import dayGridPlugin from '@fullcalendar/daygrid'
-// import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
-
-// export class Calendar extends React.Component {
-//   render() {
-//     return (
-//       <FullCalendar
-//         plugins={[ dayGridPlugin, interactionPlugin ]}
-//         initialView="dayGridMonth"
-//         editable= "true"
-//         events={[
-//           { title: 'Repas 1', date: '2021-09-20', droppable: true },
-//           { title: 'Repas 2', date: '2021-09-21', droppable: true }
-//         ]}
-//       />
-//     )
-//   }
-// }
-
 import React, { Component } from "react";
 import { Col, Row } from "reactstrap";
 import FullCalendar from "@fullcalendar/react";
@@ -36,6 +15,16 @@ export class Calendar extends React.Component {
         title: "Pizza",
         start: "2021-09-15",
         id: "99999998"
+      },
+      {
+        title: "Hamburger",
+        start: "2021-09-15",
+        id: "2"
+      },
+      {
+        title: "Toast",
+        start: "2021-09-15",
+        id: "3"
       },
       {
         title: "Lasagne",
@@ -118,7 +107,7 @@ export class Calendar extends React.Component {
               }}
             >
               <p align="center">
-                <strong> Events</strong>
+                <strong> Liste de repas</strong>
               </p>
               {this.state.events.map(event => (
                 <div
