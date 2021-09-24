@@ -4,6 +4,4 @@ Ceci est le projet de fin de DEC en informatique du Cégep Garneau à la session
 
 Chaque utilisateur devra s'authentifier pour pouvoir accéder à l'application.
 
-TEST POUR BRANCHE US4
-
 TEST MERGE US4-->dev
