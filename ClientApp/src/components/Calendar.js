@@ -1,24 +1,3 @@
-// import React from 'react'
-// import FullCalendar from '@fullcalendar/react'
-// import dayGridPlugin from '@fullcalendar/daygrid'
-// import interactionPlugin, { Draggable } from '@fullcalendar/interaction'
-
-// export class Calendar extends React.Component {
-//   render() {
-//     return (
-//       <FullCalendar
-//         plugins={[ dayGridPlugin, interactionPlugin ]}
-//         initialView="dayGridMonth"
-//         editable= "true"
-//         events={[
-//           { title: 'Repas 1', date: '2021-09-20', droppable: true },
-//           { title: 'Repas 2', date: '2021-09-21', droppable: true }
-//         ]}
-//       />
-//     )
-//   }
-// }
-
 import React, { Component } from "react";
 import { Col, Row } from "reactstrap";
 import FullCalendar from "@fullcalendar/react";
@@ -30,12 +9,24 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 
 export class Calendar extends React.Component {
+
+  // Ajout de valeur hardcodé
   state = {
     calendarEvents: [
       {
         title: "Pizza",
         start: "2021-09-15",
         id: "99999998"
+      },
+      {
+        title: "Hamburger",
+        start: "2021-09-15",
+        id: "2"
+      },
+      {
+        title: "Toast",
+        start: "2021-09-15",
+        id: "3"
       },
       {
         title: "Lasagne",
@@ -53,7 +44,7 @@ export class Calendar extends React.Component {
   };
 
   /**
-   * adding dragable properties to external events through javascript
+   * Ajout du draggable avec javascript
    */
   componentDidMount() {
     let draggableEl = document.getElementById("external-events");
@@ -71,7 +62,7 @@ export class Calendar extends React.Component {
   }
 
   /**
-   * when we click on event we are displaying event details
+   * Gestion du click sur le repas 
    */
   eventClick = eventClick => {
     Alert.fire({
@@ -81,7 +72,13 @@ export class Calendar extends React.Component {
       <table class="table">
       <tbody>
       <tr >
-      <td>Title</td>
+      <td>Repas</td>
+      <td><strong>` +
+        eventClick.event.title +
+        `</strong></td>
+      </tr>
+      <tr >
+      <td>Ingredient(s)</td>
       <td><strong>` +
         eventClick.event.title +
         `</strong></td>
@@ -93,7 +90,7 @@ export class Calendar extends React.Component {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Remove Event",
+      confirmButtonText: "Supprimer repas",
       cancelButtonText: "Close"
     }).then(result => {
       if (result.value) {
@@ -103,6 +100,7 @@ export class Calendar extends React.Component {
     });
   };
 
+  // Liste de repas à gauche du calendrier
   render() {
     return (
       <div className="animated fadeIn p-4 demo-app">
@@ -118,7 +116,7 @@ export class Calendar extends React.Component {
               }}
             >
               <p align="center">
-                <strong> Events</strong>
+                <strong> Liste de repas</strong>
               </p>
               {this.state.events.map(event => (
                 <div
@@ -151,10 +149,10 @@ export class Calendar extends React.Component {
                 weekends={this.state.calendarWeekends}
                 events={this.state.calendarEvents}
                 eventDrop={this.drop}
-                // drop={this.drop}
+                drop={this.drop}
                 eventReceive={this.eventReceive}
                 eventClick={this.eventClick}
-                // selectable={true}
+                selectable={true}
               />
             </div>
           </Col>
