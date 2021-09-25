@@ -20,6 +20,11 @@ namespace Repas
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureAppConfiguration(config => 
+                        config.AddJsonFile("appsettings.json", false, true)
+                              .AddJsonFile("appsettings.Developpement.json", true, true)
+                              .AddJsonFile("appsettings.Production.json", true, true)
+                    );
                     webBuilder.UseStartup<Startup>();
                 });
     }
