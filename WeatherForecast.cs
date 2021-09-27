@@ -1,6 +1,6 @@
 using System;
 
-namespace Repas
+namespace SiteRepas
 {
     public class WeatherForecast
     {

@@ -1,0 +1,38 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace SiteRepas.Models
+{
+    /// <summary>
+    /// Modèle servant à stocker les informations se rapportant à une famille.
+    /// </summary>
+
+    public class Famille
+    {
+        /// <summary>
+        /// Identifiant d'une famille
+        /// </summary>
+        public int Id { get; set;}
+
+        /// <summary>
+        /// Nom de la famille
+        /// </summary>
+        [Required]
+        public string Nom { get; set; }
+
+        /// <summary>
+        /// Liste d'utilisateurs dans une famille
+        /// </summary>
+        public ICollection<Utilisateur> utilisateurs { get; set;}
+
+        /// <summary>
+        /// Liste d'ingrédients dans une famille
+        /// </summary>
+        public ICollection<Ingredient> Ingredients { get; set;}
+
+        /// <summary>
+        /// Liste de repas dans une famille
+        /// </summary>
+        public ICollection<Repas> DesRepas { get; set;}
+    }
+}

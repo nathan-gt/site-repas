@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Repas.Data.Migrations
+namespace SiteRepas.Data.Migrations
 {
     public partial class InitialCreate : Migration
     {

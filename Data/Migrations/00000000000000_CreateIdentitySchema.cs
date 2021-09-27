@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace Repas.Data.Migrations
+namespace SiteRepas.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

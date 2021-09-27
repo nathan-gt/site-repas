@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Repas.Controllers
+namespace SiteRepas.Controllers
 {
     public class OidcConfigurationController : Controller
     {

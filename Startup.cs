@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Repas.Data;
-using Repas.Models;
+using SiteRepas.Data;
+using SiteRepas.Models;
 
-namespace Repas
+namespace SiteRepas
 {
     public class Startup
     {
@@ -32,11 +32,11 @@ namespace Repas
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<Utilisateur>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                .AddApiAuthorization<Utilisateur, ApplicationDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
