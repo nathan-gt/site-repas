@@ -12,6 +12,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// Identifiant d'un repas
         /// </summary>
+        [Key]
         public int Id { get; set;}
 
         /// <summary>

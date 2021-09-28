@@ -1,5 +1,8 @@
 namespace SiteRepas.Models
 {
+    /// <summary>
+    /// Enum contenant les choix pour une catégorie de repas
+    /// </summary>
     public enum CategoriesRepas
     {
         Carnivore,

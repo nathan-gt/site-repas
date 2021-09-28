@@ -12,6 +12,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// Identifiant d'une famille
         /// </summary>
+        [Key]
         public int Id { get; set;}
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// Liste d'utilisateurs dans une famille
         /// </summary>
-        public ICollection<Utilisateur> utilisateurs { get; set;}
+        public ICollection<ApplicationUser> utilisateurs { get; set;}
 
         /// <summary>
         /// Liste d'ingrédients dans une famille
