@@ -370,8 +370,6 @@ namespace SiteRepas.Data.Migrations
 
                     b.HasIndex("FamilleId");
 
-                    b.HasIndex("RepasId");
-
                     b.ToTable("Ingredient");
                 });
 
