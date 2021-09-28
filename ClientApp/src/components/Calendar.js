@@ -10,7 +10,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 
 export class Calendar extends React.Component {
-
   // Ajout de valeur hardcodé
   state = {
     calendarEvents: [
