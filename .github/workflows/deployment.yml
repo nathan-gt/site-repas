@@ -13,7 +13,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
+    defaults:
+      run:
+        working-directory: ./Repas
     steps:
       - uses: actions/checkout@v2
 
