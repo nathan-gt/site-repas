@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repas", "Repas.csproj", "{5C6ED49B-A615-4717-A3FB-3DD77B90F835}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repas", "Repas.csproj", "{5C6ED49B-A615-4717-A3FB-3DD77B90F835}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repas.UnitTests", "..\Repas.UnitTests\Repas.UnitTests.csproj", "{099217FA-A3B4-48E4-90BF-9FB67413DE0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5C6ED49B-A615-4717-A3FB-3DD77B90F835}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C6ED49B-A615-4717-A3FB-3DD77B90F835}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C6ED49B-A615-4717-A3FB-3DD77B90F835}.Release|Any CPU.Build.0 = Release|Any CPU
+		{099217FA-A3B4-48E4-90BF-9FB67413DE0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{099217FA-A3B4-48E4-90BF-9FB67413DE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{099217FA-A3B4-48E4-90BF-9FB67413DE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{099217FA-A3B4-48E4-90BF-9FB67413DE0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
