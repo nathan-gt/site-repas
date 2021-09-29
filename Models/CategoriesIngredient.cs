@@ -12,6 +12,7 @@ namespace SiteRepas.Models
         Pâte,
         Céréalié,
         Légumineuse,
-        Épice
+        Épice,
+        Sauce
     }
 }

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SiteRepas.Data;
 
-namespace SiteRepas.Data.Migrations
+namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210928030929_MigrationModel")]
-    partial class MigrationModel
+    [Migration("20210929004416_FirstRealMigration")]
+    partial class FirstRealMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -342,7 +342,7 @@ namespace SiteRepas.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Famille");
+                    b.ToTable("Familles");
                 });
 
             modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>
@@ -365,19 +365,19 @@ namespace SiteRepas.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RepasId")
+                    b.Property<int?>("UnRepasId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FamilleId");
 
-                    b.HasIndex("RepasId");
+                    b.HasIndex("UnRepasId");
 
-                    b.ToTable("Ingredient");
+                    b.ToTable("Ingredients");
                 });
 
-            modelBuilder.Entity("SiteRepas.Models.Repas", b =>
+            modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -465,12 +465,12 @@ namespace SiteRepas.Data.Migrations
                         .WithMany("Ingredients")
                         .HasForeignKey("FamilleId");
 
-                    b.HasOne("SiteRepas.Models.Repas", null)
+                    b.HasOne("SiteRepas.Models.UnRepas", null)
                         .WithMany("Ingredients")
-                        .HasForeignKey("RepasId");
+                        .HasForeignKey("UnRepasId");
                 });
 
-            modelBuilder.Entity("SiteRepas.Models.Repas", b =>
+            modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
                 {
                     b.HasOne("SiteRepas.Models.Famille", null)
                         .WithMany("DesRepas")
@@ -486,7 +486,7 @@ namespace SiteRepas.Data.Migrations
                     b.Navigation("utilisateurs");
                 });
 
-            modelBuilder.Entity("SiteRepas.Models.Repas", b =>
+            modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
                 {
                     b.Navigation("Ingredients");
                 });

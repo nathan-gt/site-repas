@@ -34,6 +34,6 @@ namespace SiteRepas.Models
         /// <summary>
         /// Liste de repas dans une famille
         /// </summary>
-        public ICollection<Repas> DesRepas { get; set;}
+        public ICollection<UnRepas> DesRepas { get; set;}
     }
 }

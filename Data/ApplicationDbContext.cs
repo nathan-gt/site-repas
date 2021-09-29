@@ -19,21 +19,24 @@ namespace SiteRepas.Data
         {
         }
 
-        // public DbSet<Ingredient> Ingredient { get; set; }
+         public DbSet<Ingredient> Ingredient { get; set; }
 
-        // public DbSet<Repas> Repas { get; set; }
+         public DbSet<UnRepas> Repas { get; set; }
 
-        // public DbSet<Famille> Famille { get; set; }
+         public DbSet<Famille> Famille { get; set; }
 
-        // //public DbSet<Utilisateur> Utilisateur { get; set; }
+         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
 
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     modelBuilder.Entity<Ingredient>().ToTable("Ingredient");
-        //     modelBuilder.Entity<Repas>().ToTable("Repas");
-        //     modelBuilder.Entity<Famille>().ToTable("Famille");
-        //     //modelBuilder.Entity<Utilisateur>().ToTable("Utilisateur");
-        // }
+         protected override void OnModelCreating(ModelBuilder modelBuilder)
+         {
+             
+             modelBuilder.Entity<Ingredient>().ToTable("Ingredients");
+             modelBuilder.Entity<UnRepas>().ToTable("Repas");
+             modelBuilder.Entity<Famille>().ToTable("Familles");
+             modelBuilder.Entity<ApplicationUser>().ToTable("Utilisateurs");
+            
+            base.OnModelCreating(modelBuilder);
+         }
     }
 }

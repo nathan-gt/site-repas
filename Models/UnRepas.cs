@@ -7,7 +7,7 @@ namespace SiteRepas.Models
     /// Modèle servant à stocker les informations se rapportant à un repas.
     /// </summary>
 
-    public class Repas
+    public class UnRepas
     {
         /// <summary>
         /// Identifiant d'un repas
