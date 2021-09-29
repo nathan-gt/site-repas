@@ -5,11 +5,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
 import Alert from "sweetalert2";
+import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 
 export class Calendar extends React.Component {
-
   // Ajout de valeur hardcodé
   state = {
     calendarEvents: [
@@ -71,17 +71,22 @@ export class Calendar extends React.Component {
         `<div class="table-responsive">
       <table class="table">
       <tbody>
-      <tr >
+      <tr>
       <td>Repas</td>
       <td><strong>` +
         eventClick.event.title +
         `</strong></td>
       </tr>
       <tr >
-      <td>Ingredient(s)</td>
-      <td><strong>` +
-        eventClick.event.title +
-        `</strong></td>
+      <td>Ingredients</td>
+        <td>
+          <strong>Pain,</strong>
+          <strong>Viande,</strong>
+          <strong>Laitue,</strong>
+          <strong>Tomate,</strong>
+          <strong>Bacon,</strong>
+          <strong>Ketchup</strong>
+        </td>
       </tr>
       </tbody>
       </table>
@@ -95,12 +100,12 @@ export class Calendar extends React.Component {
     }).then(result => {
       if (result.value) {
         eventClick.event.remove(); // It will remove event from the calendar
-        Alert.fire("Deleted!", "Your Event has been deleted.", "success");
+        Alert.fire("Supprimer!", "Le repas a été supprimé.", "success");
       }
     });
   };
 
-  // Liste de repas à gauche du calendrier
+// Liste de repas à gauche et calendrier
   render() {
     return (
       <div className="animated fadeIn p-4 demo-app">
