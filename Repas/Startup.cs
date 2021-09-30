@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -92,6 +93,17 @@ namespace SiteRepas
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+                        //app.UseMvc(routes =>
+           // {
+            //     routes.MapRoute(
+            //         name: "default",
+            //         template: "{controller=Home}/{action=Index}/{id?}");
+            // });
+
+            // InitialisationBD.Initialize(app.ApplicationServices);
         }
+        
+        
     }
 }

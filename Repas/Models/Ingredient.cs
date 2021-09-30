@@ -15,12 +15,12 @@ namespace SiteRepas.Models
         /// <summary>
         /// Identifiant d'un ingrédient
         /// </summary>
-        [Key]
         public int Id { get; set; }
 
         /// <summary>
         /// Nom de l'ingrédient
         /// </summary>
+        [Key]
         [Required]
         public string Nom { get; set; }
 
