@@ -1,0 +1,33 @@
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+code {
+  color: #E01A76;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.Calendar {
+  font-family: sans-serif;
+  text-align: center;
+}
+#external-events {
+  position: absolute;
+  z-index: 2;
+
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  background: #eee;
+  overflow-y: scroll;
+}
+
+#external-events .fc-event {
+  margin: 1em 0;
+  cursor: move;
+}
