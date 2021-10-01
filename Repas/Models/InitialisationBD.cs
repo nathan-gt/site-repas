@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SiteRepas.Data;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SiteRepas.Models
@@ -65,7 +66,7 @@ namespace SiteRepas.Models
                 new UnRepas 
                 {
                     Nom = "Pâté chinois",
-                    Categorie = CategoriesRepas.Québécois
+                    Categorie = CategoriesRepas.Québécois,
                 },
                 new UnRepas 
                 {

@@ -345,10 +345,8 @@ namespace SiteSiteRepas.Migrations
 
             modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Categorie")
                         .HasColumnType("int");
@@ -359,14 +357,13 @@ namespace SiteSiteRepas.Migrations
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UnRepasId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Nom");
 
                     b.HasIndex("FamilleId");
 

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SiteRepas.Data;
+using SiteRepas.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,21 @@ namespace SiteRepas
             var host = CreateHostBuilder(args).Build();
 
             CreateDbIfNotExists(host);
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    InitialisationBD.Initialize(services);
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+            }
+
+
 
             host.Run();
         }
