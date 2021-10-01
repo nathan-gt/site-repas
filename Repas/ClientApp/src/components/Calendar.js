@@ -90,6 +90,7 @@ export class Calendar extends React.Component {
       </tr>
       </tbody>
       </table>
+      <a href="/plat">Détails du plat</a>
       </div>`,
 
       showCancelButton: true,
