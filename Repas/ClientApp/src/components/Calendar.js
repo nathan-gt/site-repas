@@ -9,6 +9,7 @@ import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 
+
 export class Calendar extends React.Component {
   // Ajout de valeur hardcodé
   state = {
@@ -64,7 +65,7 @@ export class Calendar extends React.Component {
   /**
    * Gestion du click sur le repas 
    */
-  eventClick = eventClick => {
+    eventClick = eventClick => {
     Alert.fire({
       title: eventClick.event.title,
       html:
