@@ -10,8 +10,8 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210930174733_MigrationTest")]
-    partial class MigrationTest
+    [Migration("20211001144147_TestKey")]
+    partial class TestKey
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -347,8 +347,10 @@ namespace SiteSiteRepas.Migrations
 
             modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>
                 {
-                    b.Property<string>("Nom")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Categorie")
                         .HasColumnType("int");
@@ -359,15 +361,19 @@ namespace SiteSiteRepas.Migrations
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("UnRepasId")
                         .HasColumnType("int");
 
-                    b.HasKey("Nom");
+                    b.HasKey("Id");
 
                     b.HasIndex("FamilleId");
+
+                    b.HasIndex("Nom")
+                        .IsUnique();
 
                     b.HasIndex("UnRepasId");
 

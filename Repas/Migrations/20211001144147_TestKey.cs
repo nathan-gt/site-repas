@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteSiteRepas.Migrations
 {
-    public partial class MigrationTest : Migration
+    public partial class TestKey : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -236,8 +236,9 @@ namespace SiteSiteRepas.Migrations
                 name: "Ingredients",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
                     Categorie = table.Column<int>(type: "int", nullable: false),
                     Disponible = table.Column<bool>(type: "bit", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true),
@@ -245,7 +246,7 @@ namespace SiteSiteRepas.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ingredients", x => x.Nom);
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Ingredients_Familles_FamilleId",
                         column: x => x.FamilleId,
@@ -319,6 +320,12 @@ namespace SiteSiteRepas.Migrations
                 name: "IX_Ingredients_FamilleId",
                 table: "Ingredients",
                 column: "FamilleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_Nom",
+                table: "Ingredients",
+                column: "Nom",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_UnRepasId",
