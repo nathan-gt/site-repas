@@ -9,6 +9,7 @@ import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 import $ from "jquery";
+import { Tab } from "bootstrap";
 
 export class Calendar extends React.Component {
   // Ajout de valeur hardcodé
@@ -118,12 +119,13 @@ export class Calendar extends React.Component {
                 padding: "10px",
                 width: "80%",
                 height: "auto",
-                maxHeight: "-webkit-fill-available"
+                maxHeight: "-webkit-fill-available",
               }}
             >
               <p align="center">
                 <strong> Liste de repas</strong>
               </p>
+              <a class="fc font-weight-bold" onClick={addRepas}>Ajouter un repas</a>
               {this.state.events.map(event => (
                 <div
                   className="fc-event"
@@ -134,13 +136,14 @@ export class Calendar extends React.Component {
                   {event.title}
                 </div>
               ))}
-              <a class="fc" onClick={addRepas}>Ajouter un repas</a>
             </div>
+            
           </Col>
 
           <Col lg={9} sm={9} md={9}>
-            <div className="app-calendar" id="calendar">
+            <div>
               <FullCalendar
+                id="calendar"
                 defaultView="dayGridMonth"
                 header={{
                   left: "prev,next today",
@@ -185,6 +188,13 @@ function addRepas() {
   }).then((result) => {
     if (result.value) {
         console.log("Result: " + result.value);
+        var tag = document.createElement("div");
+        tag.classList.add("fc-event");
+        tag.title = result.value;
+        var text = document.createTextNode(result.value);
+        tag.appendChild(text);
+        var element = document.getElementById("external-events");
+        element.appendChild(tag);
     }
   })
 
