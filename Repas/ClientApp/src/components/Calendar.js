@@ -8,7 +8,7 @@ import Alert from "sweetalert2";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
-
+import $ from "jquery";
 
 export class Calendar extends React.Component {
   // Ajout de valeur hardcodé
@@ -134,11 +134,12 @@ export class Calendar extends React.Component {
                   {event.title}
                 </div>
               ))}
+              <a class="fc" onClick={addRepas}>Ajouter un repas</a>
             </div>
           </Col>
 
           <Col lg={9} sm={9} md={9}>
-            <div className="demo-app-calendar" id="mycalendartest">
+            <div className="app-calendar" id="calendar">
               <FullCalendar
                 defaultView="dayGridMonth"
                 header={{
@@ -167,3 +168,24 @@ export class Calendar extends React.Component {
     );
   }
 }
+
+
+function addRepas() {
+  Alert.fire({
+    title: 'Ajouter un repas',
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'on'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Ajouter',
+    cancelButtonText: 'Annuler',
+    closeOnConfirm: false,
+    showLoaderOnConfirm: true,
+  }).then((result) => {
+    if (result.value) {
+        console.log("Result: " + result.value);
+    }
+  })
+
+};
