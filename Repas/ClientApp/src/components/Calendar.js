@@ -101,7 +101,7 @@ export class Calendar extends React.Component {
     }).then(result => {
       if (result.value) {
         eventClick.event.remove(); // It will remove event from the calendar
-        Alert.fire("Supprimer!", "Le repas a été supprimé.", "success");
+        Alert.fire("Supprimé!", "Le repas a été supprimé.", "success");
       }
     });
   };
