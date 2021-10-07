@@ -1,19 +1,29 @@
 import React, { Component } from "react";
+import ListeIngredients from "./ListeIngredients";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 
+// Test avec des valeurs hardcodées en JS
+let infos = {
+    id: "ID du plat",
+    title: "Titre du plat",
+    start: "Date prévue (DD/MM/YYYY)",
+    ingredients: "Nom des ingrédients (tableau de valeurs ?)",
+    description: "Courte description sur la recette"
+}
+
+let ingredients = [
+    "Sauce tomate",
+    "Fromage",
+    "Pepperoni",
+    "Jambon",
+    "Poivrons",
+    "Champigons"
+]
+
 export class Plat extends Component {
     static displayName = Plat.name;
-
-    // Test avec des valeurs hardcodées en JS
-    infos = {
-        id: "ID du plat",
-        title: "Titre du plat",
-        start: "Date prévue (DD/MM/YYYY)",
-        ingredients: "Nom des ingrédients (tableau de valeurs ?)",
-        description: "Courte description sur la recette"
-    };
 
     render () {
         return (
@@ -22,10 +32,7 @@ export class Plat extends Component {
                 <h2>Nom du plat : (ex: Pizza)</h2>
                 <h3>Liste des ingrédients :</h3>
                 <ul>
-                    <li>Indrédient 1</li>
-                    <li>Indrédient 2</li>
-                    <li>Indrédient 3</li>
-                    <li>Indrédient 4</li>
+                    <ListeIngredients listeIngredients={ingredients} />
                 </ul>
 
                 <h3>Description/Préparation</h3>
