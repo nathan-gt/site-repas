@@ -8,7 +8,8 @@ import Alert from "sweetalert2";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
-
+import $ from "jquery";
+import { Tab } from "bootstrap";
 
 export class Calendar extends React.Component {
   // Ajout de valeur hardcodé
@@ -101,7 +102,7 @@ export class Calendar extends React.Component {
     }).then(result => {
       if (result.value) {
         eventClick.event.remove(); // It will remove event from the calendar
-        Alert.fire("Supprimer!", "Le repas a été supprimé.", "success");
+        Alert.fire("Supprimé!", "Le repas a été supprimé.", "success");
       }
     });
   };
@@ -118,12 +119,13 @@ export class Calendar extends React.Component {
                 padding: "10px",
                 width: "80%",
                 height: "auto",
-                maxHeight: "-webkit-fill-available"
+                maxHeight: "-webkit-fill-available",
               }}
             >
               <p align="center">
                 <strong> Liste de repas</strong>
               </p>
+              <a class="fc font-weight-bold" onClick={addRepas}>Ajouter un repas</a>
               {this.state.events.map(event => (
                 <div
                   className="fc-event"
@@ -135,11 +137,13 @@ export class Calendar extends React.Component {
                 </div>
               ))}
             </div>
+            
           </Col>
 
           <Col lg={9} sm={9} md={9}>
-            <div className="demo-app-calendar" id="mycalendartest">
+            <div>
               <FullCalendar
+                id="calendar"
                 defaultView="dayGridMonth"
                 header={{
                   left: "prev,next today",
@@ -167,3 +171,31 @@ export class Calendar extends React.Component {
     );
   }
 }
+
+
+function addRepas() {
+  Alert.fire({
+    title: 'Ajouter un repas',
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'on'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Ajouter',
+    cancelButtonText: 'Annuler',
+    closeOnConfirm: false,
+    showLoaderOnConfirm: true,
+  }).then((result) => {
+    if (result.value) {
+        console.log("Result: " + result.value);
+        var tag = document.createElement("div");
+        tag.classList.add("fc-event");
+        tag.title = result.value;
+        var text = document.createTextNode(result.value);
+        tag.appendChild(text);
+        var element = document.getElementById("external-events");
+        element.appendChild(tag);
+    }
+  })
+
+};
