@@ -54,13 +54,14 @@ namespace SiteRepas
 
             services.AddControllersWithViews();
 
-            //JSON Serializer
+            //JSON Serializer pour la lecture de données de la bd
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options=>
                 options.SerializerSettings.ReferenceLoopHandling=Newtonsoft
                 .Json.ReferenceLoopHandling.Ignore)
                 .AddNewtonsoftJson(options=>options.SerializerSettings.ContractResolver
                 =new DefaultContractResolver());
+
             services.AddControllers();
             services.AddRazorPages();
 

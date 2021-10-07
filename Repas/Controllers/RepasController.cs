@@ -21,13 +21,28 @@ namespace SiteSiteRepas.Controllers
             _configuration = configuration;
         }
 
-        //[HttpGet]
-        //public JsonResult Get()
-        //{
-        //    string requete = @"
-        //                    select Id, Nom, Categorie from dbo.Repas";
-        //    DataTable table = new DataTable();
-        //    string sqlDataSource = _configuration.GetConnectionString();
-        //}
+        [HttpGet]
+        public JsonResult Get()
+        {
+            string requete = @"
+                            select Id, Nom, Categorie from dbo.Repas";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using(SqlConnection myCon=new SqlConnection(sqlDataSource)) 
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) 
+                {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(table);
+        }
     }
 }
