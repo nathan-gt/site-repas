@@ -22,7 +22,10 @@ jobs:
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
 
-      - name: Build frontend
+      - name: npm install frontend
+        run: cd ClientApp & npm install
+        
+      - name: npm install frontend
         run: cd ClientApp & npm run build
 
       - name: Build with dotnet
