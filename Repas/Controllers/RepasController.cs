@@ -50,6 +50,7 @@ namespace SiteSiteRepas.Controllers
         //à l'aide de la méthode POST
         //TODO Mettre en string la catégorie dans initialisation bd
         //et refaire les migrations
+
         [HttpPost]
         public JsonResult Post(UnRepas repas)
         {
