@@ -19,14 +19,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+
+      - name: Build frontend
+        run: cd ClientApp & npm run build
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
           include-prerelease: true
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Debug -o ${{env.DOTNET_ROOT}}/myapp
