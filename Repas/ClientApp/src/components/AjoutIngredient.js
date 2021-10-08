@@ -20,6 +20,10 @@ export default function AjoutIngredient() {
         const name = refNomIngredient.current.value
         if (name === '') return
         console.log(name)
+        setIngredients(ingredients => {
+            return [...ingredients, [name]]
+        })
+        refNomIngredient.current.value = null
     }
 
     return (
