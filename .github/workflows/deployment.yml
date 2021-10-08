@@ -24,9 +24,9 @@ jobs:
 
       - name: npm install frontend
         run: cd ClientApp & del package.json & npm install
-        
+
       - name: list
-        run: dir
+        run: cd ClientApp & dir
 
       - name: npm build frontend
         run: cd ClientApp & npm run build --if-present
