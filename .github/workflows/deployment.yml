@@ -24,9 +24,12 @@ jobs:
 
       - name: npm install frontend
         run: cd ClientApp & npm install
-        
+      
+      - name: list
+        run: cd ClientApp & npm install
+
       - name: npm install frontend
-        run: cd ClientApp & npm run build
+        run: cd ClientApp & npm run build --if-present
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
