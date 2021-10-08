@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
+using SiteRepas.Models;
 
 namespace SiteSiteRepas.Controllers
 {
@@ -21,6 +22,7 @@ namespace SiteSiteRepas.Controllers
             _configuration = configuration;
         }
 
+        //Méthode pour l'obtention des données à l'aide de la méthode GET
         [HttpGet]
         public JsonResult Get()
         {
@@ -44,5 +46,33 @@ namespace SiteSiteRepas.Controllers
 
             return new JsonResult(table);
         }
+        //Méthode pour mettre des données dans la base de données
+        //à l'aide de la méthode POST
+        //TODO Mettre en string la catégorie dans initialisation bd
+        //et refaire les migrations
+        [HttpPost]
+        public JsonResult Post(UnRepas repas)
+        {
+            string requete = @"
+                            insert into dbo.Repas (Nom, Categorie) values
+                             ('" + repas.Nom + @"',"+repas.Categorie+@")
+                            ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Repas ajouté avec succès.");
+        }
+
+
     }
 }
