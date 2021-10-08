@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ListeIngredients from "./ListeIngredients";
+import AjoutIngredient from "./AjoutIngredient";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
@@ -13,15 +13,6 @@ let infos = {
     description: "Courte description sur la recette"
 }
 
-let ingredients = [
-    "Sauce tomate",
-    "Fromage",
-    "Pepperoni",
-    "Jambon",
-    "Poivrons",
-    "Champigons"
-]
-
 export class Plat extends Component {
     static displayName = Plat.name;
 
@@ -30,10 +21,8 @@ export class Plat extends Component {
             <div>
                 <h1>Détails sur le plat</h1>
                 <h2>Nom du plat : (ex: Pizza)</h2>
-                <h3>Liste des ingrédients :</h3>
-                <ul>
-                    <ListeIngredients listeIngredients={ingredients} />
-                </ul>
+
+                <AjoutIngredient />
 
                 <h3>Description/Préparation</h3>
                 <p>
