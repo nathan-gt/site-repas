@@ -24,11 +24,11 @@ jobs:
 
       - name: npm install react frontend
         run: npm install
-        working-directory: ClientApp
+        working-directory: .Repas/ClientApp
 
       - name: npm build react frontend
         run: npm run build --if-present
-        working-directory: ClientApp
+        working-directory: .Repas/ClientApp
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
