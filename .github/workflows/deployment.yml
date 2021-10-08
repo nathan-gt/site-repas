@@ -22,14 +22,13 @@ jobs:
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
 
-      - name: npm install frontend
-        run: cd ClientApp & del package.json & npm install
+      - name: npm install react frontend
+        run: npm install
+        working-directory: ClientApp
 
-      - name: list
-        run: cd ClientApp & dir
-
-      - name: npm build frontend
-        run: cd ClientApp & npm run build --if-present
+      - name: npm build react frontend
+        run: npm run build --if-present
+        working-directory: ClientApp
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
