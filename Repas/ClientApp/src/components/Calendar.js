@@ -8,40 +8,70 @@ import Alert from "sweetalert2";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
-import $ from "jquery";
+import $, { data } from "jquery";
 import { Tab } from "bootstrap";
 
 export class Calendar extends React.Component {
+  
+  // Get élément dans la base de donnée repas
+  componentWillMount(){
+    fetch('https://localhost:5001/api/repas',
+    {
+        method: "get",
+        dataType: 'json',
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      var repasList = [];
+      for(var i=0; i< data.length; i++){
+        var repas = data[i];
+        repasList.push(repas);
+      }
+      console.log(repasList);
+      this.setState({repasList})
+      console.log(this.state.repasList);
+
+      repasList.forEach(element =>{
+        var tag = document.createElement("div");
+        tag.classList.add("fc-event");
+        tag.title = element.Nom;
+        var text = document.createTextNode(element.Nom);
+        tag.appendChild(text);
+        var element = document.getElementById("external-events");
+        element.appendChild(tag);
+      });
+        
+    })
+    .catch(err => console.log(err))
+  }
+
+  
+  
   // Ajout de valeur hardcodé
   state = {
     calendarEvents: [
       {
         title: "Pizza",
-        start: "2021-09-15",
+        start: "2021-10-15",
         id: "99999998"
       },
       {
         title: "Hamburger",
-        start: "2021-09-15",
+        start: "2021-10-15",
         id: "2"
       },
       {
         title: "Toast",
-        start: "2021-09-15",
+        start: "2021-10-15",
         id: "3"
       },
       {
         title: "Lasagne",
-        start: "2021-09-20",
+        start: "2021-10-20",
         id: "99999999"
       }
     ],
     events: [
-      { title: "Repas 1", id: "1" },
-      { title: "Repas 2", id: "2" },
-      { title: "Repas 3", id: "3" },
-      { title: "Repas 4", id: "4" },
-      { title: "Repas 5", id: "5" }
     ]
   };
 
@@ -82,12 +112,6 @@ export class Calendar extends React.Component {
       <tr >
       <td>Ingredients</td>
         <td>
-          <strong>Pain,</strong>
-          <strong>Viande,</strong>
-          <strong>Laitue,</strong>
-          <strong>Tomate,</strong>
-          <strong>Bacon,</strong>
-          <strong>Ketchup</strong>
         </td>
       </tr>
       </tbody>
