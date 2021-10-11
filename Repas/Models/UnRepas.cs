@@ -24,7 +24,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// Catégorie du repas
         /// </summary>
-        public CategoriesRepas Categorie { get; set;}
+        public string Categorie { get; set;}
 
         /// <summary>
         /// Liste d'ingrédients pour le repas

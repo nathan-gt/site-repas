@@ -27,37 +27,37 @@ namespace SiteRepas.Models
                 new Ingredient
                 {
                     Nom = "Steak haché",
-                    Categorie = CategoriesIngredient.Viande
+                    Categorie = "Viande"
                 },
                 new Ingredient
                 {
                     Nom = "Patate",
-                    Categorie = CategoriesIngredient.Légume
+                    Categorie = "Légume"
                 },
                 new Ingredient
                 {
                     Nom = "Maïs",
-                    Categorie = CategoriesIngredient.Légume
+                    Categorie = "Légume"
                 },
                 new Ingredient
                 {
                     Nom = "Pâte à pizza",
-                    Categorie = CategoriesIngredient.Pâte
+                    Categorie = "Pâte"
                 },
                 new Ingredient
                 {
                     Nom = "Sauce marinara",
-                    Categorie = CategoriesIngredient.Sauce
+                    Categorie = "Sauce"
                 },
                 new Ingredient
                 {
                     Nom = "Poivron vert",
-                    Categorie = CategoriesIngredient.Légume
+                    Categorie = "Légume"
                 },
                 new Ingredient
                 {
                     Nom = "Fromage",
-                    Categorie = CategoriesIngredient.Laitié
+                    Categorie = "Laitié"
                 }
             );
             context.SaveChanges();
@@ -66,52 +66,52 @@ namespace SiteRepas.Models
                 new UnRepas 
                 {
                     Nom = "Pâté chinois",
-                    Categorie = CategoriesRepas.Québécois,
+                    Categorie = "Québécois",
                 },
                 new UnRepas 
                 {
-                    Nom = "Burritos",
-                    Categorie = CategoriesRepas.Mexicain,
+                    Nom = "Buritos",
+                    Categorie = "Mexicain",
                 },
                 new UnRepas 
                 {
                     Nom = "Pâte carbonara",
-                    Categorie = CategoriesRepas.Italien,
+                    Categorie = "Italien",
                 },
                 new UnRepas 
                 {
                     Nom = "Pâte bolognaise",
-                    Categorie = CategoriesRepas.Italien,
+                    Categorie = "Italien",
                 },
                 new UnRepas 
                 {
                     Nom = "Fondue chinoise",
-                    Categorie = CategoriesRepas.Carnivore,
+                    Categorie = "Carnivore",
                 },
                 new UnRepas 
                 {
                     Nom = "Raclette",
-                    Categorie = CategoriesRepas.Américain,
+                    Categorie = "Américain",
                 },
                 new UnRepas 
                 {
                     Nom = "Hamburger",
-                    Categorie = CategoriesRepas.Américain,
+                    Categorie = "Américain",
                 },
                 new UnRepas 
                 {
                     Nom = "Doigt de poulet",
-                    Categorie = CategoriesRepas.Américain,
+                    Categorie = "Américain",
                 },
                 new UnRepas 
                 {
                     Nom = "Gnocci",
-                    Categorie = CategoriesRepas.Italien,
+                    Categorie = "Italien",
                 },
                 new UnRepas 
                 {
                     Nom = "Pizza",
-                    Categorie = CategoriesRepas.Italien
+                    Categorie = "Italien"
                 });
             context.SaveChanges();
         }

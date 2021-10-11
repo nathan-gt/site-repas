@@ -10,8 +10,8 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211011162744_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211011165353_MAJModels")]
+    partial class MAJModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -352,8 +352,8 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Categorie")
-                        .HasColumnType("int");
+                    b.Property<string>("Categorie")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
@@ -387,8 +387,8 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Categorie")
-                        .HasColumnType("int");
+                    b.Property<string>("Categorie")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");

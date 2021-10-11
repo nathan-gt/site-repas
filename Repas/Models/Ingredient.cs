@@ -30,7 +30,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// Catégorie de l'ingrédient
         /// </summary>
-        public CategoriesIngredient Categorie { get; set;}
+        public string Categorie { get; set;}
 
         /// <summary>
         /// Disponibilité de l'ingrédient
