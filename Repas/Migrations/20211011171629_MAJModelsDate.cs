@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteSiteRepas.Migrations
 {
-    public partial class MAJModels : Migration
+    public partial class MAJModelsDate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -134,6 +134,7 @@ namespace SiteSiteRepas.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCalendrier = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

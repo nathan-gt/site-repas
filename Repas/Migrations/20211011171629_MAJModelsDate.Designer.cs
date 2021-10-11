@@ -10,8 +10,8 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211011165353_MAJModels")]
-    partial class MAJModels
+    [Migration("20211011171629_MAJModelsDate")]
+    partial class MAJModelsDate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -389,6 +389,9 @@ namespace SiteSiteRepas.Migrations
 
                     b.Property<string>("Categorie")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCalendrier")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");

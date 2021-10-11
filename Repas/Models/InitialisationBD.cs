@@ -63,56 +63,46 @@ namespace SiteRepas.Models
             context.SaveChanges();
             //Ajoute des plats à la bd
             context.Repas.AddRange(
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Pâté chinois",
                     Categorie = "Québécois",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Buritos",
                     Categorie = "Mexicain",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Pâte carbonara",
                     Categorie = "Italien",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Pâte bolognaise",
                     Categorie = "Italien",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Fondue chinoise",
                     Categorie = "Carnivore",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Raclette",
                     Categorie = "Américain",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Hamburger",
                     Categorie = "Américain",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Doigt de poulet",
                     Categorie = "Américain",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Gnocci",
                     Categorie = "Italien",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Pizza",
                     Categorie = "Italien"
-                });
+                }) ; 
             context.SaveChanges();
         }
     }

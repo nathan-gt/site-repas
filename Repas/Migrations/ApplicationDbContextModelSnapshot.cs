@@ -388,6 +388,9 @@ namespace SiteSiteRepas.Migrations
                     b.Property<string>("Categorie")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateCalendrier")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 

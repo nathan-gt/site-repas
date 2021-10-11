@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,5 +31,8 @@ namespace SiteRepas.Models
         /// Liste d'ingrédients pour le repas
         /// </summary>
         public ICollection<Ingredient> Ingredients { get; set;}
+
+
+        public DateTime DateCalendrier { get; set; }
     }
 }
