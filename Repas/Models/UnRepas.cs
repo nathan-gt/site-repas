@@ -10,13 +10,13 @@ namespace SiteRepas.Models
     public class UnRepas
     {
         /// <summary>
-        /// Identifiant d'un repas
+        /// Identifiant d'un repas (unique)
         /// </summary>
         [Key]
         public int Id { get; set;}
 
         /// <summary>
-        /// Nom du repas
+        /// Nom du repas (non unique)
         /// </summary>
         [Required]
         public string Nom { get; set; }
