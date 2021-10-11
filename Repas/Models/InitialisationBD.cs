@@ -70,6 +70,46 @@ namespace SiteRepas.Models
                 },
                 new UnRepas 
                 {
+                    Nom = "Burritos",
+                    Categorie = CategoriesRepas.Mexicain,
+                },
+                new UnRepas 
+                {
+                    Nom = "Pâte carbonara",
+                    Categorie = CategoriesRepas.Italien,
+                },
+                new UnRepas 
+                {
+                    Nom = "Pâte bolognaise",
+                    Categorie = CategoriesRepas.Italien,
+                },
+                new UnRepas 
+                {
+                    Nom = "Fondue chinoise",
+                    Categorie = CategoriesRepas.Carnivore,
+                },
+                new UnRepas 
+                {
+                    Nom = "Raclette",
+                    Categorie = CategoriesRepas.Américain,
+                },
+                new UnRepas 
+                {
+                    Nom = "Hamburger",
+                    Categorie = CategoriesRepas.Américain,
+                },
+                new UnRepas 
+                {
+                    Nom = "Doigt de poulet",
+                    Categorie = CategoriesRepas.Américain,
+                },
+                new UnRepas 
+                {
+                    Nom = "Gnocci",
+                    Categorie = CategoriesRepas.Italien,
+                },
+                new UnRepas 
+                {
                     Nom = "Pizza",
                     Categorie = CategoriesRepas.Italien
                 });
