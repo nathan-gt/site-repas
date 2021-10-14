@@ -21,42 +21,48 @@ namespace SiteSiteRepas.Controllers
         {
             _configuration = configuration;
         }
-
-        //Méthode pour l'obtention des données à l'aide de la méthode GET
-        [HttpGet]
-        public JsonResult Get()
-        {
-            string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, FamilleId from dbo.Repas";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            SqlDataReader myReader;
-            using(SqlConnection myCon=new SqlConnection(sqlDataSource)) 
+        try 
+	    {	        
+		    //Méthode pour l'obtention des données à l'aide de la méthode GET
+            [HttpGet]
+            public JsonResult Get()
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) 
+                string requete = @"
+                                select Id, Nom, Categorie, DateCalendrier, FamilleId from dbo.Repas";
+                DataTable table = new DataTable();
+                string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+                SqlDataReader myReader;
+                using(SqlConnection myCon=new SqlConnection(sqlDataSource)) 
                 {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader); ;
+                    myCon.Open();
+                    using (SqlCommand myCommand = new SqlCommand(requete, myCon)) 
+                    {
+                        myReader = myCommand.ExecuteReader();
+                        table.Load(myReader); ;
 
-                    myReader.Close();
-                    myCon.Close();
+                        myReader.Close();
+                        myCon.Close();
+                    }
                 }
-            }
 
-            return new JsonResult(table);
-        }
+                return new JsonResult(table);
+            }
+	    }
+	    catch (global::System.Exception)
+	    {
+
+		    throw;
+	    }
+
         //Méthode pour mettre des données dans la base de données
         //à l'aide de la méthode POST
-        //TODO Mettre en string la catégorie dans initialisation bd
-        //et refaire les migrations
 
         [HttpPost]
         public JsonResult Post(UnRepas repas)
         {
             string requete = @"
                             insert into dbo.Repas (Nom, Categorie) values
-                             ('" + repas.Nom + @"',"+repas.Categorie+@")
+                             ('" + repas.Nom + @"','"+repas.Categorie+@"')
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");

@@ -27,9 +27,9 @@ namespace SiteRepas
                 {
                     InitialisationBD.Initialize(services);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    
+                    throw new Exception("Erreur lors de l'initialisation de la base de données.", e.InnerException);
                 }
             }
 
