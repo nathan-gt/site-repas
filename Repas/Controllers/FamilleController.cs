@@ -13,11 +13,11 @@ namespace SiteSiteRepas.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RepasController : ControllerBase
+    public class FamilleController : Controller
     {
         private readonly IConfiguration _configuration;
 
-        public RepasController(IConfiguration configuration)
+        public FamilleController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -27,35 +27,7 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Get()
         {
             string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, FamilleId from dbo.Repas";
-            DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            SqlDataReader myReader;
-            using(SqlConnection myCon=new SqlConnection(sqlDataSource)) 
-            {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) 
-                {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader); ;
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-
-            return new JsonResult(table);
-        }
-        //Méthode pour mettre des données dans la base de données
-        //à l'aide de la méthode POST
-
-        [HttpPost]
-        public JsonResult Post(UnRepas repas)
-        {
-            string requete = @"
-                            insert into dbo.Repas (Nom, Categorie) values
-                             ('" + repas.Nom + @"','"+repas.Categorie+@"')
-                            ";
+                            select Id, Nom from dbo.Familles";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -69,7 +41,30 @@ namespace SiteSiteRepas.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Repas ajouté avec succès.");
+
+            return new JsonResult(table);
+        }
+
+        [HttpPost]
+        public JsonResult Post(Famille famile)
+        {
+            string requete = @"
+                            insert into dbo.Familles (Nom) values
+                             ('" + famile.Nom + @"')";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Famille ajouté avec succès.");
         }
     }
 }

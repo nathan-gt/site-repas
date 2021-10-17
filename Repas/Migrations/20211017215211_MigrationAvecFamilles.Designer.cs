@@ -10,8 +10,8 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211011171629_MAJModelsDate")]
-    partial class MAJModelsDate
+    [Migration("20211017215211_MigrationAvecFamilles")]
+    partial class MigrationAvecFamilles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
