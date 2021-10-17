@@ -13,55 +13,47 @@ namespace SiteRepas.Models
     public class InitialisationBD
     {
         public static void Initialize(IServiceProvider serviceProvider)
-        {   
+        {
             using var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<ApplicationDbContext>>(), null);
-            if(context.Ingredient.Any())
-            {
+            if (context.Ingredient.Any()) {
                 return;  //Le seed a déjà été fait
             }
 
-            //Ajoute des ingrédients à la bd
+            //Ajout de ingrédients à la bd
             context.Ingredient.AddRange(
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Steak haché",
                     Categorie = "Viande"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Patate",
                     Categorie = "Légume"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Maïs",
                     Categorie = "Légume"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Pâte à pizza",
                     Categorie = "Pâte"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Sauce marinara",
                     Categorie = "Sauce"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Poivron vert",
                     Categorie = "Légume"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Fromage",
                     Categorie = "Laitié"
                 }
             );
             context.SaveChanges();
-            //Ajoute des plats à la bd
+            //Ajout de plats à la bd
             context.Repas.AddRange(
                 new UnRepas {
                     Nom = "Pâté chinois",
@@ -102,8 +94,23 @@ namespace SiteRepas.Models
                 new UnRepas {
                     Nom = "Pizza",
                     Categorie = "Italien"
-                }) ; 
+                });
             context.SaveChanges();
+
+            //Ajout de familles à la bd
+            context.Famille.AddRange(
+                new Famille {
+                    Nom = "Roy"
+                },
+                new Famille {
+                    Nom = "Legault"
+                },
+                new Famille {
+                    Nom = "Drouin"
+                },
+                new Famille {
+                    Nom = "LeBlanc"
+                });
         }
     }
 }

@@ -26,9 +26,45 @@ namespace SiteSiteRepas.Controllers
         [HttpGet]
         public JsonResult Get()
         {
+            string requete = @"
+                            select Id, Nom from dbo.Familles";
             DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
 
             return new JsonResult(table);
+        }
+
+        [HttpPost]
+        public JsonResult Post(Famille famile)
+        {
+            string requete = @"
+                            insert into dbo.Familles (Nom) values
+                             ('" + famile.Nom + @"')";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Famille ajouté avec succès.");
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteSiteRepas.Migrations
 {
-    public partial class MAJModelsDate : Migration
+    public partial class MigrationAvecFamilles : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

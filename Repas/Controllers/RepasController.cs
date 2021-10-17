@@ -21,39 +21,31 @@ namespace SiteSiteRepas.Controllers
         {
             _configuration = configuration;
         }
-        try 
-	    {	        
-		    //Méthode pour l'obtention des données à l'aide de la méthode GET
-            [HttpGet]
-            public JsonResult Get()
+
+        //Méthode pour l'obtention des données à l'aide de la méthode GET
+        [HttpGet]
+        public JsonResult Get()
+        {
+            string requete = @"
+                            select Id, Nom, Categorie, DateCalendrier, FamilleId from dbo.Repas";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using(SqlConnection myCon=new SqlConnection(sqlDataSource)) 
             {
-                string requete = @"
-                                select Id, Nom, Categorie, DateCalendrier, FamilleId from dbo.Repas";
-                DataTable table = new DataTable();
-                string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-                SqlDataReader myReader;
-                using(SqlConnection myCon=new SqlConnection(sqlDataSource)) 
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) 
                 {
-                    myCon.Open();
-                    using (SqlCommand myCommand = new SqlCommand(requete, myCon)) 
-                    {
-                        myReader = myCommand.ExecuteReader();
-                        table.Load(myReader); ;
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
 
-                        myReader.Close();
-                        myCon.Close();
-                    }
+                    myReader.Close();
+                    myCon.Close();
                 }
-
-                return new JsonResult(table);
             }
-	    }
-	    catch (global::System.Exception)
-	    {
 
-		    throw;
-	    }
-
+            return new JsonResult(table);
+        }
         //Méthode pour mettre des données dans la base de données
         //à l'aide de la méthode POST
 
@@ -79,7 +71,5 @@ namespace SiteSiteRepas.Controllers
             }
             return new JsonResult("Repas ajouté avec succès.");
         }
-
-
     }
 }
