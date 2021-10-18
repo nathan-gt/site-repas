@@ -31,8 +31,8 @@ jobs:
       - name: install openssl
         run: choco install openssl -y --no-progress
 
-      - run: echo %PRIVATE_KEY%
-      - run: echo %PUBLIC_KEY%
+      - run: echo ${{ env.PUBLIC_KEY }}
+      - run: echo ${{ env.PRIVATE_KEY }}
 
       - name: Creating private key from github secrets
         run: echo %PRIVATE_KEY% > private.key
