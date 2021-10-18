@@ -32,10 +32,10 @@ jobs:
         run: choco install openssl -y --no-progress
         
       - name: Creating private key from github secrets
-        run: echo ${{ env.PRIVATE_KEY }} > private.key
+        run: echo ${{ secrets.PRIVATE_KEY }}  > private.key
 
       - name: Creating public key from github secrets
-        run: echo ${{ env.PUBLIC_KEY }} > public.crt
+        run: echo ${{ secrets.PUBLIC_KEY }}  > public.crt
       
       - name: Generating .pfx certificate from private and public key
         run: openssl pkcs12 -export -out certificate.pfx -inkey private.key -in public.crt -passout pass:localhost
