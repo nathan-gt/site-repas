@@ -23,11 +23,12 @@ jobs:
       - uses: actions/checkout@v2
 
       ## Replacing Connection string
-      - name: Replace connection string with github secrets
+      - name: Replace connection string with github secrets and del appsettings.Development.json
         run: >-
           $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
           $JSON.ConnectionStrings.DefaultConnection = '${{ secrets.CONNECTION_STRING }}';
-          ConvertTo-Json $json | Out-File appsettings.json
+          ConvertTo-Json $json | Out-File appsettings.json;
+          del appsettings.Development.json
 
       ## SELF SIGNED CERTIFICATE GENERATION ##
       - name: use chocolatey env
