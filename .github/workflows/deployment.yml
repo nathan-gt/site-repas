@@ -22,6 +22,30 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      ## SELF SIGNED CERTIFICATE GENERATION ##
+      - name: use chocolatey env
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: -h
+
+      - name: install openssl --no-progress
+        run: choco install openssl -y
+
+      - name: Creating private key from github secrets
+        run: echo %PRIVATE_KEY% > private.key
+
+      - name: Creating public key from github secrets
+        run: echo %PUBLIC_KEY% > public.crt
+      
+      - name: list
+        run: DIR \o \b .
+        
+      # openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout example.key -out example.crt -subj "/CN=example.com" -addext "subjectAltName=DNS:example.com,DNS:www.example.net,IP:10.0.0.1
+
+
+      #   openssl pkcs12 -export -out certificate.pfx -inkey example.key -in example.crt
+    ##-----------------------------------##
+
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
 
@@ -33,29 +57,6 @@ jobs:
         run: npm run build --if-present
         working-directory: ./Repas/ClientApp
 
-    ## SELF SIGNED CERTIFICATE GENERATION ##
-      - name: use chocolatey env
-        uses: crazy-max/ghaction-chocolatey@v1
-        with:
-          args: -h
-
-      - name: install openssl
-        run: choco install openssl -y
-
-      - name: Creating private from github secrets
-        run: echo %PRIVATE_KEY% > private.key
-
-      - name: Creating private from github secrets
-        run: echo %PUBLIC_KEY% > public.crt
-      
-      - name: list
-        run: DIR /o /b
-        
-      # openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout example.key -out example.crt -subj "/CN=example.com" -addext "subjectAltName=DNS:example.com,DNS:www.example.net,IP:10.0.0.1
-
-
-      #   openssl pkcs12 -export -out certificate.pfx -inkey example.key -in example.crt
-    ##-----------------------------------##
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
