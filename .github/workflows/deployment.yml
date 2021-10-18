@@ -67,7 +67,7 @@ jobs:
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Move certificate to build folder
-        run: MOVE localhost.pfx ${{env.DOTNET_ROOT}}/myapp
+        run: mv localhost.pfx ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
