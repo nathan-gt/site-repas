@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }} 
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }} 
     defaults:
       run:
         working-directory: ./Repas
@@ -30,17 +33,32 @@ jobs:
         run: npm run build --if-present
         working-directory: ./Repas/ClientApp
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+    ## SELF SIGNED CERTIFICATE GENERATION ##
+      # - name: use chocolatey env
+      #   uses: crazy-max/ghaction-chocolatey@v1
+      #   with:
+      #     args: -h
 
+      # - name: install openssl
+      #   run: choco install openssl -y
+
+      # - name: Creating private and public keys from github secrets
+      #   run: openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout example.key -out example.crt -subj "/CN=example.com" -addext "subjectAltName=DNS:example.com,DNS:www.example.net,IP:10.0.0.1
+
+
+      #   openssl pkcs12 -export -out certificate.pfx -inkey example.key -in example.crt
+    ##-----------------------------------##
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-          include-prerelease: true
+          include-prerelease: true        
 
       - name: dotnet publish
-        run: dotnet publish -c Debug -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Move certificate to build folder
+        run: mv localhost.pfx ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
