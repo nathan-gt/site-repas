@@ -14,14 +14,22 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }} 
-      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }} 
+      PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
     defaults:
       run:
         working-directory: ./Repas
     steps:
       - uses: actions/checkout@v2
 
+      ## Replacing Connection string
+      - name: Replace connection string with github secrets
+        run: >-
+        $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json; 
+        $JSON.ConnectionStrings.DefaultConnection = ${{ secrets.CONNECTION_STRING }}; 
+        ConvertTo-Json $json | Out-File appsettings.json
+
+      -run: echo appsettings.json
       ## SELF SIGNED CERTIFICATE GENERATION ##
       - name: use chocolatey env
         uses: crazy-max/ghaction-chocolatey@v1
@@ -39,11 +47,6 @@ jobs:
       
       - name: Generating .pfx certificate from private and public key
         run: openssl pkcs12 -export -out certificate.pfx -inkey private.key -in public.crt -passout pass:localhost
-        
-      # openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout example.key -out example.crt -subj "/CN=example.com" -addext "subjectAltName=DNS:example.com,DNS:www.example.net,IP:10.0.0.1
-
-
-      #   openssl pkcs12 -export -out certificate.pfx -inkey example.key -in example.crt
     ##-----------------------------------##
 
       - name: Install Node.js ${{ matrix.node-version }}
