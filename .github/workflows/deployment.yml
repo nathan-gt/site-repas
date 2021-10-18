@@ -34,16 +34,24 @@ jobs:
         working-directory: ./Repas/ClientApp
 
     ## SELF SIGNED CERTIFICATE GENERATION ##
-      # - name: use chocolatey env
-      #   uses: crazy-max/ghaction-chocolatey@v1
-      #   with:
-      #     args: -h
+      - name: use chocolatey env
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: -h
 
-      # - name: install openssl
-      #   run: choco install openssl -y
+      - name: install openssl
+        run: choco install openssl -y
 
-      # - name: Creating private and public keys from github secrets
-      #   run: openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout example.key -out example.crt -subj "/CN=example.com" -addext "subjectAltName=DNS:example.com,DNS:www.example.net,IP:10.0.0.1
+      - name: Creating private from github secrets
+        run: echo %PRIVATE_KEY% > private.key
+
+      - name: Creating private from github secrets
+        run: echo %PUBLIC_KEY% > public.crt
+      
+      - name: list
+        run: DIR /o /b
+        
+      # openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout example.key -out example.crt -subj "/CN=example.com" -addext "subjectAltName=DNS:example.com,DNS:www.example.net,IP:10.0.0.1
 
 
       #   openssl pkcs12 -export -out certificate.pfx -inkey example.key -in example.crt
@@ -58,7 +66,7 @@ jobs:
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Move certificate to build folder
-        run: mv localhost.pfx ${{env.DOTNET_ROOT}}/myapp
+        run: MOVE localhost.pfx ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
