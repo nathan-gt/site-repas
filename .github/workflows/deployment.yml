@@ -29,7 +29,6 @@ jobs:
           $JSON.ConnectionStrings.DefaultConnection = '${{ secrets.CONNECTION_STRING }}';
           ConvertTo-Json $json | Out-File appsettings.json
 
-      - run: Get-Content -Raw appsettings.json
       ## SELF SIGNED CERTIFICATE GENERATION ##
       - name: use chocolatey env
         uses: crazy-max/ghaction-chocolatey@v1
