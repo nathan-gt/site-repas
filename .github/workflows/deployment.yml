@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - US4-CICD
   workflow_dispatch:
 
 jobs:
@@ -22,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      ## Replacing Connection string
+      ## Replacing Connection string in appsettings.json
       - name: Replace connection string with github secrets and del appsettings.Development.json
         run: >-
           $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
