@@ -1,18 +1,12 @@
 import React, { useRef, useState } from "react";
 import ListeIngredients from "./ListeIngredients";
 
-export default function AjoutIngredient() {
+export default function AjoutIngredient({ listeIngredients }) {
     // Récupération du nom de l'ingrédient (input text)
     const refNomIngredient = useRef()
+
     // Création d'une liste d'ingrédients fictive
-    const [ingredients, setIngredients] = useState([
-        "Sauce tomate",
-        "Fromage",
-        "Pepperoni",
-        "Jambon",
-        "Poivrons",
-        "Champigons"
-    ])
+    const [ingredients, setIngredients] = useState([listeIngredients])
 
     // Fonction qui gère le click sur 
     // le bouton d'ajout d'un ingrédient.
