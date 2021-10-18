@@ -23,9 +23,6 @@ jobs:
       - uses: actions/checkout@v2
 
       ## SELF SIGNED CERTIFICATE GENERATION ##
-      - name: list
-        run: ls
-        
       - name: use chocolatey env
         uses: crazy-max/ghaction-chocolatey@v1
         with:
@@ -40,8 +37,8 @@ jobs:
       - name: Creating public key from github secrets
         run: echo %PUBLIC_KEY% > public.crt
       
-      - name: list
-        run: ls
+      - name: Generating .pfx certificate from private and public key
+        run: openssl pkcs12 -export -out certificate.pfx -inkey private.key -in public.crt -passout pass:localhost
         
       # openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes -keyout example.key -out example.crt -subj "/CN=example.com" -addext "subjectAltName=DNS:example.com,DNS:www.example.net,IP:10.0.0.1
 

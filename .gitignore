@@ -1,6 +1,7 @@
 # Nos fichiers ignorés:
 published/
 Repas/published
+*.pfx # certificates
 
 
 ## Ignore Visual Studio temporary files, build results, and
