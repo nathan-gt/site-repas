@@ -25,11 +25,11 @@ jobs:
       ## Replacing Connection string
       - name: Replace connection string with github secrets
         run: >-
-          $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json; 
-          $JSON.ConnectionStrings.DefaultConnection = ${{ secrets.CONNECTION_STRING }}; 
+          $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
+          $JSON.ConnectionStrings.DefaultConnection = ${{ secrets.CONNECTION_STRING }};
           ConvertTo-Json $json | Out-File appsettings.json
 
-      -run: echo appsettings.json
+      - run: echo appsettings.json
       ## SELF SIGNED CERTIFICATE GENERATION ##
       - name: use chocolatey env
         uses: crazy-max/ghaction-chocolatey@v1
