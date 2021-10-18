@@ -26,7 +26,7 @@ jobs:
       - name: Replace connection string with github secrets
         run: >-
           $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
-          $JSON.ConnectionStrings.DefaultConnection = ${{ secrets.CONNECTION_STRING }};
+          $JSON.ConnectionStrings.DefaultConnection = '${{ secrets.CONNECTION_STRING }}';
           ConvertTo-Json $json | Out-File appsettings.json
 
       - run: echo appsettings.json
