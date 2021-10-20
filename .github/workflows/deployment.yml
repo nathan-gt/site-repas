@@ -21,11 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      ## Replacing Connection string in appsettings.json
+      ## Replacing Connection string and make identity server use file certificate in appsettings.json
       - name: Replace connection string with github secrets and del appsettings.Development.json
         run: >-
           $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
           $JSON.ConnectionStrings.DefaultConnection = '${{ secrets.CONNECTION_STRING }}';
+          $key = [ordered]@{key=@{Type="File";FilePath="./certificate.pfx";Password="localhost"}};
+          $JSON.IdentityServer | Add-Member -NotePropertyMembers $key;
           ConvertTo-Json $json | Out-File appsettings.json;
           del appsettings.Development.json
 
