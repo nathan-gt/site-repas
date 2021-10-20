@@ -11,10 +11,14 @@ import "../custom.css";
 import $, { data } from "jquery";
 import { Tab } from "bootstrap";
 
+
 export class Calendar extends React.Component {
+  
+  calendarRef = React.createRef()
   
   // Get élément dans la base de donnée repas
   componentWillMount(){
+    console.log(process.env);
     fetch('https://localhost:5001/api/repas',
     {
         method: "get",
@@ -27,7 +31,7 @@ export class Calendar extends React.Component {
         var repas = data[i];
         repasList.push(repas);
       }
-      console.log(repasList);
+      //console.log(repasList);
       this.setState({repasList})
       console.log(this.state.repasList);
 
@@ -37,34 +41,25 @@ export class Calendar extends React.Component {
         tag.title = element.Nom;
         var text = document.createTextNode(element.Nom);
         tag.appendChild(text);
-        var element = document.getElementById("external-events");
-        element.appendChild(tag);
+        var elements = document.getElementById("external-events");
+        elements.appendChild(tag);
+
+        if(!element.DateCalendrier.toString().startsWith("0")){
+          const api = this.calendarRef.current.getApi();
+          api.addEvent({
+              title: element.Nom,
+              start: element.DateCalendrier,
+              display: 'block'
+          });
+        }
       });
-        
     })
     .catch(err => console.log(err))
   }
-
-  
   
   // Ajout de valeur hardcodé
   state = {
     calendarEvents: [
-      {
-        title: "Pizza",
-        start: "2021-10-15",
-        id: "99999998"
-      },
-      {
-        title: "Hamburger",
-        start: "2021-10-15",
-        id: "2"
-      },
-      {
-        title: "Toast",
-        start: "2021-10-15",
-        id: "3"
-      },
       {
         title: "Lasagne",
         start: "2021-10-20",
@@ -116,7 +111,6 @@ export class Calendar extends React.Component {
       </tr>
       </tbody>
       </table>
-      <a href="/plat">Détails du plat</a>
       </div>`,
 
       showCancelButton: true,
@@ -164,7 +158,6 @@ export class Calendar extends React.Component {
             </div>
             
           </Col>
-
           <Col lg={9} sm={9} md={9}>
             <div>
               <FullCalendar
@@ -180,7 +173,7 @@ export class Calendar extends React.Component {
                 editable={true}
                 droppable={true}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                ref={this.calendarComponentRef}
+                ref={this.calendarRef}
                 weekends={this.state.calendarWeekends}
                 events={this.state.calendarEvents}
                 eventDrop={this.drop}
@@ -220,6 +213,16 @@ function addRepas() {
         tag.appendChild(text);
         var element = document.getElementById("external-events");
         element.appendChild(tag);
+
+        // Ajout du repas à la base de donnée
+        fetch('https://localhost:5001/api/repas', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({Nom: result.value, Categorie: 'None', DateCalendrier:'0001-01-01 00:00:00'})
+        });
     }
   })
 

@@ -53,9 +53,8 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Post(UnRepas repas)
         {
             string requete = @"
-                            insert into dbo.Repas (Nom, Categorie) values
-                             ('" + repas.Nom + @"','"+repas.Categorie+@"')
-                            ";
+                            insert into dbo.Repas (Nom, Categorie, dateCalendrier) values
+                             ('" + repas.Nom + @"','"+repas.Categorie+@"','" + repas.DateCalendrier + @"')";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
