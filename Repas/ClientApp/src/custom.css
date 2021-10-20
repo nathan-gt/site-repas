@@ -34,3 +34,11 @@ code {
   padding: 3px;
   border-radius: 5px;
 }
+
+.fc-event-time{
+  display : none;
+}
+
+.fc-daygrid-event-dot{
+  display: none;
+}
