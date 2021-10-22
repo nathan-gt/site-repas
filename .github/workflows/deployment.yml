@@ -30,6 +30,10 @@ jobs:
           $JSON.IdentityServer | Add-Member -NotePropertyMembers $key;
           ConvertTo-Json $json | Out-File appsettings.json;
           del appsettings.Development.json
+      
+      ## Replacing base server URL in .env of frontend react app
+      - name: Replacing REACT_APP_BASE_URL .env
+        run: echo 'REACT_APP_BASE_URL=${{secrets.BASE_APP_URL}}' > .env
 
       ## SELF SIGNED CERTIFICATE GENERATION ##
       - name: use chocolatey env

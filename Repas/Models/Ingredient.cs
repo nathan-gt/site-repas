@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace SiteRepas.Models
 {
     /// <summary>
     /// Modèle servant à stocker les informations se rapportant à un ingrédent.
     /// </summary>
+    [Index(nameof(Nom), IsUnique = true)]
     public class Ingredient
     {
         /// <summary>
@@ -27,7 +30,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// Catégorie de l'ingrédient
         /// </summary>
-        public CategoriesIngredient Categorie { get; set;}
+        public string Categorie { get; set;}
 
         /// <summary>
         /// Disponibilité de l'ingrédient

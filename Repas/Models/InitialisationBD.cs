@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SiteRepas.Data;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SiteRepas.Models
@@ -12,67 +13,104 @@ namespace SiteRepas.Models
     public class InitialisationBD
     {
         public static void Initialize(IServiceProvider serviceProvider)
-        {   
+        {
             using var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<ApplicationDbContext>>(), null);
-            if(context.Ingredient.Any())
-            {
+            if (context.Ingredient.Any()) {
                 return;  //Le seed a déjà été fait
             }
 
-            //Ajoute des ingrédients à la bd
+            //Ajout de ingrédients à la bd
             context.Ingredient.AddRange(
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Steak haché",
-                    Categorie = CategoriesIngredient.Viande
+                    Categorie = "Viande"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Patate",
-                    Categorie = CategoriesIngredient.Légume
+                    Categorie = "Légume"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Maïs",
-                    Categorie = CategoriesIngredient.Légume
+                    Categorie = "Légume"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Pâte à pizza",
-                    Categorie = CategoriesIngredient.Pâte
+                    Categorie = "Pâte"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Sauce marinara",
-                    Categorie = CategoriesIngredient.Sauce
+                    Categorie = "Sauce"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Poivron vert",
-                    Categorie = CategoriesIngredient.Légume
+                    Categorie = "Légume"
                 },
-                new Ingredient
-                {
+                new Ingredient {
                     Nom = "Fromage",
-                    Categorie = CategoriesIngredient.Laitié
+                    Categorie = "Laitié"
                 }
             );
             context.SaveChanges();
-            //Ajoute des plats à la bd
+            //Ajout de plats à la bd
             context.Repas.AddRange(
-                new UnRepas 
-                {
+                new UnRepas {
                     Nom = "Pâté chinois",
-                    Categorie = CategoriesRepas.Québécois
+                    Categorie = "Québécois",
                 },
-                new UnRepas 
-                {
+                new UnRepas {
+                    Nom = "Buritos",
+                    Categorie = "Mexicain",
+                },
+                new UnRepas {
+                    Nom = "Pâte carbonara",
+                    Categorie = "Italien",
+                },
+                new UnRepas {
+                    Nom = "Pâte bolognaise",
+                    Categorie = "Italien",
+                },
+                new UnRepas {
+                    Nom = "Fondue chinoise",
+                    Categorie = "Carnivore",
+                },
+                new UnRepas {
+                    Nom = "Raclette",
+                    Categorie = "Américain",
+                },
+                new UnRepas {
+                    Nom = "Hamburger",
+                    Categorie = "Américain",
+                },
+                new UnRepas {
+                    Nom = "Doigt de poulet",
+                    Categorie = "Américain",
+                },
+                new UnRepas {
+                    Nom = "Gnocci",
+                    Categorie = "Italien",
+                },
+                new UnRepas {
                     Nom = "Pizza",
-                    Categorie = CategoriesRepas.Italien
+                    Categorie = "Italien"
                 });
             context.SaveChanges();
+
+            //Ajout de familles à la bd
+            context.Famille.AddRange(
+                new Famille {
+                    Nom = "Roy"
+                },
+                new Famille {
+                    Nom = "Legault"
+                },
+                new Famille {
+                    Nom = "Drouin"
+                },
+                new Famille {
+                    Nom = "LeBlanc"
+                });
         }
     }
 }
