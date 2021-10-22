@@ -350,8 +350,8 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Categorie")
-                        .HasColumnType("int");
+                    b.Property<string>("Categorie")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
@@ -385,8 +385,11 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Categorie")
-                        .HasColumnType("int");
+                    b.Property<string>("Categorie")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCalendrier")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");

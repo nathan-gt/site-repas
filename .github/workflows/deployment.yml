@@ -7,29 +7,75 @@ on:
   push:
     branches:
       - main
-      - US4-CICD
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
     defaults:
       run:
         working-directory: ./Repas
     steps:
       - uses: actions/checkout@v2
 
+      ## Replacing Connection string and make identity server use file certificate in appsettings.json
+      - name: Replace connection string with github secrets and del appsettings.Development.json
+        run: >-
+          $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
+          $JSON.ConnectionStrings.DefaultConnection = '${{ secrets.CONNECTION_STRING }}';
+          $key = [ordered]@{key=@{Type="File";FilePath="./certificate.pfx";Password="localhost"}};
+          $JSON.IdentityServer | Add-Member -NotePropertyMembers $key;
+          ConvertTo-Json $json | Out-File appsettings.json;
+          del appsettings.Development.json
+      
+      ## Replacing base server URL in .env of frontend react app
+      - name: Replacing REACT_APP_BASE_URL .env
+        run: echo 'REACT_APP_BASE_URL=${{secrets.BASE_APP_URL}}' > .env
+
+      ## SELF SIGNED CERTIFICATE GENERATION ##
+      - name: use chocolatey env
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: -h
+
+      - name: install openssl
+        run: choco install openssl -y --no-progress
+        
+      - name: Creating private key from github secrets
+        run: echo '${{ secrets.PRIVATE_KEY }}' | Out-File private.key
+
+      - name: Creating public key from github secrets
+        run: echo '${{ secrets.PUBLIC_KEY }}' | Out-File public.crt
+      
+      - name: Generating .pfx certificate from private and public key
+        run: openssl pkcs12 -export -out certificate.pfx -inkey private.key -in public.crt -passout pass:localhost
+    ##-----------------------------------##
+
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+
+      - name: npm install react frontend
+        run: npm install
+        working-directory: ./Repas/ClientApp
+
+      - name: npm build react frontend
+        run: npm run build --if-present
+        working-directory: ./Repas/ClientApp
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-          include-prerelease: true
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+          include-prerelease: true        
 
       - name: dotnet publish
-        run: dotnet publish -c Debug -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Move certificate to build folder
+        run: mv certificate.pfx ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SiteRepas.Data;
 using SiteRepas.Models;
+using Newtonsoft.Json.Serialization;
 
 namespace SiteRepas
 {
@@ -22,11 +23,22 @@ namespace SiteRepas
             Configuration = configuration;
         }
 
+        private IWebHostEnvironment _env;
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Enlever le CORS
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod()
+                .AllowAnyHeader());
+            });
+
+
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -43,6 +55,16 @@ namespace SiteRepas
                 .AddIdentityServerJwt();
 
             services.AddControllersWithViews();
+
+            //JSON Serializer pour la lecture de donn�es de la bd
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options=>
+                options.SerializerSettings.ReferenceLoopHandling=Newtonsoft
+                .Json.ReferenceLoopHandling.Ignore)
+                .AddNewtonsoftJson(options=>options.SerializerSettings.ContractResolver
+                =new DefaultContractResolver());
+
+            services.AddControllers();
             services.AddRazorPages();
 
             // In production, the React files will be served from this directory
@@ -55,6 +77,8 @@ namespace SiteRepas
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -64,10 +88,10 @@ namespace SiteRepas
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

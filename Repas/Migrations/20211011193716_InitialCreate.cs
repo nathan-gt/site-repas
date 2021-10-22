@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteSiteRepas.Migrations
 {
-    public partial class TestKey : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -133,7 +133,8 @@ namespace SiteSiteRepas.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Categorie = table.Column<int>(type: "int", nullable: false),
+                    Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCalendrier = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -239,7 +240,7 @@ namespace SiteSiteRepas.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Categorie = table.Column<int>(type: "int", nullable: false),
+                    Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Disponible = table.Column<bool>(type: "bit", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true),
                     UnRepasId = table.Column<int>(type: "int", nullable: true)

@@ -8,39 +8,65 @@ import Alert from "sweetalert2";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
+import $, { data } from "jquery";
+import { Tab } from "bootstrap";
 
 
 export class Calendar extends React.Component {
+  
+  calendarRef = React.createRef()
+  
+  // Get élément dans la base de donnée repas
+  componentWillMount(){
+    console.log(process.env);
+    fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+    {
+        method: "get",
+        dataType: 'json',
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      var repasList = [];
+      for(var i=0; i< data.length; i++){
+        var repas = data[i];
+        repasList.push(repas);
+      }
+      console.log(repasList);
+      this.setState({repasList})
+      console.log(this.state.repasList);
+
+      repasList.forEach(element =>{
+        var tag = document.createElement("div");
+        tag.classList.add("fc-event");
+        tag.title = element.Nom;
+        var text = document.createTextNode(element.Nom);
+        tag.appendChild(text);
+        var elements = document.getElementById("external-events");
+        elements.appendChild(tag);
+
+        if(!element.DateCalendrier.toString().startsWith("0")){
+          const api = this.calendarRef.current.getApi();
+          api.addEvent({
+              title: element.Nom,
+              start: element.DateCalendrier,
+              display: 'block'
+          });
+        }
+      });
+    })
+    .catch(err => console.log(err))
+  }
+  
   // Ajout de valeur hardcodé
   state = {
     calendarEvents: [
       {
-        title: "Pizza",
-        start: "2021-09-15",
-        id: "99999998"
-      },
-      {
-        title: "Hamburger",
-        start: "2021-09-15",
-        id: "2"
-      },
-      {
-        title: "Toast",
-        start: "2021-09-15",
-        id: "3"
-      },
-      {
         title: "Lasagne",
-        start: "2021-09-20",
+        start: "2021-10-20",
         id: "99999999"
       }
     ],
     events: [
-      { title: "Repas 1", id: "1" },
-      { title: "Repas 2", id: "2" },
-      { title: "Repas 3", id: "3" },
-      { title: "Repas 4", id: "4" },
-      { title: "Repas 5", id: "5" }
     ]
   };
 
@@ -81,12 +107,6 @@ export class Calendar extends React.Component {
       <tr >
       <td>Ingredients</td>
         <td>
-          <strong>Pain,</strong>
-          <strong>Viande,</strong>
-          <strong>Laitue,</strong>
-          <strong>Tomate,</strong>
-          <strong>Bacon,</strong>
-          <strong>Ketchup</strong>
         </td>
       </tr>
       </tbody>
@@ -101,7 +121,7 @@ export class Calendar extends React.Component {
     }).then(result => {
       if (result.value) {
         eventClick.event.remove(); // It will remove event from the calendar
-        Alert.fire("Supprimer!", "Le repas a été supprimé.", "success");
+        Alert.fire("Supprimé!", "Le repas a été supprimé.", "success");
       }
     });
   };
@@ -118,12 +138,13 @@ export class Calendar extends React.Component {
                 padding: "10px",
                 width: "80%",
                 height: "auto",
-                maxHeight: "-webkit-fill-available"
+                maxHeight: "-webkit-fill-available",
               }}
             >
               <p align="center">
                 <strong> Liste de repas</strong>
               </p>
+              <a class="fc font-weight-bold" onClick={addRepas}>Ajouter un repas</a>
               {this.state.events.map(event => (
                 <div
                   className="fc-event"
@@ -135,11 +156,12 @@ export class Calendar extends React.Component {
                 </div>
               ))}
             </div>
+            
           </Col>
-
           <Col lg={9} sm={9} md={9}>
-            <div className="demo-app-calendar" id="mycalendartest">
+            <div>
               <FullCalendar
+                id="calendar"
                 defaultView="dayGridMonth"
                 header={{
                   left: "prev,next today",
@@ -151,7 +173,7 @@ export class Calendar extends React.Component {
                 editable={true}
                 droppable={true}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-                ref={this.calendarComponentRef}
+                ref={this.calendarRef}
                 weekends={this.state.calendarWeekends}
                 events={this.state.calendarEvents}
                 eventDrop={this.drop}
@@ -167,3 +189,41 @@ export class Calendar extends React.Component {
     );
   }
 }
+
+
+function addRepas() {
+  Alert.fire({
+    title: 'Ajouter un repas',
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'on'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Ajouter',
+    cancelButtonText: 'Annuler',
+    closeOnConfirm: false,
+    showLoaderOnConfirm: true,
+  }).then((result) => {
+    if (result.value) {
+        console.log("Result: " + result.value);
+        var tag = document.createElement("div");
+        tag.classList.add("fc-event");
+        tag.title = result.value;
+        var text = document.createTextNode(result.value);
+        tag.appendChild(text);
+        var element = document.getElementById("external-events");
+        element.appendChild(tag);
+
+        // Ajout du repas à la base de donnée
+        fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({Nom: result.value, Categorie: 'None', DateCalendrier:'0001-01-01 00:00:00'})
+        });
+    }
+  })
+
+};
