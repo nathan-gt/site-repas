@@ -23,6 +23,8 @@ namespace SiteRepas
             Configuration = configuration;
         }
 
+        private IWebHostEnvironment _env;
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -54,7 +56,7 @@ namespace SiteRepas
 
             services.AddControllersWithViews();
 
-            //JSON Serializer pour la lecture de données de la bd
+            //JSON Serializer pour la lecture de donnï¿½es de la bd
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options=>
                 options.SerializerSettings.ReferenceLoopHandling=Newtonsoft
@@ -86,10 +88,10 @@ namespace SiteRepas
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

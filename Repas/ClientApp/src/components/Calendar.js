@@ -19,7 +19,7 @@ export class Calendar extends React.Component {
   // Get élément dans la base de donnée repas
   componentWillMount(){
     console.log(process.env);
-    fetch('https://localhost:5001/api/repas',
+    fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
     {
         method: "get",
         dataType: 'json',
@@ -31,7 +31,7 @@ export class Calendar extends React.Component {
         var repas = data[i];
         repasList.push(repas);
       }
-      //console.log(repasList);
+      console.log(repasList);
       this.setState({repasList})
       console.log(this.state.repasList);
 
@@ -215,7 +215,7 @@ function addRepas() {
         element.appendChild(tag);
 
         // Ajout du repas à la base de donnée
-        fetch('https://localhost:5001/api/repas', {
+        fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
