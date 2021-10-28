@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import AjoutIngredient from "./AjoutIngredient";
 
-export default function AfficherPlat() {
-
+export default function AfficherPlat({ platAAfficher }) {
+    
     // Test à l'aide d'une liste fictive de plats
     const [plats, setPlats] = useState([
         {

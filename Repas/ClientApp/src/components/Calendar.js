@@ -111,6 +111,7 @@ export class Calendar extends React.Component {
       </tr>
       </tbody>
       </table>
+      <a href="/plat">Détails sur le plat</a>
       </div>`,
 
       showCancelButton: true,

@@ -6,7 +6,7 @@ export default function AjoutIngredient({ listeIngredients }) {
     const refNomIngredient = useRef()
 
     // Création d'une liste d'ingrédients fictive
-    const [ingredients, setIngredients] = useState([listeIngredients])
+    const [ingredients, setIngredients] = useState(listeIngredients)
 
     // Fonction qui gère le click sur 
     // le bouton d'ajout d'un ingrédient.
