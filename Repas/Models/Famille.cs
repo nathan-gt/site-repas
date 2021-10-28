@@ -18,7 +18,6 @@ namespace SiteRepas.Models
         /// <summary>
         /// Nom de la famille
         /// </summary>
-        [Required]
         public string Nom { get; set; }
 
         /// <summary>
