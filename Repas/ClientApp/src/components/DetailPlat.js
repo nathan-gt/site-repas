@@ -1,60 +1,33 @@
-import React, { useState, useRef } from 'react'
-import AjoutIngredient from "./AjoutIngredient";
+import React, { Component } from 'react'
 
-export default function AfficherPlat({ platAAfficher }) {
-
-    // Récupération du type de plat dans la page
-    const refTypePlat = useRef();
-    console.log("Type de plat : " + refTypePlat);
+export class DetailPlat extends Component {
     
-    // Test à l'aide d'une liste fictive de plats
-    const [plats, setPlats] = useState([
+    // Get élément dans la base de donnée repas
+    componentWillMount(){
+        fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
         {
-            id: 1,
-            nom: "Pizza",
-            categorie: "Carnivore",
-            ingredients: [
-                "Sauce tomate",
-                "Mozzarella",
-                "Pepperoni",
-                "Jambon",
-                "Poivrons",
-                "Champigons"
-            ]
-        },
-        {
-            id: 2,
-            nom: "Hamburger",
-            categorie: "Carnivore",
-            ingredients: [
-                "Boulette de boeuf",
-                "Cheddar",
-                "Laitue",
-                "Tomate",
-                "Oignon",
-                "Sauce Barbecue"
-            ]
-        },
-        {
-            id: 3,
-            nom: "Potage aux légumes 4 saisons",
-            categorie: "Végétalien",
-            ingredients: []
-        }
-    ])
+            method: "get",
+            dataType: 'json',
+        })
+        .then((res) => res.json())
+        .then((data) => {});
+    }
 
-    return (
+    render(){
+        return (
         <div>
-            <h2>Plat : {plats[0].nom}</h2>
+                <h1>Détails sur le plat</h1><br />
+        <div>
+            <h2>Plat : Test</h2>
 
             <label for="cars">Type de plat : </label>
-            <select ref={refTypePlat} name="typePlat" id="type">
+            <select name="typePlat" id="type">
                 <option value="carnivore">Carnivore</option>
                 <option value="vegetarien">Végétarien</option>
                 <option value="vegan">Vegan</option>
             </select><br /><br />
 
-            <AjoutIngredient listeIngredients={plats[2].ingredients}/>
+            {/* <AjoutIngredient listeIngredients={plats[2].ingredients}/> */}
 
             <h3>Description/Préparation</h3><br />
             <p>
@@ -88,5 +61,7 @@ export default function AfficherPlat({ platAAfficher }) {
                 ingrédients pour la seconde pizza.
             </p>
         </div>
+        </div>
     )
+    }
 }

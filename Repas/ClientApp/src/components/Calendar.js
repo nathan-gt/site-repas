@@ -12,7 +12,7 @@ import $, { data } from "jquery";
 import { Tab } from "bootstrap";
 
 
-export class Calendar extends React.Component {
+export class Calendar extends Component {
   
   calendarRef = React.createRef()
   
