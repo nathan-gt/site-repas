@@ -19,7 +19,6 @@ namespace SiteRepas.Models
         /// <summary>
         /// Nom du repas (non unique)
         /// </summary>
-        [Required]
         public string Nom { get; set; }
 
         /// <summary>

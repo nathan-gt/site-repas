@@ -66,5 +66,29 @@ namespace SiteSiteRepas.Controllers
             }
             return new JsonResult("Famille ajouté avec succès.");
         }
+
+        //Méthode pour supprimer des données dans la base de données
+        //à l'aide d'un HTTP DELETE
+
+        [HttpDelete]
+        public JsonResult Delete(Famille famille)
+        {
+            string requete = @"
+                            delete from dbo.Familles where id = " + famille.Id;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Famille supprimé avec succès");
+        }
     }
 }

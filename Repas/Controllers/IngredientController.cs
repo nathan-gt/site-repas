@@ -67,5 +67,29 @@ namespace SiteSiteRepas.Controllers
             }
             return new JsonResult("Ingredient ajouté avec succès.");
         }
+
+        //Méthode pour supprimer des données dans la base de données
+        //à l'aide d'un HTTP DELETE
+
+        [HttpDelete]
+        public JsonResult Delete(Ingredient ingredient)
+        {
+            string requete = @"
+                            delete from dbo.Ingredients where id = " + ingredient.Id;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Ingredient supprimé avec succès");
+        }
     }
 }
