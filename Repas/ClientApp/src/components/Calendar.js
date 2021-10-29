@@ -18,7 +18,6 @@ export class Calendar extends React.Component {
   
   // Get élément dans la base de donnée repas
   componentWillMount(){
-    console.log(process.env);
     fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
     {
         method: "get",
@@ -31,9 +30,7 @@ export class Calendar extends React.Component {
         var repas = data[i];
         repasList.push(repas);
       }
-      console.log(repasList);
       this.setState({repasList})
-      console.log(this.state.repasList);
 
       repasList.forEach(element =>{
         var tag = document.createElement("div");
@@ -47,6 +44,7 @@ export class Calendar extends React.Component {
         if(!element.DateCalendrier.toString().startsWith("0")){
           const api = this.calendarRef.current.getApi();
           api.addEvent({
+              id: element.Id,
               title: element.Nom,
               start: element.DateCalendrier,
               display: 'block'
@@ -59,15 +57,8 @@ export class Calendar extends React.Component {
   
   // Ajout de valeur hardcodé
   state = {
-    calendarEvents: [
-      {
-        title: "Lasagne",
-        start: "2021-10-20",
-        id: "99999999"
-      }
-    ],
-    events: [
-    ]
+    calendarEvents: [],
+    events: []
   };
 
   /**
@@ -111,6 +102,7 @@ export class Calendar extends React.Component {
       </tr>
       </tbody>
       </table>
+      <a href="` +process.env.REACT_APP_BASE_URL+ `/plat">Détail du repas</a>
       </div>`,
 
       showCancelButton: true,
@@ -120,6 +112,15 @@ export class Calendar extends React.Component {
       cancelButtonText: "Close"
     }).then(result => {
       if (result.value) {
+        // Suppresion du repas à la base de donnée
+        fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+          method: 'DELETE',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({Id: eventClick.event.id})
+        });
         eventClick.event.remove(); // It will remove event from the calendar
         Alert.fire("Supprimé!", "Le repas a été supprimé.", "success");
       }
@@ -176,9 +177,50 @@ export class Calendar extends React.Component {
                 ref={this.calendarRef}
                 weekends={this.state.calendarWeekends}
                 events={this.state.calendarEvents}
-                eventDrop={this.drop}
+                eventDrop={function(info){
+
+                  // Ajout du repas à la base de donnée
+                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+                    method: 'DELETE',
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({Id: info.event.id})
+                  });
+
+                  // Ajout du repas à la base de donnée
+                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+                    method: 'POST',
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({Nom: info.event.title, Categorie: 'None', DateCalendrier:info.event.start})
+                  });
+
+                  var events = this.getEvents();
+                  var calendarApi = this;
+                  setTimeout(function(){refreshBD(info, events, calendarApi, true)},100);
+                }}
                 drop={this.drop}
-                eventReceive={this.eventReceive}
+                eventReceive={function(info){
+
+                  // Ajout du repas à la base de donnée
+                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+                    method: 'POST',
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({Nom: info.event.title, Categorie: 'None', DateCalendrier:info.event.start})
+                  });
+
+                  var events = this.getEvents();
+                  var calendarApi = this;
+                  setTimeout(function(){refreshBD(info, events, calendarApi, false)},100);
+
+                }}
                 eventClick={this.eventClick}
                 selectable={true}
               />
@@ -205,7 +247,6 @@ function addRepas() {
     showLoaderOnConfirm: true,
   }).then((result) => {
     if (result.value) {
-        console.log("Result: " + result.value);
         var tag = document.createElement("div");
         tag.classList.add("fc-event");
         tag.title = result.value;
@@ -225,5 +266,38 @@ function addRepas() {
         });
     }
   })
-
 };
+
+function refreshBD(info, events, calendarApi, drag){
+
+  if(!drag){
+    events[events.length - 1].remove();
+  }
+
+  events.forEach(event => {
+    if (String(event.start).slice(0,10) === String(info.event.start).slice(0,10)){
+        event.remove();
+    }
+  });
+
+  fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+  {
+      method: "get",
+      dataType: 'json',
+  })
+  .then((res) => res.json())
+  .then((data) => {
+    var date = String(info.event.start.toISOString()).slice(0,10);
+
+    data.forEach(element =>{
+      if(String(element.DateCalendrier).slice(0,10) === date)
+        calendarApi.addEvent({
+            id: element.Id,
+            title: element.Nom,
+            start: date,
+            display: 'block'
+        });
+    });
+  })
+  
+}

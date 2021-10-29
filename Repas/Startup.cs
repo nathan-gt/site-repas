@@ -23,8 +23,6 @@ namespace SiteRepas
             Configuration = configuration;
         }
 
-        private IWebHostEnvironment _env;
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -36,8 +34,6 @@ namespace SiteRepas
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod()
                 .AllowAnyHeader());
             });
-
-
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -64,7 +60,7 @@ namespace SiteRepas
                 .AddNewtonsoftJson(options=>options.SerializerSettings.ContractResolver
                 =new DefaultContractResolver());
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddRazorPages();
 
             // In production, the React files will be served from this directory

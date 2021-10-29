@@ -24,7 +24,6 @@ namespace SiteRepas.Models
         /// <summary>
         /// Nom de l'ingrédient
         /// </summary>
-        [Required]
         public string Nom { get; set; }
 
         /// <summary>

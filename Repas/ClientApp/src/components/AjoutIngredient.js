@@ -1,18 +1,12 @@
 import React, { useRef, useState } from "react";
 import ListeIngredients from "./ListeIngredients";
 
-export default function AjoutIngredient() {
+export default function AjoutIngredient({ listeIngredients }) {
     // Récupération du nom de l'ingrédient (input text)
     const refNomIngredient = useRef()
+
     // Création d'une liste d'ingrédients fictive
-    const [ingredients, setIngredients] = useState([
-        "Sauce tomate",
-        "Fromage",
-        "Pepperoni",
-        "Jambon",
-        "Poivrons",
-        "Champigons"
-    ])
+    const [ingredients, setIngredients] = useState(listeIngredients)
 
     // Fonction qui gère le click sur 
     // le bouton d'ajout d'un ingrédient.
@@ -26,6 +20,19 @@ export default function AjoutIngredient() {
         setIngredients(ingredientsPrec => [...ingredientsPrec, [name]])
         // Vidage du TextBox
         refNomIngredient.current.value = null
+    }
+    
+    if (!ingredients.length > 0) {
+        return (
+            <section>
+                <h3>Liste des ingrédients :</h3>
+                <p>Vous n'avez pas encore ajouté d'ingrédients à ce plat. Ajoutez-en!</p>
+
+                <label>Ajouter un ingrédient :</label><br />
+                <input ref={refNomIngredient} type="text" />
+                <button onClick={gererAjoutIngr}>Ajouter</button><br /><br />
+            </section>  
+        )
     }
 
     return (
