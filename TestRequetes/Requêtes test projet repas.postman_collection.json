@@ -62,6 +62,36 @@
 			"response": []
 		},
 		{
+			"name": "RepasModif",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\":17,\r\n    \"Nom\":\"Testtttt\",\r\n    \"Categorie\":\"Américain\",\r\n    \"DateCalendrier\":\"0001-01-01 00:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/repas/{17}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"repas",
+						"{17}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Ingrédient",
 			"request": {
 				"method": "POST",
@@ -91,6 +121,24 @@
 			"response": []
 		},
 		{
+			"name": "IngrédientModif",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": null
+			},
+			"response": []
+		},
+		{
 			"name": "Famille",
 			"request": {
 				"method": "POST",
@@ -114,6 +162,36 @@
 					"path": [
 						"api",
 						"famille"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FamilleModif",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\":2,\r\n    \"Nom\":\"Legault\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/famille/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"famille",
+						"2"
 					]
 				}
 			},

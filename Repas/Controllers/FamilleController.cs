@@ -67,6 +67,32 @@ namespace SiteSiteRepas.Controllers
             return new JsonResult("Famille ajouté avec succès.");
         }
 
+        //Méthode pour mettre à jour une famille dans la base de données 
+        //à l'aide d'un HTTP POST
+
+        [HttpPost("{id}")]
+        public JsonResult PostModif(Famille famille)
+        {
+            string requete = @"
+                            UPDATE dbo.Familles
+                            SET Nom = '" + famille.Nom + @"'
+                            WHERE Id = " + famille.Id;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Famille modifié avec succès.");
+        }
+
         //Méthode pour supprimer des données dans la base de données
         //à l'aide d'un HTTP DELETE
 

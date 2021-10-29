@@ -68,6 +68,32 @@ namespace SiteSiteRepas.Controllers
             return new JsonResult("Ingredient ajouté avec succès.");
         }
 
+        //Méthode pour mettre à jour un ingrédient dans la base de données 
+        //à l'aide d'un HTTP POST
+
+        [HttpPost("{id}")]
+        public JsonResult PostModif(Ingredient ingredient)
+        {
+            string requete = @"
+                            UPDATE dbo.Ingredients
+                            SET Nom = '" + ingredient.Nom + @"', Categorie = '" + ingredient.Categorie + @"', Disponible = '" + ingredient.Disponible + @"'
+                            WHERE Id = " + ingredient.Id;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Ingrédient modifié avec succès.");
+        }
+
         //Méthode pour supprimer des données dans la base de données
         //à l'aide d'un HTTP DELETE
 
