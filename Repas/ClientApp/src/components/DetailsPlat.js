@@ -32,7 +32,7 @@ export class DetailsPlat extends Component {
     render () {
         return (
             <div>
-                <h1>Détails sur le plat</h1>
+                <h1>Détails sur le plat</h1><br />
                 
                 <AfficherPlat />
             </div>

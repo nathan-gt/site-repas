@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import AjoutIngredient from "./AjoutIngredient";
 
 export default function AfficherPlat({ platAAfficher }) {
+
+    // Récupération du type de plat dans la page
+    const refTypePlat = useRef();
+    console.log("Type de plat : " + refTypePlat);
     
     // Test à l'aide d'une liste fictive de plats
     const [plats, setPlats] = useState([
@@ -30,6 +34,12 @@ export default function AfficherPlat({ platAAfficher }) {
                 "Oignon",
                 "Sauce Barbecue"
             ]
+        },
+        {
+            id: 3,
+            nom: "Potage aux légumes 4 saisons",
+            categorie: "Végétalien",
+            ingredients: []
         }
     ])
 
@@ -37,9 +47,16 @@ export default function AfficherPlat({ platAAfficher }) {
         <div>
             <h2>Plat : {plats[0].nom}</h2>
 
-            <AjoutIngredient listeIngredients={plats[0].ingredients}/>
+            <label for="cars">Type de plat : </label>
+            <select ref={refTypePlat} name="typePlat" id="type">
+                <option value="carnivore">Carnivore</option>
+                <option value="vegetarien">Végétarien</option>
+                <option value="vegan">Vegan</option>
+            </select><br /><br />
 
-            <h3>Description/Préparation</h3>
+            <AjoutIngredient listeIngredients={plats[2].ingredients}/>
+
+            <h3>Description/Préparation</h3><br />
             <p>
                 <strong>Étape 1 :</strong>Égoutter les tomates et réserver le jus dans un 
                 bol. Épépiner les tomates en retirant l’eau de végétation 

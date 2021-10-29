@@ -21,6 +21,19 @@ export default function AjoutIngredient({ listeIngredients }) {
         // Vidage du TextBox
         refNomIngredient.current.value = null
     }
+    
+    if (!ingredients.length > 0) {
+        return (
+            <section>
+                <h3>Liste des ingrédients :</h3>
+                <p>Vous n'avez pas encore ajouté d'ingrédients à ce plat. Ajoutez-en!</p>
+
+                <label>Ajouter un ingrédient :</label><br />
+                <input ref={refNomIngredient} type="text" />
+                <button onClick={gererAjoutIngr}>Ajouter</button><br /><br />
+            </section>  
+        )
+    }
 
     return (
         <section>
