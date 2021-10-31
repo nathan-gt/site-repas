@@ -2,21 +2,36 @@ import React, { Component } from 'react'
 
 export class DetailPlat extends Component {
     
-    // Get élément dans la base de donnée repas
-    componentWillMount(){
+    // GET élément dans la base de donnée repas
+    componentWillMount() {
+        const GET_ID_PLAT = this.props.match.params.id;
+        var platAAfficher = {};
+
+        // Requête vers la BD pour aller chercher tous les plats
         fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
         {
+            // Spécifation de la méthode et du format des données
             method: "get",
             dataType: 'json',
         })
+        // Exécution de la requête 
         .then((res) => res.json())
-        .then((data) => {});
+        // Traitement des données recues en JSON
+        .then((data) => {
+            data.forEach(plat => {
+                if (plat['Id'] == GET_ID_PLAT)
+                    platAAfficher = plat
+            });
+
+            console.log("ID du plat à afficher " + platAAfficher['Id']);
+            console.log(platAAfficher);
+        });
     }
 
     render(){
         return (
         <div>
-                <h1>Détails sur le plat</h1><br />
+            <h1>Détails sur le plat</h1><br />
         <div>
             <h2>Plat : Test</h2>
 
