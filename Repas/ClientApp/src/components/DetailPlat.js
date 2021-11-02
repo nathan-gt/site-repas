@@ -1,11 +1,30 @@
 import React, { Component } from 'react'
 
 export class DetailPlat extends Component {
-    
+    constructor() {
+        super();
+
+        this.platAAfficher = {};
+    }
     // GET élément dans la base de donnée repas
     componentWillMount() {
         const GET_ID_PLAT = this.props.match.params.id;
-        var platAAfficher = {};
+
+        fetch(process.env.REACT_APP_BASE_URL + '/api/repas/recherche', {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({Id: GET_ID_PLAT})
+        })
+        // Exécution de la requête 
+        .then((res) => res.json())
+        // Traitement des données recues en JSON
+        .then((data) => {
+            console.log(data);
+        });
+        
 
         // Requête vers la BD pour aller chercher tous les plats
         fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
@@ -20,20 +39,24 @@ export class DetailPlat extends Component {
         .then((data) => {
             data.forEach(plat => {
                 if (plat['Id'] == GET_ID_PLAT)
-                    platAAfficher = plat
+                    this.platAAfficher = plat
             });
 
-            console.log("ID du plat à afficher " + platAAfficher['Id']);
-            console.log(platAAfficher);
+            /*console.log("ID du plat à afficher " + this.platAAfficher['Id']);
+            console.log(this.platAAfficher);*/
         });
     }
 
+    titreRepas() {
+        
+    }
+    
     render(){
         return (
         <div>
             <h1>Détails sur le plat</h1><br />
         <div>
-            <h2>Plat : Test</h2>
+            <h2>{this.platAAfficher['Nom']}</h2>
 
             <label for="cars">Type de plat : </label>
             <select name="typePlat" id="type">
