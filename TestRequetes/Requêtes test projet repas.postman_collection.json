@@ -6,34 +6,100 @@
 	},
 	"item": [
 		{
-			"name": "ingredient",
+			"name": "Get tous les ingredients",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "https://localhost:5001/api/ingredient",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "repas",
+			"name": "Get tous les repas",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "https://localhost:5001/api/repas",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"repas"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Famille",
+			"name": "Get un repas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/repas/recherche",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"repas",
+						"recherche"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Repas",
+			"name": "Get toutes les familles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/famille",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"famille"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'un repas",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -68,7 +134,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Id\":17,\r\n    \"Nom\":\"Testtttt\",\r\n    \"Categorie\":\"Américain\",\r\n    \"DateCalendrier\":\"0001-01-01 00:00:00\"\r\n}",
+					"raw": "{\r\n    \"Id\":17,\r\n    \"Nom\":\"Test\",\r\n    \"Categorie\":\"Américain\",\r\n    \"DateCalendrier\":\"0001-01-01 00:00:00\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -76,7 +142,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/api/repas/{17}",
+					"raw": "https://localhost:5001/api/repas/id",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -85,14 +151,14 @@
 					"path": [
 						"api",
 						"repas",
-						"{17}"
+						"id"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Ingrédient",
+			"name": "Ajout d'un ingrédient",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -127,19 +193,31 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n    \"Id\":12,\r\n    \"Nom\" : \"Test\",\r\n    \"Categorie\" : \"Test\",\r\n    \"Disponible\" : 0\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": null
+				"url": {
+					"raw": "https://localhost:5001/api/ingredient/12",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ingredient",
+						"12"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "Famille",
+			"name": "Ajout d'une famille",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -204,7 +282,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Id\" : 16\r\n}",
+					"raw": "{\r\n    \"Id\" : 18\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -263,7 +341,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Id\" : 11\r\n}",
+					"raw": "{\r\n    \"Id\" : 12\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
