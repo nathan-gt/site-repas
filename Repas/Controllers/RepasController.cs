@@ -45,6 +45,31 @@ namespace SiteSiteRepas.Controllers
 
             return new JsonResult(table);
         }
+
+        //Méthode pour l'obtention d'un repas à l'aide d'un HTTP GET
+        [HttpGet("recherche")]
+        public JsonResult GetUnRepas(UnRepas repas)
+        {
+            string requete = @"
+                            select Id, Nom, Categorie, DateCalendrier, FamilleId 
+                            from dbo.Repas
+                            where Id = " + repas.Id;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(table);
+        }
         //Méthode pour mettre des données dans la base de données
         //à l'aide d'un HTTP POST
 
