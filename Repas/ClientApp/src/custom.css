@@ -42,3 +42,20 @@ code {
 .fc-daygrid-event-dot{
   display: none;
 }
+
+.selectCategorie{
+  margin-right: 150px;
+  margin-left: 5px;
+}
+
+@media only screen and (max-width: 765px){
+  .selectCategorie{
+    margin-right: 130px;
+    margin-left: 5px;
+  }
+}
+
+#search{
+  margin-top: 4px;
+  margin-left: 2px;
+}
