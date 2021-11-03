@@ -27,21 +27,19 @@ export default function AjoutIngredient({ listeIngredients }) {
     const [ingredients, setIngredients] = useState(lesPlatsDuJour[0].LesIngredients)
 
     /* ***************
-        useEffect() : fonction qui est appelée une fois qu'un contenu de la 
-        page a été remanipulé.
+        useEffect() : 
+            Fonction qui est appelée une fois que le render est appelé. 
+            Celui-ci est appelé lors d'un changement d'état de ce dernier ou 
+            lorsqu'il recoit de nouvelle données.
 
-        Utilisation : Dans ce cas, lorsque la liste des ingrédient a été 
-        modifiée, la fonction pa pousser les changements dans la BD.
+        Utilisation : 
+            Dans ce cas, lorsque la liste des ingrédient a été 
+            modifiée, la fonction pa pousser les changements dans la BD..
+
     *****************/
     useEffect(() => {
-        /*fetch(process.env.REACT_APP_BASE_URL + '/api/repas/recherche', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({Id: GET_ID_PLAT})
-        });*/
+        // TODO: Faire la requête pour ajouter l'ingrédient
+        //      à la BD ICI !
         console.log("Un ingrédient a été ajouté !")
     }, [ingredients])
 

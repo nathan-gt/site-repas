@@ -3,103 +3,72 @@ import AjoutIngredient from './AjoutIngredient';
 import $, { data } from "jquery";
 
 export class DetailPlat extends Component {
-    constructor(props) {
-        super(props);
-
-        this.platAAfficher = {};
-    }
     
-    // GET élément dans la base de donnée repas
+    /***********************
+        componentWillMount() : 
+            A pour but d'interroger la BD pour aller chercher les informations 
+            d'un plat pour les afficher dans la page web.
+            
+    ***********************/
     componentWillMount() {
+        // Récupération de l'ID du plat dans l'URL.
         const GET_ID_PLAT = this.props.match.params.id;
 
-        /*let plat = fetch(process.env.REACT_APP_BASE_URL + '/api/repas/recherche', {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({Id: GET_ID_PLAT})
-        });
-        
-        console.log(plat);*/
-
-        // Requête vers la BD pour aller chercher tous les plats
+        // Requête vers la BD pour aller chercher tous les plats.
         fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
         {
-            // Spécifation de la méthode et du format des données
+            // Spécifation de la méthode et du format des données.
             method: "get",
             dataType: 'json',
         })
         // Exécution de la requête 
         .then((res) => res.json())
-        // Traitement des données recues en JSON
+        // Traitement des données recues en JSON.
         .then((data) => {
+            // Parcours des plats pour retrouver celui qu'on veut afficher
             data.forEach(plat => {
                 if (plat['Id'] == GET_ID_PLAT)
-                    this.platAAfficher = plat
-            });
+                {
+                    loadInfosPlat(plat);
 
-            /*console.log("ID du plat à afficher " + this.platAAfficher['Id']);
-            console.log(this.platAAfficher);*/
+                    console.log("ID du plat à afficher " + plat['Id']);
+                    console.log(plat);
+                }
+            });
         });
     }
 
+    
     render() {
         return (
             <div>
                 <h1>Détails sur le plat</h1><br />
                 <div>
-                    <h2 id="titre-plat">{this.platAAfficher['Nom']}</h2>
+                    <h2 id="titre-plat">Titre du plat</h2>
 
                     <label for="cars">Type de plat : </label>
                     <select name="typePlat" id="type">
+                        <option value="default">Sélectionnez un type</option>
                         <option value="carnivore">Carnivore</option>
                         <option value="vegetarien">Végétarien</option>
                         <option value="vegan">Vegan</option>
                     </select><br /><br />
 
                     <AjoutIngredient listeIngredients={[]} />
-
-                    <h3>Description/Préparation</h3><br />
-                    <p>
-                        <strong>Étape 1 :</strong>Égoutter les tomates et réserver le jus dans un 
-                        bol. Épépiner les tomates en retirant l’eau de végétation 
-                        contenue dans chacune d’elles (voir note). Avec les mains, 
-                        broyer les tomates grossièrement. Déposer les tomates en 
-                        morceaux dans le jus réservé et ajouter le reste des 
-                        ingrédients. Saler et poivrer.
-                    </p>
-                    <p>
-                        <strong>Étape 2 :</strong>Placer la grille au centre du four. 
-                        Y placer une pierre à pizza ou une plaque de cuisson à l’envers. 
-                        Préchauffer le four à 230 °C (450 °F).
-                    </p>
-                    <p>
-                        <strong>Étape 3 :</strong>Dans une poêle, dorer les champignons 
-                        dans l’huile. Saler et poivrer. Réserver.
-                    </p>
-                    <p>
-                        <strong>Étape 4 :</strong>Séparer la pâte en deux. Sur un plan de 
-                        travail fariné, abaisser un morceau de pâte à la fois en un disque 
-                        de 35 cm (14 po) de diamètre en formant une bordure épaisse. 
-                        Déposer sur du papier parchemin. Étaler 250 ml (1 tasse) de 
-                        sauce tomate sur toute la surface. Parsemer la moitié (310 ml/1 
-                        1/4 tasse) du fromage râpé. Répartir la chair d’une saucisse 
-                        et la moitié des champignons. Cuire au four environ 12 minutes. 
-                        Ajouter la moitié de la mozzarella fraîche émiettée. Poursuivre 
-                        la cuisson environ 5 minutes ou jusqu’à ce que la pâte soit bien 
-                        dorée et que le fromage soit fondu. Répéter avec le reste des 
-                        ingrédients pour la seconde pizza.
-                    </p>
                 </div>
             </div>
         )
     }
 }
 
+/***********************
+    loadInfosPlat() : 
+        A pour but d'afficher les informations sur un plat.
 
-
-function loadPlat(plat) {
-    
+    Paramètes :
+        - plat => Plat dont on veut afficher les informations.
+        
+***********************/
+function loadInfosPlat(plat) {
+    $("#titre-plat").text(plat['Nom']);
 }
