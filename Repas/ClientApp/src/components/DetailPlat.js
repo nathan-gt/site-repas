@@ -3,6 +3,21 @@ import AjoutIngredient from './AjoutIngredient';
 import $, { data } from "jquery";
 
 export class DetailPlat extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {value: 'default'};
+    
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    // Méthode ayant pour but de gérer le
+    // changement de valeur du type de plat
+    handleChange(event) {
+        // TODO: Mettre à jour le type de plat dans la BD ICI
+        this.setState({value: event.target.value});
+        console.log("La valeur est maintenant à " + event.target.value);
+    }
     
     /***********************
         componentWillMount() : 
@@ -38,16 +53,16 @@ export class DetailPlat extends Component {
         });
     }
 
-    
+    // Affiche le contenu de la page
     render() {
         return (
             <div>
-                <h1>Détails sur le plat</h1><br />
-                <div>
-                    <h2 id="titre-plat">Titre du plat</h2>
+                <h1 class="display-2 text-center" id="titre-plat">Détails sur le plat</h1>
+                <p class="text-center">(détails sur le plat)</p><br />
 
-                    <label for="cars">Type de plat : </label>
-                    <select name="typePlat" id="type">
+                <div id="details-plat">
+                    <h3>Type de plat : </h3>
+                    <select value={this.state.value} onChange={this.handleChange}>
                         <option value="default">Sélectionnez un type</option>
                         <option value="carnivore">Carnivore</option>
                         <option value="vegetarien">Végétarien</option>

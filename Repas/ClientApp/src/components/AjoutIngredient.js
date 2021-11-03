@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import ListeIngredients from "./ListeIngredients";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../custom.css";
 
 export default function AjoutIngredient({ listeIngredients }) {
 
@@ -73,13 +75,14 @@ export default function AjoutIngredient({ listeIngredients }) {
     return (
         <section>
             <h3>Liste des ingrédients :</h3>
-            <ul>
+            <ol>
                 <ListeIngredients listeIngredients={ingredients} />
-            </ul>
+            </ol>
 
-            <label>Ajouter un ingrédient :</label>
-            <input ref={refNomIngredient} type="text" />
-            <button onClick={gererAjoutIngr}>Ajouter</button>
+            <label class="form-label" for="aj-ingredient">Ajouter un ingrédient :</label>
+            <input class="form-control rounded" placeholder="Ingredient à ajouter" aria-label="Search"
+                aria-describedby="search-addon" ref={refNomIngredient} />
+            <button type="button" class="btn btn-primary" onClick={gererAjoutIngr}>Ajouter</button>
         </section>
     )
 }
