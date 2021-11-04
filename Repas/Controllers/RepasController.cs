@@ -47,13 +47,15 @@ namespace SiteSiteRepas.Controllers
         }
 
         //Méthode pour l'obtention d'un repas à l'aide d'un HTTP GET
-        [HttpGet("recherche")]
-        public JsonResult GetUnRepas(UnRepas repas)
+        [HttpGet("{id}")]
+        public JsonResult GetUnRepas(int id)
         {
+            Console.WriteLine("ID REPAS: " + id);
             string requete = @"
                             select Id, Nom, Categorie, DateCalendrier, FamilleId 
                             from dbo.Repas
-                            where Id = " + repas.Id;
+                            where Id = " + id;
+            
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
