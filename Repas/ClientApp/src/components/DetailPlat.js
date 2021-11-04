@@ -18,6 +18,17 @@ export class DetailPlat extends Component {
         this.setState({value: event.target.value});
         console.log("La valeur est maintenant à " + event.target.value);
     }
+
+    // Fonction ayant pour but de transférer les ingrédients à celle
+    // qui s'occupe de les afficher sur la page (AjoutIngregient.js).
+    envoyerIngredients = () => {
+        // TODO: Faire une requête pour aller chercher la liste des ingrédients
+        //       du plat
+        return {
+            Id: this.props.match.params.id,
+            LesIngredients: []
+        };
+    }
     
     /***********************
         componentWillMount() : 
@@ -44,7 +55,8 @@ export class DetailPlat extends Component {
             data.forEach(plat => {
                 if (plat['Id'] == GET_ID_PLAT)
                 {
-                    loadInfosPlat(plat);
+                    // Modifier le titre du plat dans la page
+                    $("#titre-plat").text(plat['Nom']);
 
                     console.log("ID du plat à afficher " + plat['Id']);
                     console.log(plat);
@@ -69,21 +81,9 @@ export class DetailPlat extends Component {
                         <option value="vegan">Vegan</option>
                     </select><br /><br />
 
-                    <AjoutIngredient listeIngredients={[]} />
+                    <AjoutIngredient listeIngredients={ this.envoyerIngredients() } />
                 </div>
             </div>
         )
     }
-}
-
-/***********************
-    loadInfosPlat() : 
-        A pour but d'afficher les informations sur un plat.
-
-    Paramètes :
-        - plat => Plat dont on veut afficher les informations.
-        
-***********************/
-function loadInfosPlat(plat) {
-    $("#titre-plat").text(plat['Nom']);
 }

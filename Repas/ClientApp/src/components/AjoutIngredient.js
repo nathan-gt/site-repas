@@ -5,28 +5,11 @@ import "../custom.css";
 
 export default function AjoutIngredient({ listeIngredients }) {
 
-    // Plat fictif
-    const lesPlatsDuJour = [
-        {
-            Id: 1,
-            Nom: "Pizza",
-            Categorie: "Carnivore",
-            LesIngredients: [
-                "Sauce tomate",
-                "Fromage",
-                "Pepperoni",
-                "Jambon",
-                "Poivrons",
-                "Champignons"
-            ]
-        }
-    ]
-
     // Récupération du nom de l'ingrédient (input text)
     const refNomIngredient = useRef()
 
     // Création d'une liste d'ingrédients fictive
-    const [ingredients, setIngredients] = useState(lesPlatsDuJour[0].LesIngredients)
+    const [ingredients, setIngredients] = useState(listeIngredients['LesIngredients'])
 
     /* ***************
         useEffect() : 
@@ -41,7 +24,7 @@ export default function AjoutIngredient({ listeIngredients }) {
     *****************/
     useEffect(() => {
         // TODO: Faire la requête pour ajouter l'ingrédient
-        //      à la BD ICI !
+        //       à la BD ICI !
         console.log("Un ingrédient a été ajouté !")
     }, [ingredients])
 
@@ -62,12 +45,14 @@ export default function AjoutIngredient({ listeIngredients }) {
     if (!ingredients.length > 0) {
         return (
             <section>
-                <h3>Liste des ingrédients :</h3>
-                <p>Vous n'avez pas encore ajouté d'ingrédients à ce plat. Ajoutez-en!</p>
+                <h3>Liste des ingrédients :</h3><br/> 
+                <h2 class="display-5 text-center">Vous n'avez pas encore ajouté <br/> 
+                d'ingrédients à ce plat. Ajoutez-en!</h2><br/>
 
-                <label>Ajouter un ingrédient :</label><br />
-                <input ref={refNomIngredient} type="text" />
-                <button onClick={gererAjoutIngr}>Ajouter</button><br /><br />
+                <label class="form-label" for="aj-ingredient">Ajouter un ingrédient :</label>
+                <input type="search" class="form-control rounded aj-ingredient" aria-label="Search" aria-describedby="search-addon"
+                placeholder="Ingredient à ajouter" id="aj-ingredient" ref={refNomIngredient} />
+                <button type="button" class="btn btn-outline-primary aj-ingredient" onClick={gererAjoutIngr}>Ajouter</button>
             </section>  
         )
     }
@@ -80,9 +65,9 @@ export default function AjoutIngredient({ listeIngredients }) {
             </ol>
 
             <label class="form-label" for="aj-ingredient">Ajouter un ingrédient :</label>
-            <input class="form-control rounded" placeholder="Ingredient à ajouter" aria-label="Search"
-                aria-describedby="search-addon" ref={refNomIngredient} />
-            <button type="button" class="btn btn-primary" onClick={gererAjoutIngr}>Ajouter</button>
+            <input type="search" class="form-control rounded aj-ingredient" aria-label="Search" aria-describedby="search-addon"
+             placeholder="Ingredient à ajouter" id="aj-ingredient" ref={refNomIngredient} />
+            <button type="button" class="btn btn-outline-primary aj-ingredient" onClick={gererAjoutIngr}>Ajouter</button>
         </section>
     )
 }

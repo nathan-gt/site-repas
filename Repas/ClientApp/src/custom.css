@@ -103,3 +103,9 @@ ol li:before {
 #details-plat {
   margin-bottom: 100px;
 }
+
+.aj-ingredient {
+  display: inline;
+  width:max-content;
+  margin: 1em 0em 1em 1em;
+}
