@@ -23,7 +23,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// Nom de la famille
         /// </summary>
-        public ApplicationUser Admin { get; set; }
+        //public ApplicationUser Admin { get; set; }
 
         /// <summary>
         /// Liste d'utilisateurs dans une famille

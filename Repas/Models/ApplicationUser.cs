@@ -15,6 +15,6 @@ namespace SiteRepas.Models
         /// <summary>
         /// famille associé au compte
         /// </summary>
-        public Famille Famille { get; set; }
+        //public Famille Famille { get; set; }
     }
 }

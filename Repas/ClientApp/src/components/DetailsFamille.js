@@ -1,17 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
 
-let hardCodedId = authService.getUser().sub;
+/* let hardCodedId = await authService.getUser().sub;
 
 let hardCodedClient = {
-    id=hardCodedId,
-    famille={
-        admin= {
-            id=hardCodedId
-        }
 
+    id : hardCodedId,
+    famille : {
+        admin : { id:hardCodedId},
+        membres : [
+            {
+                id : "1234",
+                nom : "1234",
+
+            }
+        ]
     }
-}
+} */
 
 export class DetailsFamille extends Component {
     
