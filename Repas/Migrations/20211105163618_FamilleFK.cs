@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteSiteRepas.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class FamilleFK : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,7 +46,7 @@ namespace SiteSiteRepas.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -132,7 +132,7 @@ namespace SiteSiteRepas.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCalendrier = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true)
@@ -239,7 +239,7 @@ namespace SiteSiteRepas.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Nom = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Disponible = table.Column<bool>(type: "bit", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true),
@@ -326,7 +326,8 @@ namespace SiteSiteRepas.Migrations
                 name: "IX_Ingredients_Nom",
                 table: "Ingredients",
                 column: "Nom",
-                unique: true);
+                unique: true,
+                filter: "[Nom] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_UnRepasId",

@@ -95,7 +95,6 @@ namespace SiteRepas.Models
                     Nom = "Pizza",
                     Categorie = "Italien"
                 });
-            context.SaveChanges();
 
             //Ajout de familles à la bd
             context.Famille.AddRange(
@@ -111,6 +110,8 @@ namespace SiteRepas.Models
                 new Famille {
                     Nom = "LeBlanc"
                 });
+            context.SaveChanges();
+
         }
     }
 }

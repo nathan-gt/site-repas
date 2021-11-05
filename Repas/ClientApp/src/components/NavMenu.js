@@ -3,6 +3,8 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import { LoginMenu } from './api-authorization/LoginMenu';
 import './NavMenu.css';
+import authService from './api-authorization/AuthorizeService';
+
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -23,6 +25,9 @@ export class NavMenu extends Component {
   }
 
   render () {
+      const authMenu = 
+      <NavItem><NavLink tag={Link} className="text-dark" to="/DetailsFamille">Famille</NavLink></NavItem>;
+
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -37,6 +42,7 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/calendar">Calendar</NavLink>
                 </NavItem>
+                {!!authService.isAuthenticated() ? authMenu: null}
                 <LoginMenu>
                 </LoginMenu>
               </ul>

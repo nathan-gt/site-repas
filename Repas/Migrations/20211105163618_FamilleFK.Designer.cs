@@ -10,8 +10,8 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211011193716_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211105163618_FamilleFK")]
+    partial class FamilleFK
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -337,7 +337,6 @@ namespace SiteSiteRepas.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -362,7 +361,6 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("UnRepasId")
@@ -373,7 +371,8 @@ namespace SiteSiteRepas.Migrations
                     b.HasIndex("FamilleId");
 
                     b.HasIndex("Nom")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Nom] IS NOT NULL");
 
                     b.HasIndex("UnRepasId");
 
@@ -397,7 +396,6 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -460,9 +458,11 @@ namespace SiteSiteRepas.Migrations
 
             modelBuilder.Entity("SiteRepas.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("SiteRepas.Models.Famille", null)
+                    b.HasOne("SiteRepas.Models.Famille", "Famille")
                         .WithMany("utilisateurs")
                         .HasForeignKey("FamilleId");
+
+                    b.Navigation("Famille");
                 });
 
             modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>
