@@ -45,6 +45,29 @@ namespace SiteSiteRepas.Controllers
             return new JsonResult(table);
         }
 
+        //Méthode pour l'obtention des données à l'aide de la méthode GET
+        [HttpGet("{id}")]
+        public JsonResult GetFamilleByUserId(int id)
+        {
+            string requete = @"
+                            select Id, Nom from dbo.Familles";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(table);
+        }
+
         [HttpPost]
         public JsonResult Post(Famille famile)
         {
