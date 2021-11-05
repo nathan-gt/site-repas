@@ -59,3 +59,53 @@ code {
   margin-top: 4px;
   margin-left: 2px;
 }
+
+/*** DÉTAILS D'UN PLAT ***/
+
+ol {
+  counter-reset: li; 
+  list-style: none; 
+  padding: 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+ol li {
+  position: relative;
+  display: block;
+  padding: .4em .4em .4em 2em;
+  margin: .5em 0;
+  background: #ebe6e1;
+  color: #444;
+  font-size: large;
+  border-radius: .3em;
+  transition: .3s ease-out;
+}
+
+ol li:before {
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  left: -1.3em;
+  top: 50%;
+  margin-top: -1.3em;
+  background: #3788d8;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
+  border: .3em solid #3788d8;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2em;
+  transition: all .3s ease-out;
+  color: white;
+}
+
+#details-plat {
+  margin-bottom: 100px;
+}
+
+.aj-ingredient {
+  display: inline;
+  width:max-content;
+  margin: 1em 0em 1em 1em;
+}

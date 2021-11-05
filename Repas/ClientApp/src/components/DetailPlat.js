@@ -1,67 +1,89 @@
 import React, { Component } from 'react'
+import AjoutIngredient from './AjoutIngredient';
+import $, { data } from "jquery";
 
 export class DetailPlat extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {value: 'default'};
     
-    // Get élément dans la base de donnée repas
-    componentWillMount(){
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    // Méthode ayant pour but de gérer le
+    // changement de valeur du type de plat
+    handleChange(event) {
+        // TODO: Mettre à jour le type de plat dans la BD ICI
+        this.setState({value: event.target.value});
+        console.log("La valeur est maintenant à " + event.target.value);
+    }
+
+    // Fonction ayant pour but de transférer les ingrédients à celle
+    // qui s'occupe de les afficher sur la page (AjoutIngregient.js).
+    envoyerIngredients = () => {
+        // TODO: Faire une requête pour aller chercher la liste des ingrédients
+        //       du plat
+        return {
+            Id: this.props.match.params.id,
+            LesIngredients: []
+        };
+    }
+    
+    /***********************
+        componentWillMount() : 
+            A pour but d'interroger la BD pour aller chercher les informations 
+            d'un plat pour les afficher dans la page web.
+            
+    ***********************/
+    componentWillMount() {
+        // Récupération de l'ID du plat dans l'URL.
+        const GET_ID_PLAT = this.props.match.params.id;
+
+        // Requête vers la BD pour aller chercher tous les plats.
         fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
         {
+            // Spécifation de la méthode et du format des données.
             method: "get",
             dataType: 'json',
         })
+        // Exécution de la requête 
         .then((res) => res.json())
-        .then((data) => {});
+        // Traitement des données recues en JSON.
+        .then((data) => {
+            // Parcours des plats pour retrouver celui qu'on veut afficher
+            data.forEach(plat => {
+                if (plat['Id'] == GET_ID_PLAT)
+                {
+                    // Modifier le titre du plat dans la page
+                    $("#titre-plat").text(plat['Nom']);
+
+                    console.log("ID du plat à afficher " + plat['Id']);
+                    console.log(plat);
+                }
+            });
+        });
     }
 
-    render(){
+    // Affiche le contenu de la page
+    render() {
         return (
-        <div>
-                <h1>Détails sur le plat</h1><br />
-        <div>
-            <h2>Plat : Test</h2>
+            <div>
+                <h1 class="display-2 text-center" id="titre-plat">Détails sur le plat</h1>
+                <p class="text-center">(détails sur le plat)</p><br />
 
-            <label for="cars">Type de plat : </label>
-            <select name="typePlat" id="type">
-                <option value="carnivore">Carnivore</option>
-                <option value="vegetarien">Végétarien</option>
-                <option value="vegan">Vegan</option>
-            </select><br /><br />
+                <div id="details-plat">
+                    <h3>Type de plat : </h3>
+                    <select value={this.state.value} onChange={this.handleChange}>
+                        <option value="default">Sélectionnez un type</option>
+                        <option value="carnivore">Carnivore</option>
+                        <option value="vegetarien">Végétarien</option>
+                        <option value="vegan">Vegan</option>
+                    </select><br /><br />
 
-            {/* <AjoutIngredient listeIngredients={plats[2].ingredients}/> */}
-
-            <h3>Description/Préparation</h3><br />
-            <p>
-                <strong>Étape 1 :</strong>Égoutter les tomates et réserver le jus dans un 
-                bol. Épépiner les tomates en retirant l’eau de végétation 
-                contenue dans chacune d’elles (voir note). Avec les mains, 
-                broyer les tomates grossièrement. Déposer les tomates en 
-                morceaux dans le jus réservé et ajouter le reste des 
-                ingrédients. Saler et poivrer.
-            </p>
-            <p>
-                <strong>Étape 2 :</strong>Placer la grille au centre du four. 
-                Y placer une pierre à pizza ou une plaque de cuisson à l’envers. 
-                Préchauffer le four à 230 °C (450 °F).
-            </p>
-            <p>
-                <strong>Étape 3 :</strong>Dans une poêle, dorer les champignons 
-                dans l’huile. Saler et poivrer. Réserver.
-            </p>
-            <p>
-                <strong>Étape 4 :</strong>Séparer la pâte en deux. Sur un plan de 
-                travail fariné, abaisser un morceau de pâte à la fois en un disque 
-                de 35 cm (14 po) de diamètre en formant une bordure épaisse. 
-                Déposer sur du papier parchemin. Étaler 250 ml (1 tasse) de 
-                sauce tomate sur toute la surface. Parsemer la moitié (310 ml/1 
-                1/4 tasse) du fromage râpé. Répartir la chair d’une saucisse 
-                et la moitié des champignons. Cuire au four environ 12 minutes. 
-                Ajouter la moitié de la mozzarella fraîche émiettée. Poursuivre 
-                la cuisson environ 5 minutes ou jusqu’à ce que la pâte soit bien 
-                dorée et que le fromage soit fondu. Répéter avec le reste des 
-                ingrédients pour la seconde pizza.
-            </p>
-        </div>
-        </div>
-    )
+                    <AjoutIngredient listeIngredients={ this.envoyerIngredients() } />
+                </div>
+            </div>
+        )
     }
 }
