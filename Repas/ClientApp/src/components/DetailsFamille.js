@@ -1,47 +1,41 @@
 import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
+import { toast } from 'react-toastify';
+import { data } from 'jquery';
 
-/* let hardCodedId = await authService.getUser().sub;
-
-let hardCodedClient = {
-
-    id : hardCodedId,
-    famille : {
-        admin : { id:hardCodedId},
-        membres : [
-            {
-                id : "1234",
-                nom : "1234",
-
-            }
-        ]
-    }
-} */
+let dataFamille;
 
 export class DetailsFamille extends Component {
     
     componentWillMount(){
         authService.getUser()
-        .then((user) =>{
-            console.log(user);
-        })
-
-        authService.getAccessToken()
-        .then((token) => {
-            console.log(token);
-            fetch(process.env.REACT_APP_BASE_URL + '/connect/userinfo',
+        .then((user) => {
+            fetch(process.env.REACT_APP_BASE_URL + '/api/famille/byUserId/' + user.sub,
             {
                 method: "get",
                 headers: new Headers({
-                    'Authorization': "Bearer " + token, 
                     'Content-Type': 'application/json'
                   })
             })
             .then((res) => res.json())
             .then((data) => {
+                if(data["errors"]) {
+                    throw new Error("Error while trying to load data from famille");
+                }
+                dataFamille = data;
                 console.log(data);
+            })        
+            .catch((err) =>
+            {
+                toast.error("Erreur lors du fetch des données de la famille.")
+                throw (err);
             });
         })
+        .catch((err) =>
+        {
+            toast.error("Erreur lors du fetch des données de la famille.")
+            throw (err);
+        });
         
     }
 
@@ -50,7 +44,7 @@ export class DetailsFamille extends Component {
         //console.log(authService.getAccessToken());
         return (
             <div>Hello World
-                
+                {dataFamille}
             </div>
     )
     }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using SiteRepas.Models;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace SiteSiteRepas.Controllers
 {
@@ -45,12 +46,15 @@ namespace SiteSiteRepas.Controllers
             return new JsonResult(table);
         }
 
-        //Méthode pour l'obtention des données à l'aide de la méthode GET
-        [HttpGet("{id}")]
-        public JsonResult GetFamilleByUserId(int id)
+        //Retourne la famille d'un user GET
+        [HttpGet("byUserId/{id}")]
+        public JsonResult GetFamilleOfUser(string id)
         {
             string requete = @"
-                            select Id, Nom from dbo.Familles";
+            SELECT f.*, u.Email, u.UserName, u.FamilleId, u.Id
+            FROM dbo.AspNetUsers u
+            INNER JOIN dbo.Familles f ON 
+            (SELECT u.FamilleId FROM dbo.AspNetUsers u WHERE u.Id = '" + id + "') = u.FamilleId";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
