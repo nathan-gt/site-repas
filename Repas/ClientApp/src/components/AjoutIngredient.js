@@ -3,13 +3,25 @@ import ListeIngredients from "./ListeIngredients";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 
+// Clé pour le local storage des ingrédients
+var LOCAL_STORAGE_KEY = null;
+
 export default function AjoutIngredient({ listeIngredients }) {
+
+    LOCAL_STORAGE_KEY = String(listeIngredients['Id']);
 
     // Récupération du nom de l'ingrédient (input text)
     const refNomIngredient = useRef()
 
     // Création d'une liste d'ingrédients fictive
     const [ingredients, setIngredients] = useState(listeIngredients['LesIngredients'])
+
+    // Autre utilisation du useEffect pour conserver les ingrédients 
+    useEffect(() => {
+        console.log("LOCAL_STORAGE_KEY : " + LOCAL_STORAGE_KEY)
+        const storedIngredients = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+        if (storedIngredients) setIngredients(storedIngredients);
+    }, [])
 
     /* ***************
         useEffect() : 
@@ -25,6 +37,9 @@ export default function AjoutIngredient({ listeIngredients }) {
     useEffect(() => {
         // TODO: Faire la requête pour ajouter l'ingrédient
         //       à la BD ICI !
+        // NOTE: La solution adoptée est temporaire.
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(ingredients))
+
         console.log("Un ingrédient a été ajouté !")
     }, [ingredients])
 
@@ -32,14 +47,14 @@ export default function AjoutIngredient({ listeIngredients }) {
     // le bouton d'ajout d'un ingrédient.
     function gererAjoutIngr(e) {
         // Récupération du contenu du TextBox
-        const name = refNomIngredient.current.value
+        const name = refNomIngredient.current.value;
         // Vérification si le contenu du 
         // TextBox n'est pas vide
         if (name === '') return
         // Ajout de l'ingrédient à la liste
-        setIngredients(ingredientsPrec => [...ingredientsPrec, [name]])
+        setIngredients(ingredientsPrec => [...ingredientsPrec, [name]]);
         // Vidage du TextBox
-        refNomIngredient.current.value = null
+        refNomIngredient.current.value = null;
     }
     
     if (!ingredients.length > 0) {
