@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
-import { toast } from 'react-toastify';
+//import { toast } from 'react-toastify';
 import { data } from 'jquery';
 
 let dataFamille;
@@ -27,13 +27,13 @@ export class DetailsFamille extends Component {
             })        
             .catch((err) =>
             {
-                toast.error("Erreur lors du fetch des données de la famille.")
+                //toast.error("Erreur lors du fetch des données de la famille.")
                 throw (err);
             });
         })
         .catch((err) =>
         {
-            toast.error("Erreur lors du fetch des données de la famille.")
+           // toast.error("Erreur lors du fetch des données de la famille.")
             throw (err);
         });
         
