@@ -279,6 +279,9 @@ namespace SiteSiteRepas.Migrations
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsAdminFamille")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -457,7 +460,7 @@ namespace SiteSiteRepas.Migrations
             modelBuilder.Entity("SiteRepas.Models.ApplicationUser", b =>
                 {
                     b.HasOne("SiteRepas.Models.Famille", "Famille")
-                        .WithMany("utilisateurs")
+                        .WithMany()
                         .HasForeignKey("FamilleId");
 
                     b.Navigation("Famille");
@@ -486,8 +489,6 @@ namespace SiteSiteRepas.Migrations
                     b.Navigation("DesRepas");
 
                     b.Navigation("Ingredients");
-
-                    b.Navigation("utilisateurs");
                 });
 
             modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
