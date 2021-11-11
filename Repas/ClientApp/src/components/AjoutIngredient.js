@@ -56,6 +56,9 @@ export default function AjoutIngredient({ listeIngredients }) {
         console.log("Un ingrédient '" + name + "' a été ajouté !")
     }
 
+    // Fonction qui gère le click sur 
+    // le bouton de suppression d'un 
+    // ingrédient.
     function gererSuppressionIngr(nomIngredient) {
         const newIngredients = [...ingredients]
         const idIngrSuppr = newIngredients.indexOf(nomIngredient);
