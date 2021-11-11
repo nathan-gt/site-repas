@@ -132,3 +132,7 @@ ol li:before {
 
   padding-right: 40px;
 }
+
+.input {
+  display: inline;
+}
