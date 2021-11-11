@@ -10,8 +10,8 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211105163618_FamilleFK")]
-    partial class FamilleFK
+    [Migration("20211109163011_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -281,6 +281,9 @@ namespace SiteSiteRepas.Migrations
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsAdminFamille")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -459,7 +462,7 @@ namespace SiteSiteRepas.Migrations
             modelBuilder.Entity("SiteRepas.Models.ApplicationUser", b =>
                 {
                     b.HasOne("SiteRepas.Models.Famille", "Famille")
-                        .WithMany("utilisateurs")
+                        .WithMany()
                         .HasForeignKey("FamilleId");
 
                     b.Navigation("Famille");
@@ -488,8 +491,6 @@ namespace SiteSiteRepas.Migrations
                     b.Navigation("DesRepas");
 
                     b.Navigation("Ingredients");
-
-                    b.Navigation("utilisateurs");
                 });
 
             modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>

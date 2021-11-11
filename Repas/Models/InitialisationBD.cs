@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SiteRepas.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using static SiteRepas.Utilities;
 
 namespace SiteRepas.Models
 {
@@ -96,20 +99,88 @@ namespace SiteRepas.Models
                     Categorie = "Italien"
                 });
 
+                var familles = new Famille[] {
+                    new Famille {
+                        Nom = "Roy"
+                    },
+                    new Famille {
+                        Nom = "Legault"
+                    },
+                    new Famille {
+                        Nom = "Drouin"
+                    },
+                    new Famille {
+                        Nom = "LeBlanc"
+                    }
+                 };
             //Ajout de familles à la bd
-            context.Famille.AddRange(
-                new Famille {
-                    Nom = "Roy"
+            context.Famille.AddRange(familles);
+
+
+            // Ajout users
+            var hasher = new PasswordHasher<ApplicationUser>();
+
+            var users = new ApplicationUser[] {
+                new ApplicationUser() {
+                    UserName = "Test1@test.com",
+                    Email = "Test1@test.com",
+                    Famille = familles[0],
+                    NormalizedUserName = "TEST1@TEST.COM",
+                    NormalizedEmail = "TEST1@TEST.COM",
+                    EmailConfirmed = true,
+                    IsAdminFamille = true
                 },
-                new Famille {
-                    Nom = "Legault"
+                new ApplicationUser() {
+                    UserName = "Test2@test.com",
+                    Email = "Test2@test.com",
+                    NormalizedUserName = "TEST2@TEST.COM",
+                    Famille = familles[0],                 
+                    NormalizedEmail = "TEST2@TEST.COM",
+                    EmailConfirmed = true,
                 },
-                new Famille {
-                    Nom = "Drouin"
+                new ApplicationUser() {
+                    UserName = "Test3@test.com",
+                    Email = "Test3@test.com",
+                    Famille = familles[1],
+                    NormalizedUserName = "TEST3@TEST.COM",
+                    IsAdminFamille = true,
+                    NormalizedEmail = "TEST3@TEST.COM",
+                    EmailConfirmed = true,
+
                 },
-                new Famille {
-                    Nom = "LeBlanc"
-                });
+                new ApplicationUser() {
+                    UserName = "Test4@test.com",
+                    Email = "Test4@test.com",
+                    NormalizedUserName = "TEST4@TEST.COM",
+                    NormalizedEmail = "TEST4@TEST.COM",
+                    EmailConfirmed = true,
+                    Famille = familles[1]
+                },
+                new ApplicationUser() {
+                    UserName = "Test5@test.com",
+                    Email = "Test5@test.com",
+                    Famille = familles[2],
+                    NormalizedUserName = "TEST5@TEST.COM",
+                    NormalizedEmail = "TEST5@TEST.COM",
+                    EmailConfirmed = true,
+                    IsAdminFamille = true
+                },
+                new ApplicationUser() {
+                    UserName = "Test6@test.com",
+                    Email = "Test6@test.com",
+                    NormalizedUserName = "TEST6@TEST.COM",
+                    NormalizedEmail = "TEST6@TEST.COM",
+                    EmailConfirmed = true,
+                    Famille = familles[2]
+                }
+            };
+
+            // Ajout des mots de passes hachés aux users
+            foreach(ApplicationUser user in users) {
+                user.PasswordHash = hasher.HashPassword(user, user.Email);
+            }
+
+            context.ApplicationUser.AddRange(users);
             context.SaveChanges();
 
         }

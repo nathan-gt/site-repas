@@ -46,15 +46,38 @@ namespace SiteSiteRepas.Controllers
             return new JsonResult(table);
         }
 
+        [HttpGet("{id}")]
+        public JsonResult Get(int id)
+        {
+            string requete = @"
+                            SELECT *
+                            FROM dbo.Familles
+                            WHERE Id = '" + id + "'";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(table);
+        }
+
         //Retourne la famille d'un user GET
         [HttpGet("byUserId/{id}")]
         public JsonResult GetFamilleOfUser(string id)
         {
             string requete = @"
-            SELECT f.*, u.Email, u.UserName, u.FamilleId, u.Id
-            FROM dbo.AspNetUsers u
-            INNER JOIN dbo.Familles f ON 
-            (SELECT u.FamilleId FROM dbo.AspNetUsers u WHERE u.Id = '" + id + "') = u.FamilleId";
+            SELECT u.Id, u.Username, u.IsAdminFamille, u.FamilleId, f.Nom AS FamilleNom
+            FROM AspNetUsers u INNER JOIN dbo.Familles f ON u.FamilleId = f.Id
+            WHERE f.Id = (SELECT u.FamilleId FROM dbo.AspNetUsers u WHERE u.Id = '"+ id +"')";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
