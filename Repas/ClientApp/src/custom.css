@@ -109,3 +109,7 @@ ol li:before {
   width:max-content;
   margin: 1em 0em 1em 1em;
 }
+
+input {
+  display: inline;
+}

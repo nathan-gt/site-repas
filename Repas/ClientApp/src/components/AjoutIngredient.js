@@ -18,7 +18,6 @@ export default function AjoutIngredient({ listeIngredients }) {
 
     // Autre utilisation du useEffect pour conserver les ingrédients 
     useEffect(() => {
-        console.log("LOCAL_STORAGE_KEY : " + LOCAL_STORAGE_KEY)
         const storedIngredients = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
         if (storedIngredients) setIngredients(storedIngredients);
     }, [])
@@ -38,14 +37,13 @@ export default function AjoutIngredient({ listeIngredients }) {
         // TODO: Faire la requête pour ajouter l'ingrédient
         //       à la BD ICI !
         // NOTE: La solution adoptée est temporaire.
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(ingredients))
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(ingredients));
 
-        console.log("Un ingrédient a été ajouté !")
     }, [ingredients])
 
     // Fonction qui gère le click sur 
     // le bouton d'ajout d'un ingrédient.
-    function gererAjoutIngr(e) {
+    function gererAjoutIngr() {
         // Récupération du contenu du TextBox
         const name = refNomIngredient.current.value;
         // Vérification si le contenu du 
@@ -55,6 +53,14 @@ export default function AjoutIngredient({ listeIngredients }) {
         setIngredients(ingredientsPrec => [...ingredientsPrec, [name]]);
         // Vidage du TextBox
         refNomIngredient.current.value = null;
+        console.log("Un ingrédient '" + name + "' a été ajouté !")
+    }
+
+    function gererSuppressionIngr(nomIngredient) {
+        const newIngredients = [...ingredients]
+        const idIngrSuppr = newIngredients.indexOf(nomIngredient);
+        newIngredients.splice(idIngrSuppr, 1);
+        setIngredients(newIngredients);
     }
     
     if (!ingredients.length > 0) {
@@ -76,7 +82,7 @@ export default function AjoutIngredient({ listeIngredients }) {
         <section>
             <h3>Liste des ingrédients :</h3>
             <ol>
-                <ListeIngredients listeIngredients={ingredients} />
+                <ListeIngredients listeIngredients={ingredients} gererSuppressionIngr={gererSuppressionIngr} />
             </ol>
 
             <label class="form-label" for="aj-ingredient">Ajouter un ingrédient :</label>
