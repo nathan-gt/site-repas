@@ -34,13 +34,14 @@ export class Calendar extends Component {
       repasList.forEach(element =>{
 
         if(element.DateCalendrier.toString().startsWith("0")){
-          addExternal(element.Id, element.Nom);
+          addExternal(element.Id, element.Nom, element.Categorie);
         }else{
           const api = this.calendarRef.current.getApi();
           api.addEvent({
               id: element.Id,
               title: element.Nom,
               start: element.DateCalendrier,
+              classNames: element.Categorie,
               display: 'block'
           });
         }
@@ -67,7 +68,8 @@ export class Calendar extends Component {
         let id = eventEl.getAttribute("data");
         return {
           title: title,
-          id: id
+          id: id,
+          classNames: eventEl.id
         };
       }
     });
@@ -90,6 +92,12 @@ export class Calendar extends Component {
         `</strong></td>
       </tr>
       <tr >
+      <td>Catégorie</td>
+        <td>` +
+        eventClick.event.classNames +
+        `</td>
+      </tr>
+      <tr>
       <td>Ingredients</td>
         <td>
         </td>
@@ -187,7 +195,7 @@ export class Calendar extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({Id: info.event.id, Nom: info.event.title, Categorie: 'None', DateCalendrier:info.event.start})
+                    body: JSON.stringify({Id: info.event.id, Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start})
                   });
                 }}
                 drop={this.drop}
@@ -200,7 +208,7 @@ export class Calendar extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({Nom: info.event.title, Categorie: 'None', DateCalendrier:info.event.start})
+                    body: JSON.stringify({Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start})
                   });
 
                   var events = this.getEvents();
@@ -242,9 +250,6 @@ function addRepas() {
           ])
         })
       },
-      onOpen: function () {
-        $('#swal-input1').focus()
-      },
       inputAttributes: {
         autocapitalize: 'on'
       },
@@ -252,7 +257,7 @@ function addRepas() {
       confirmButtonText: 'Ajouter',
       cancelButtonText: 'Annuler',
       }).then(function (result) {
-        if(result.value[0] !== ""){
+        if(result.value && result.value[0] !== ""){
           // Ajout du repas à la base de donnée
           fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
             method: 'POST',
@@ -271,13 +276,17 @@ function addRepas() {
           })
           .then((res) => res.json())
           .then((data) => {
-            addExternal(data[data.length-1].Id, result.value[0]);
+            addExternal(data[data.length-1].Id, result.value[0],result.value[1]);
           })},100);
+
+          $("#searchText").val("");
+          $("#categorie").val("None");
+          $('#search').click();
         }
       }).catch()
 };
 
-function addExternal(id, nom){
+function addExternal(id, nom, cat){
   var event = document.createElement("div");
   event.classList.add("external");
   event.classList.add("mb-2");
@@ -300,6 +309,7 @@ function addExternal(id, nom){
   tag.classList.add("fc-event");
   tag.classList.add("p-1");
   tag.title = nom;
+  tag.id = cat;
 
   var text = document.createTextNode(nom);
   tag.appendChild(text);
@@ -331,13 +341,16 @@ function refreshBD(info, events, calendarApi){
     var date = String(info.event.start.toISOString()).slice(0,10);
 
     data.forEach(element =>{
-      if(String(element.DateCalendrier).slice(0,10) === date)
+      if(String(element.DateCalendrier).slice(0,10) === date){
         calendarApi.addEvent({
-            id: element.Id,
-            title: element.Nom,
-            start: date,
-            display: 'block'
+          id: element.Id,
+          title: element.Nom,
+          start: date,
+          classNames: element.Categorie,
+          display: 'block'
         });
+      }
+        
     });
   })
 }
@@ -385,7 +398,7 @@ $( document ).ready(function() {
           if(element.DateCalendrier.toString().startsWith("0")){
             var nom = element.Nom.toLowerCase()
             if (nom.includes(value.toLocaleLowerCase()) && element.Categorie === select){
-              addExternal(element.Id, element.Nom);
+              addExternal(element.Id, element.Nom, element.Categorie);
             }
           }
           
@@ -401,9 +414,8 @@ $( document ).ready(function() {
       .then((data) => { 
         data.forEach(element => {
           if(element.DateCalendrier.toString().startsWith("0")){
-            var nom = element.Nom.toLowerCase()
             if (element.Categorie === select){
-              addExternal(element.Id, element.Nom);
+              addExternal(element.Id, element.Nom, element.Categorie);
             }
           }
         });
@@ -420,7 +432,7 @@ $( document ).ready(function() {
           if(element.DateCalendrier.toString().startsWith("0")){
             var nom = element.Nom.toLowerCase()
             if (nom.includes(value.toLocaleLowerCase())){
-              addExternal(element.Id, element.Nom);
+              addExternal(element.Id, element.Nom, element.Categorie);
             }
           }
         });
@@ -435,7 +447,7 @@ $( document ).ready(function() {
       .then((data) => { 
         data.forEach(element => {
           if(element.DateCalendrier.toString().startsWith("0")){
-            addExternal(element.Id, element.Nom);
+            addExternal(element.Id, element.Nom, element.Categorie);
           }
         });
       })

@@ -47,6 +47,7 @@ namespace SiteRepas
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
+
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 

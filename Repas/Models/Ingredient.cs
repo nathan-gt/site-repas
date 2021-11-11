@@ -24,6 +24,8 @@ namespace SiteRepas.Models
         /// <summary>
         /// Nom de l'ingrédient
         /// </summary>
+        // [Key]
+        // [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Nom { get; set; }
 
         /// <summary>
