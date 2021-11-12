@@ -16,5 +16,10 @@ namespace SiteRepas.Models
         /// famille associé au compte
         /// </summary>
         public Famille Famille { get; set; }
+
+        /// <summary>
+        /// Si User est admin de sa famille
+        /// </summary>
+        public bool IsAdminFamille { get; set; }
     }
 }

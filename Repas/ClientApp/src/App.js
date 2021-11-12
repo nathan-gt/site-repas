@@ -4,7 +4,6 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Calendar } from './components/Calendar';
 import { DetailPlat } from './components/DetailPlat';
-import { ListeEpicerie } from './components/ListeEpicerie';
 import { DetailsFamille } from './components/DetailsFamille';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
@@ -21,9 +20,8 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <Route path='/calendar' component={Calendar} />
-        <Route path='/plat/:id' component={DetailPlat} />
-        <Route path='/epicerie' component={ListeEpicerie} />
+        <AuthorizeRoute path='/calendar' component={Calendar} />
+        <AuthorizeRoute path='/plat/:id' component={DetailPlat} />
         <AuthorizeRoute path='/DetailsFamille' component={DetailsFamille} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>

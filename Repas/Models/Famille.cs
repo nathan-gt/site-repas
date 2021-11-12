@@ -21,14 +21,14 @@ namespace SiteRepas.Models
         public string Nom { get; set; }
 
         /// <summary>
-        /// Nom de la famille
+        /// Admin de la famille
         /// </summary>
-        //public ApplicationUser Admin { get; set; }
+        /// public ApplicationUser Admin { get; set; }
 
         /// <summary>
         /// Liste d'utilisateurs dans une famille
         /// </summary>
-        public ICollection<ApplicationUser> utilisateurs { get; set;}
+        //public ICollection<ApplicationUser> utilisateurs { get; set;}
 
         /// <summary>
         /// Liste d'ingrédients dans une famille

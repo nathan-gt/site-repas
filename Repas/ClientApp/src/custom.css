@@ -109,3 +109,30 @@ ol li:before {
   width:max-content;
   margin: 1em 0em 1em 1em;
 }
+
+.admin-text
+{
+  color:rgba(255, 255, 255, 0.5); 
+  font-style: italic;
+}
+
+.delete-buttons {
+  display: none;
+}
+
+.table td {
+  min-width: 100px;
+}
+
+.x-button {
+  color:red;
+  background-color: transparent;
+  border-style: none;
+  font-size:x-large;
+
+  padding-right: 40px;
+}
+
+.input {
+  display: inline;
+}
