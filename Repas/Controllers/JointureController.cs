@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.JsonPatch;
 namespace SiteSiteRepas.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController] 
     public class JointureController : ControllerBase
     {
         private readonly IConfiguration _configuration;
