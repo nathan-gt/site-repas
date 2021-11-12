@@ -31,7 +31,9 @@ namespace SiteRepas.Models
         /// </summary>
         public ICollection<Ingredient> Ingredients { get; set;}
 
-
+        /// <summary>
+        /// Date à laquelle le repas est assigné dans le calendrier
+        /// </summary>
         public DateTime DateCalendrier { get; set; }
     }
 }

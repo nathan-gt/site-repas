@@ -50,7 +50,6 @@ namespace SiteSiteRepas.Controllers
         [HttpGet("{id}")]
         public JsonResult GetUnRepas(int id)
         {
-            Console.WriteLine("ID REPAS: " + id);
             string requete = @"
                             select Id, Nom, Categorie, DateCalendrier, FamilleId 
                             from dbo.Repas
