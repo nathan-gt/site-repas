@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.JsonPatch;
 namespace SiteSiteRepas.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController] 
+    [ApiController]
     public class JointureController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -24,13 +24,13 @@ namespace SiteSiteRepas.Controllers
         }
 
         //Méthode pour l'obtention des ingrédients d'un repas à l'aide d'un HTTP GET
+        //ou l'id est celui du repas
         [HttpGet("{id}")]
         public JsonResult Get(int id)
         {
-            string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, FamilleId 
-                            from dbo.Repas
-                            where Id = " + id;
+            string requete = @"SELECT * 
+                                FROM Ingredients
+                                INNER JOIN Repas ON " + id + " = Repas.Id";
 
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
