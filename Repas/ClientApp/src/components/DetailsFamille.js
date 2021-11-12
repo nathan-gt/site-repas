@@ -8,16 +8,23 @@ let dataFamille;
 export class DetailsFamille extends Component {
 
     handleClickX(event) {
-        fetch(process.env.REACT_APP_BASE_URL + '/api/famille/removeFromFamily/' + event.data.member, 
-        {
-            method: "post",
-            headers: new Headers({
-                'Content-Type': 'application/json'
+        authService.getAccessToken()
+        .then((token) => {
+            fetch(process.env.REACT_APP_BASE_URL + '/api/famille/removeFromFamily/' + event.data.member, 
+            {
+                method: "patch",
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                })
             })
+            .then((res) => {
+                if(res.ok) {
+                    $(event.target).parent().parent().hide()
+                }
+            });
         })
-        .then((res) => {
-            console.log(res);
-        });
+
     }
     
     componentDidMount(){
@@ -85,7 +92,10 @@ export class DetailsFamille extends Component {
                 <table class="table table-dark">
                   <tbody id="body"></tbody>
                 </table>
-                <button class="btn btn-success">Ajouter un membre</button>
+                <div id="detailsFamille-buttons">
+                    <button class="btn btn-success">Ajouter un membre</button>
+                    <button class="btn btn-danger">Quitter la famille</button>
+                </div>
             </div>
             
     )

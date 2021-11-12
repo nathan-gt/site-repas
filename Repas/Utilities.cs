@@ -67,6 +67,7 @@ namespace SiteRepas
                 }
             }
 
+            table.PrimaryKey = new DataColumn[] { table.Columns["Id"] }; // Specify the primary key (for some reason it doesn't do that already)
             return table;
         }
 

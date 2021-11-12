@@ -162,33 +162,31 @@ namespace SiteSiteRepas.Controllers
                 requete = @"
                          UPDATE dbo.Users
                          SET IdFamille = NULL
-                         WHERE Id = " + id;
+                         WHERE Id = '" + id + "'";
             }
             else { // the admin of the family is the one requesting
                 DataTable infoUsers = GetInfoUsers(new string[]{connectedUserId , id }, _configuration.GetConnectionString("DefaultConnection"));
+
                 if(infoUsers.Rows.Count < 2) {
                     return NotFound();
                 }
 
-                var penis = infoUsers.Rows.Find(connectedUserId).Field<bool>("IsAdminFamille");
-                var kfkf = infoUsers.Rows.Find(connectedUserId).Field<Famille>("FamilleId");
-                var irfkifr = infoUsers.Rows.Find(id).Field<Famille>("FamilleId");
-                // if (infoUsers.Rows.Find(connectedUserId).Field<bool>("IsAdminFamille") &&
-                //    infoUsers.Rows.Find(connectedUserId).Field<Famille>("FamilleId") == 
-                //    infoUsers.Rows.Find(id).Field<Famille>("FamilleId")) {
+                bool isAdmin = infoUsers.Rows.Find(connectedUserId).Field<bool>("IsAdminFamille");
+                int familleId_A = infoUsers.Rows.Find(connectedUserId).Field<int>("FamilleId");
+                int familleId_B = infoUsers.Rows.Find(id).Field<int>("FamilleId");
 
-                // }
-                //else {
-                //    return Unauthorized();
-                //}
-
-                requete = @"
-                         UPDATE dbo.Users
-                         SET IdFamille = NULL
-                         WHERE Id = " + id;
+                if (isAdmin && familleId_A == familleId_B) {
+                    requete = @"
+                         UPDATE AspNetUsers
+                         SET FamilleId = NULL
+                         WHERE Id = '" + id + "'";
+                }
+                else {
+                    return Unauthorized();
+                }
             }
 
-            
+
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
