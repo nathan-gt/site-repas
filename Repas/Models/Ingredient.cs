@@ -37,8 +37,13 @@ namespace SiteRepas.Models
         public bool Disponible { get; set;}
 
         /// <summary>
-        /// Identifiant du repas à lequel l'ingrédient appartient
+        /// Identifiant d'un repas relié à l'ingrédient
         /// </summary>
-        public int IdRepas { get; set; }
+        public int UnRepasId { get; set; }
+
+        /// <summary>
+        /// Identifiant d'une famille reliée à l'ingrédient
+        /// </summary>
+        public int FamilleId { get; set; }
     }
 }

@@ -20,12 +20,12 @@ namespace SiteRepas.Models
             using var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<
                     DbContextOptions<ApplicationDbContext>>(), null);
-            if (context.Ingredient.Any()) {
+            if (context.Ingredients.Any()) {
                 return;  //Le seed a déjà été fait
             }
 
             //Ajout de ingrédients à la bd
-            context.Ingredient.AddRange(
+            context.Ingredients.AddRange(
                 new Ingredient {
                     Nom = "Steak haché",
                     Categorie = "Viande"
@@ -40,19 +40,23 @@ namespace SiteRepas.Models
                 },
                 new Ingredient {
                     Nom = "Pâte à pizza",
-                    Categorie = "Pâte"
+                    Categorie = "Pâte",
+                    UnRepasId = 10
                 },
                 new Ingredient {
                     Nom = "Sauce marinara",
-                    Categorie = "Sauce"
+                    Categorie = "Sauce",
+                    UnRepasId = 10
                 },
                 new Ingredient {
                     Nom = "Poivron vert",
-                    Categorie = "Légume"
+                    Categorie = "Légume",
+                    UnRepasId = 10
                 },
                 new Ingredient {
                     Nom = "Fromage",
-                    Categorie = "Laitié"
+                    Categorie = "Laitié",
+                    UnRepasId = 10
                 }
             );
             context.SaveChanges();
@@ -114,7 +118,7 @@ namespace SiteRepas.Models
                     }
                  };
             //Ajout de familles à la bd
-            context.Famille.AddRange(familles);
+            context.Familles.AddRange(familles);
 
 
             // Ajout users

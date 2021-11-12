@@ -10,7 +10,7 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211112022043_AjoutTableJointure")]
+    [Migration("20211112191236_AjoutTableJointure")]
     partial class AjoutTableJointure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,6 +281,9 @@ namespace SiteSiteRepas.Migrations
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsAdminFamille")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -357,29 +360,20 @@ namespace SiteSiteRepas.Migrations
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("FK_IdIngredient")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FamilleId")
+                    b.Property<int>("FamilleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("UnRepasId")
+                    b.Property<int>("UnRepasId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FK_IdIngredient");
-
-                    b.HasIndex("FamilleId");
-
                     b.HasIndex("Nom")
                         .IsUnique()
                         .HasFilter("[Nom] IS NOT NULL");
-
-                    b.HasIndex("UnRepasId");
 
                     b.ToTable("Ingredients");
                 });
@@ -397,15 +391,13 @@ namespace SiteSiteRepas.Migrations
                     b.Property<DateTime>("DateCalendrier")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FamilleId")
+                    b.Property<int>("IdFamille")
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FamilleId");
 
                     b.ToTable("Repas");
                 });
@@ -482,51 +474,10 @@ namespace SiteSiteRepas.Migrations
             modelBuilder.Entity("SiteRepas.Models.ApplicationUser", b =>
                 {
                     b.HasOne("SiteRepas.Models.Famille", "Famille")
-                        .WithMany("utilisateurs")
+                        .WithMany()
                         .HasForeignKey("FamilleId");
 
                     b.Navigation("Famille");
-                });
-
-            modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>
-                {
-                    b.HasOne("SiteSiteRepas.Models.JointureRepasIngredients", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("FK_IdIngredient");
-
-                    b.HasOne("SiteRepas.Models.Famille", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("FamilleId");
-
-                    b.HasOne("SiteRepas.Models.UnRepas", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("UnRepasId");
-                });
-
-            modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
-                {
-                    b.HasOne("SiteRepas.Models.Famille", null)
-                        .WithMany("DesRepas")
-                        .HasForeignKey("FamilleId");
-                });
-
-            modelBuilder.Entity("SiteRepas.Models.Famille", b =>
-                {
-                    b.Navigation("DesRepas");
-
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("utilisateurs");
-                });
-
-            modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
-                {
-                    b.Navigation("Ingredients");
-                });
-
-            modelBuilder.Entity("SiteSiteRepas.Models.JointureRepasIngredients", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

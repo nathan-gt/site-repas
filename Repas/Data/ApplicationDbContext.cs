@@ -20,11 +20,11 @@ namespace SiteRepas.Data
         {
         }
 
-        public DbSet<Ingredient> Ingredient { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
 
         public DbSet<UnRepas> Repas { get; set; }
 
-        public DbSet<Famille> Famille { get; set; }
+        public DbSet<Famille> Familles { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
 

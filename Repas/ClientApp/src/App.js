@@ -4,6 +4,7 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Calendar } from './components/Calendar';
 import { DetailPlat } from './components/DetailPlat';
+import { ListeEpicerie } from './components/ListeEpicerie';
 import { DetailsFamille } from './components/DetailsFamille';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
