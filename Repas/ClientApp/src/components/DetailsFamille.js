@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
 // import { toast } from 'react-toastify';
 import $ from 'jquery';
+import Popup from 'reactjs-popup';
+import CreerFamille from './CreerFamille';
 
 let dataFamille;
 
@@ -137,7 +139,7 @@ export class DetailsFamille extends Component {
                             </tbody>
                         </table>
                     </div>
-                    <button id="create-fam" class="btn btn-success">Créer une famille</button>
+                    <CreerFamille></CreerFamille>
                 </div>
 
             </div>
