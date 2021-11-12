@@ -63,8 +63,8 @@ namespace SiteRepas.Models
             //Ajout de plats à la bd
             context.Repas.AddRange(
                 new UnRepas {
-                    Nom = "Pâté chinois",
-                    Categorie = "Québécois",
+                    Nom = "Salade",
+                    Categorie = "Végétarien",
                 },
                 new UnRepas {
                     Nom = "Buritos",
@@ -80,7 +80,7 @@ namespace SiteRepas.Models
                 },
                 new UnRepas {
                     Nom = "Fondue chinoise",
-                    Categorie = "Carnivore",
+                    Categorie = "None",
                 },
                 new UnRepas {
                     Nom = "Raclette",
