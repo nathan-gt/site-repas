@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
 // import { toast } from 'react-toastify';
-import $, { event, post }  from 'jquery';
+import $ from 'jquery';
 
 let dataFamille;
 
 export class DetailsFamille extends Component {
 
-    handleClickX(event) {
+    async handleClickX(event) {
         authService.getAccessToken()
         .then((token) => {
             fetch(process.env.REACT_APP_BASE_URL + '/api/famille/removeFromFamily/' + event.data.member, 
@@ -20,11 +20,56 @@ export class DetailsFamille extends Component {
             })
             .then((res) => {
                 if(res.ok) {
-                    $(event.target).parent().parent().hide()
+                    return;
                 }
+                else throw new Error("Un problème est arrivé lors de la demande");
             });
         })
 
+    }
+    handleNoFam(currentUser) {
+        $('#noFamily').show();
+    }
+
+    handleFam(data, user) {
+        $('#hasFamily').show();
+
+        $("#titreFamille").append("Famille " + data[0].FamilleNom)
+
+        let isAdmin = (data.find(member => {
+            return member.Id === user.sub;
+          })).IsAdminFamille
+
+        data.forEach(member => {
+            let admin = "";
+            let btn = "";
+            admin = (member.IsAdminFamille ? "Admin" : "");
+            btn = (isAdmin && !member.IsAdminFamille ? '' : "");
+            btn = (isAdmin && !member.IsAdminFamille ? 
+                "<td class='w-25'><button id='"+ member.Id +"' value='" + member.Id + "' class='x-button'>&#x2715</button></td>" : "");
+            $("#body").append(
+                $(`
+                <tr>
+                    <td style=text-align:center; >${member.Username}</td>
+                    <td style=line-height: 309px; class="admin-text">${admin}</td>
+                    ${btn}
+                </tr>
+                `)
+            );
+            $("#" + member.Id).on("click", { member : member.Id}, (event) => {
+                this.handleClickX(event)
+                .then(() => {
+                    $(event.target).parent().parent().hide()
+                })
+            });
+        });
+        $('#btn-leave').on("click", { member : user.sub}, (event) => {
+             this.handleClickX(event)
+             .then(() => 
+            {
+                window.location.reload(false);
+            })
+        });
     }
     
     componentDidMount(){
@@ -44,32 +89,13 @@ export class DetailsFamille extends Component {
                 if(data["errors"]) {
                     throw new Error("Error while trying to load data from famille");
                 }
-
-                $("#titreFamille").append("Famille " + data[0].FamilleNom)
-
-                isAdmin = (data.find(member => {
-                    return member.Id === user.sub;
-                  })).IsAdminFamille
-
-                data.forEach(member => {
-                    let admin = "";
-                    let btn = "";
-                    admin = (member.IsAdminFamille ? "Admin" : "");
-                    btn = (isAdmin && !member.IsAdminFamille ? '' : "");
-                    btn = (isAdmin && !member.IsAdminFamille ? 
-                        "<td class='w-25'><button id='"+ member.Id +"' value='" + member.Id + "' class='x-button'>&#x2715</button></td>" : "");
-                        //(event) => {handleClickX(event, user)}
-                    $("#body").append(
-                        $(`
-                        <tr>
-                            <td style=text-align:center; >${member.Username}</td>
-                            <td style=line-height: 309px; class="admin-text">${admin}</td>
-                            ${btn}
-                        </tr>
-                        `)
-                    );
-                    $("#" + member.Id).on("click", { member : member.Id}, (event) => {this.handleClickX(event)})
-                });                
+                else if(data.length == 0)
+                {
+                    this.handleNoFam(user);
+                }
+                else {
+                    this.handleFam(data, user);
+                }             
             })        
             .catch((err) =>
             {
@@ -88,27 +114,33 @@ export class DetailsFamille extends Component {
     render(){
         return (
             <div>
-                <h1 id="titreFamille" class="display-3"></h1> <br />
-                <table class="table table-dark">
-                  <tbody id="body"></tbody>
-                </table>
-                <div id="detailsFamille-buttons">
-                    <button class="btn btn-success">Ajouter un membre</button>
-                    <button class="btn btn-danger">Quitter la famille</button>
+                <div class ="lead" style={{display : "none"}} id="hasFamily">
+                    <h1 id="titreFamille" class="display-3"></h1> <br />
+                    <table class="table table-dark">
+                      <tbody id="body"></tbody>
+                    </table>
+                    <div id="detailsFamille-buttons">
+                        <button class="btn btn-success">Ajouter un membre</button>
+                        <button id="btn-leave" class="btn btn-danger">Quitter la famille</button>
+                    </div>
                 </div>
+                <div class ="lead" style={{display : "none"}} id="noFamily">
+                    <h1 class="display-3">Vous n'avez pas de famille</h1>
+                    Vous n'avez pas encore de famille, attendez de recevoir 
+                    une invitation pour en rejoindre une ou bien créez-en une en 
+                    cliquant le bouton "Créer une famille". <br /><br />
+                    <h5 >Votre invitation:</h5>
+                    <div id="invites">
+                        <table class="table">
+                            <tbody>
+                                <tbody id="body-noFamily"></tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="create-fam" class="btn btn-success">Créer une famille</button>
+                </div>
+
             </div>
-            
-    )
+        )
     }
 }
-  /*
-  https://localhost:44380/connect/authorize/callback
-  client_id=Repas
-  redirect_uri=https%3A%2F%2Flocalhost%3A44380%2Fauthentication%2Flogin-callback
-  response_type=code
-  scope=SiteRepasAPI%20openid%20profile
-  state=82ae79f2e9f54a50840223ae29757273
-  code_challenge=NDQWIruxTxQVvYbtzS7YYGrc8rCty5JVZArgZFPacv8
-  code_challenge_method=S256
-  response_mode=query"
-  */ 

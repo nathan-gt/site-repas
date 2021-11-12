@@ -100,6 +100,7 @@ namespace SiteSiteRepas.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true),
+                    FamilleInviteId = table.Column<int>(type: "int", nullable: true),
                     IsAdminFamille = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -122,6 +123,12 @@ namespace SiteSiteRepas.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Familles_FamilleId",
                         column: x => x.FamilleId,
+                        principalTable: "Familles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Familles_FamilleInviteId",
+                        column: x => x.FamilleInviteId,
                         principalTable: "Familles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -299,6 +306,11 @@ namespace SiteSiteRepas.Migrations
                 name: "IX_AspNetUsers_FamilleId",
                 table: "AspNetUsers",
                 column: "FamilleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_FamilleInviteId",
+                table: "AspNetUsers",
+                column: "FamilleInviteId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

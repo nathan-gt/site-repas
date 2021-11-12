@@ -160,8 +160,8 @@ namespace SiteSiteRepas.Controllers
 
             if (connectedUserId == id) { // User requesting to leave their own family
                 requete = @"
-                         UPDATE dbo.Users
-                         SET IdFamille = NULL
+                         UPDATE AspNetUsers
+                         SET FamilleId = NULL, IsAdminFamille = 0
                          WHERE Id = '" + id + "'";
             }
             else { // the admin of the family is the one requesting

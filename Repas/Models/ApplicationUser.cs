@@ -11,11 +11,15 @@ namespace SiteRepas.Models
     /// </summary>
     public class ApplicationUser : IdentityUser
     {
-        //À faire, je ne sais pas si ça va faire planter l'authentification déjà en place
         /// <summary>
         /// famille associé au compte
         /// </summary>
         public Famille Famille { get; set; }
+
+        /// <summary>
+        /// famille ayant envoyé une invitation à un compte
+        /// </summary>
+        public Famille FamilleInvite { get; set; }
 
         /// <summary>
         /// Si User est admin de sa famille

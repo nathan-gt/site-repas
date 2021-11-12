@@ -10,7 +10,7 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211109163011_InitialCreate")]
+    [Migration("20211112211138_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,6 +281,9 @@ namespace SiteSiteRepas.Migrations
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FamilleInviteId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsAdminFamille")
                         .HasColumnType("bit");
 
@@ -320,6 +323,8 @@ namespace SiteSiteRepas.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FamilleId");
+
+                    b.HasIndex("FamilleInviteId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -465,7 +470,13 @@ namespace SiteSiteRepas.Migrations
                         .WithMany()
                         .HasForeignKey("FamilleId");
 
+                    b.HasOne("SiteRepas.Models.Famille", "FamilleInvite")
+                        .WithMany()
+                        .HasForeignKey("FamilleInviteId");
+
                     b.Navigation("Famille");
+
+                    b.Navigation("FamilleInvite");
                 });
 
             modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>

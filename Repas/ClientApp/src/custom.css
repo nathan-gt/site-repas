@@ -136,3 +136,8 @@ ol li:before {
 .input {
   display: inline;
 }
+
+#detailsFamille-buttons {
+  display: flex;
+  gap: 25px;
+}
