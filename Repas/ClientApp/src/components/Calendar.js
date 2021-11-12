@@ -97,11 +97,6 @@ export class Calendar extends Component {
         eventClick.event.classNames +
         `</td>
       </tr>
-      <tr>
-      <td>Ingredients</td>
-        <td>
-        </td>
-      </tr>
       </tbody>
       </table>
       <a href="` +process.env.REACT_APP_BASE_URL+ `/plat/` + eventClick.event.id +`">Détail du repas</a>
@@ -157,10 +152,14 @@ export class Calendar extends Component {
               <label htmlFor="categorie">Catégorie:</label>
               <select className="form-select mb-3 ml-1" name="categorie" id="categorie">
                 <option value="None"></option>
+                <option value="Végétarien">Végétarien</option>
+                <option value="Végétalien">Végétalien</option>
                 <option value="Américain">Américain</option>
                 <option value="Italien">Italien</option>
-                <option value="Carnivore">Carnivore</option>
-                <option value="Québécois">Québécois</option>
+                <option value="Méxicain">Méxicain</option>
+                <option value="Asiatique">Asiatique</option>
+                <option value="Libanais">Libanais</option>
+                <option value="Fruits de mer">Fruits de mer</option>
               </select>
               {this.state.events.map(event => (
                 <div
@@ -237,10 +236,14 @@ function addRepas() {
       '<label htmlFor="swal-input2">Catégorie:</label>' +
       '<select id="swal-input2" class="swal2-input selectCategorie">' +
                 '<option value="None"></option>' +
+                '<option value="Végétarien">Végétarien</option>' +
+                '<option value="Végétalien">Végétalien</option>' +
                 '<option value="Américain">Américain</option>' +
                 '<option value="Italien">Italien</option>' +
-                '<option value="Carnivore">Carnivore</option>' +
-                '<option value="Québécois">Québécois</option>' +
+                '<option value="Méxicain">Méxicain</option>' +
+                '<option value="Asiatique">Asiatique</option>' +
+                '<option value="Libanais">Libanais</option>' +
+                '<option value="Fruits de mer">Fruits de mer</option>' +
       '</select>',
       preConfirm: function () {
         return new Promise(function (resolve) {
