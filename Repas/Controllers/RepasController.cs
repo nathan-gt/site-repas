@@ -51,7 +51,7 @@ namespace SiteSiteRepas.Controllers
         public JsonResult GetUnRepas(int id)
         {
             string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, FamilleId 
+                            select Id, Nom, Categorie, DateCalendrier, IdFamille 
                             from dbo.Repas
                             where Id = " + id;
             
