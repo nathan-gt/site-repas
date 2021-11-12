@@ -10,8 +10,8 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211105163618_FamilleFK")]
-    partial class FamilleFK
+    [Migration("20211112022043_AjoutTableJointure")]
+    partial class AjoutTableJointure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -357,6 +357,9 @@ namespace SiteSiteRepas.Migrations
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("FK_IdIngredient")
+                        .HasColumnType("int");
+
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
@@ -367,6 +370,8 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FK_IdIngredient");
 
                     b.HasIndex("FamilleId");
 
@@ -403,6 +408,24 @@ namespace SiteSiteRepas.Migrations
                     b.HasIndex("FamilleId");
 
                     b.ToTable("Repas");
+                });
+
+            modelBuilder.Entity("SiteSiteRepas.Models.JointureRepasIngredients", b =>
+                {
+                    b.Property<int>("IdJointure")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FK_IdIngredient")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FK_IdRepas")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdJointure");
+
+                    b.ToTable("JointureRepasIngredients");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -467,6 +490,10 @@ namespace SiteSiteRepas.Migrations
 
             modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>
                 {
+                    b.HasOne("SiteSiteRepas.Models.JointureRepasIngredients", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("FK_IdIngredient");
+
                     b.HasOne("SiteRepas.Models.Famille", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("FamilleId");
@@ -493,6 +520,11 @@ namespace SiteSiteRepas.Migrations
                 });
 
             modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
+                {
+                    b.Navigation("Ingredients");
+                });
+
+            modelBuilder.Entity("SiteSiteRepas.Models.JointureRepasIngredients", b =>
                 {
                     b.Navigation("Ingredients");
                 });

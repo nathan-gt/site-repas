@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SiteRepas.Models;
+using SiteSiteRepas.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,24 +20,27 @@ namespace SiteRepas.Data
         {
         }
 
-         public DbSet<Ingredient> Ingredient { get; set; }
+        public DbSet<Ingredient> Ingredient { get; set; }
 
-         public DbSet<UnRepas> Repas { get; set; }
+        public DbSet<UnRepas> Repas { get; set; }
 
-         public DbSet<Famille> Famille { get; set; }
+        public DbSet<Famille> Famille { get; set; }
 
-         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<JointureRepasIngredients> JointureRepasIngredients { get; set; }
 
 
-         protected override void OnModelCreating(ModelBuilder modelBuilder)
-         {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
              
-             modelBuilder.Entity<Ingredient>().ToTable("Ingredients");
-             modelBuilder.Entity<UnRepas>().ToTable("Repas");
-             modelBuilder.Entity<Famille>().ToTable("Familles");
-             modelBuilder.Entity<ApplicationUser>().ToTable("Utilisateurs");
+            modelBuilder.Entity<Ingredient>().ToTable("Ingredients");
+            modelBuilder.Entity<UnRepas>().ToTable("Repas");
+            modelBuilder.Entity<Famille>().ToTable("Familles");
+            modelBuilder.Entity<ApplicationUser>().ToTable("Utilisateurs");
+            modelBuilder.Entity<JointureRepasIngredients>().ToTable("JointureRepasIngredients");
             
-            base.OnModelCreating(modelBuilder);
-         }
+           base.OnModelCreating(modelBuilder);
+        }
     }
 }

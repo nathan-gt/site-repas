@@ -24,8 +24,6 @@ namespace SiteRepas.Models
         /// <summary>
         /// Nom de l'ingrédient
         /// </summary>
-        // [Key]
-        // [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Nom { get; set; }
 
         /// <summary>
@@ -37,5 +35,10 @@ namespace SiteRepas.Models
         /// Disponibilité de l'ingrédient
         /// </summary>
         public bool Disponible { get; set;}
+
+        /// <summary>
+        /// Identifiant du repas à lequel l'ingrédient appartient
+        /// </summary>
+        public int IdRepas { get; set; }
     }
 }
