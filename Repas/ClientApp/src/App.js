@@ -20,8 +20,8 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
-        <Route path='/calendar' component={Calendar} />
-        <Route path='/plat/:id' component={DetailPlat} />
+        <AuthorizeRoute path='/calendar' component={Calendar} />
+        <AuthorizeRoute path='/plat/:id' component={DetailPlat} />
         <AuthorizeRoute path='/DetailsFamille' component={DetailsFamille} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>

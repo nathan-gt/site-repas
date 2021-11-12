@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -32,6 +35,39 @@ namespace SiteRepas
             Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
             Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
             return Convert.ToBase64String(dst);
+        }
+
+        /// <summary>
+        /// Get current user id
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>Current connected User Id, null if none found</returns>
+        public static string SubjectId(this ClaimsPrincipal user) { return user?.Claims?.FirstOrDefault(c => c.Type.Equals("sub", StringComparison.OrdinalIgnoreCase))?.Value; }
+
+        /// <summary>
+        /// Send a request to the database to request all fields associated with given users
+        /// </summary>
+        /// <param name="id">UserIds</param>
+        /// <param name="connectionString">ConnectionString to db</param>
+        /// <returns></returns>
+        public static DataTable GetInfoUsers(string[] ids, string connectionString)
+        {
+            string requete = "SELECT * FROM dbo.AspNetUsers WHERE Id IN ('" + string.Join("', '", ids) + "')";
+            DataTable table = new DataTable();
+            string sqlDataSource = connectionString;
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return table;
         }
 
         /* private void ImportKeys()

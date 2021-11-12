@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import $  from 'jquery';
 
 let dataFamille;
@@ -24,6 +24,7 @@ export class DetailsFamille extends Component {
                 if(data["errors"]) {
                     throw new Error("Error while trying to load data from famille");
                 }
+                console.log(data);
 
                 isAdmin = (data.find(member => {
                     return member.Id === user.sub;
