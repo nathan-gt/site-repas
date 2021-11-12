@@ -1,11 +1,24 @@
 import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
 // import { toast } from 'react-toastify';
-import $  from 'jquery';
+import $, { event, post }  from 'jquery';
 
 let dataFamille;
 
 export class DetailsFamille extends Component {
+
+    handleClickX(event) {
+        fetch(process.env.REACT_APP_BASE_URL + '/api/famille/removeFromFamily/' + event.data.member, 
+        {
+            method: "post",
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        })
+        .then((res) => {
+            console.log(res);
+        });
+    }
     
     componentDidMount(){
 
@@ -24,7 +37,8 @@ export class DetailsFamille extends Component {
                 if(data["errors"]) {
                     throw new Error("Error while trying to load data from famille");
                 }
-                console.log(data);
+
+                $("#titreFamille").append("Famille " + data[0].FamilleNom)
 
                 isAdmin = (data.find(member => {
                     return member.Id === user.sub;
@@ -35,8 +49,9 @@ export class DetailsFamille extends Component {
                     let btn = "";
                     admin = (member.IsAdminFamille ? "Admin" : "");
                     btn = (isAdmin && !member.IsAdminFamille ? '' : "");
-                    btn = (isAdmin && !member.IsAdminFamille ? '<td class="w-25"><button class="x-button">&#x2715</button></td>' : "");
-
+                    btn = (isAdmin && !member.IsAdminFamille ? 
+                        "<td class='w-25'><button id='"+ member.Id +"' value='" + member.Id + "' class='x-button'>&#x2715</button></td>" : "");
+                        //(event) => {handleClickX(event, user)}
                     $("#body").append(
                         $(`
                         <tr>
@@ -46,6 +61,7 @@ export class DetailsFamille extends Component {
                         </tr>
                         `)
                     );
+                    $("#" + member.Id).on("click", { member : member.Id}, (event) => {this.handleClickX(event)})
                 });                
             })        
             .catch((err) =>
@@ -65,6 +81,7 @@ export class DetailsFamille extends Component {
     render(){
         return (
             <div>
+                <h1 id="titreFamille" class="display-3"></h1> <br />
                 <table class="table table-dark">
                   <tbody id="body"></tbody>
                 </table>
