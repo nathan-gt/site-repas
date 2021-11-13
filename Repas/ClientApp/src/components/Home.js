@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import { getFamilleId } from './Helper'
+
+getFamilleId()
 
 export class Home extends Component {
   static displayName = Home.name;
+
+  
 
   render () {
     return (
