@@ -414,7 +414,7 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
             var nom = element.Nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             nom = nom.toLowerCase()
             if (nom.includes(value) && element.Categorie === select){
@@ -433,7 +433,7 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
             if (element.Categorie === select){
               addExternal(element.Id, element.Nom, element.Categorie);
             }
@@ -449,7 +449,7 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
             var nom = element.Nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             nom = nom.toLowerCase();
             if (nom.includes(value)){
@@ -467,7 +467,7 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
             addExternal(element.Id, element.Nom, element.Categorie);
           }
         });
