@@ -28,7 +28,7 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Get()
         {
             string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, FamilleId from dbo.Repas";
+                            select Id, Nom, Categorie, DateCalendrier, IdFamille from dbo.Repas";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -78,8 +78,8 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Post(UnRepas repas)
         {
             string requete = @"
-                            insert into dbo.Repas (Nom, Categorie, dateCalendrier) values
-                             ('" + repas.Nom + @"','" + repas.Categorie + @"','" + repas.DateCalendrier + @"')";
+                            insert into dbo.Repas (Nom, Categorie, dateCalendrier, IdFamille) values
+                             ('" + repas.Nom + @"','" + repas.Categorie + @"','" + repas.DateCalendrier + @"','" + repas.IdFamille + @"')";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;

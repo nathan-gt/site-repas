@@ -10,7 +10,7 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211112203949_InitialCreate")]
+    [Migration("20211112204800_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -65,58 +65,68 @@ namespace SiteRepas.Models
                 new UnRepas {
                     Nom = "Salade",
                     Categorie = "Végétarien",
+                    IdFamille = 1
                 },
                 new UnRepas {
                     Nom = "Buritos",
                     Categorie = "Mexicain",
+                    IdFamille = 1
                 },
                 new UnRepas {
                     Nom = "Pâte carbonara",
                     Categorie = "Italien",
+                    IdFamille = 1
                 },
                 new UnRepas {
                     Nom = "Pâte bolognaise",
                     Categorie = "Italien",
+                    IdFamille = 2
                 },
                 new UnRepas {
                     Nom = "Fondue chinoise",
                     Categorie = "None",
+                    IdFamille = 2
                 },
                 new UnRepas {
                     Nom = "Raclette",
                     Categorie = "Américain",
+                    IdFamille = 2
                 },
                 new UnRepas {
                     Nom = "Hamburger",
                     Categorie = "Américain",
+                    IdFamille = 1
                 },
                 new UnRepas {
                     Nom = "Doigt de poulet",
                     Categorie = "Américain",
+                    IdFamille = 1
                 },
                 new UnRepas {
                     Nom = "Gnocci",
                     Categorie = "Italien",
+                    IdFamille = 2
                 },
                 new UnRepas {
                     Nom = "Pizza",
-                    Categorie = "Italien"
+                    Categorie = "Italien",
+                    IdFamille = 1
                 });
 
-                var familles = new Famille[] {
-                    new Famille {
-                        Nom = "Roy"
-                    },
-                    new Famille {
-                        Nom = "Legault"
-                    },
-                    new Famille {
-                        Nom = "Drouin"
-                    },
-                    new Famille {
-                        Nom = "LeBlanc"
-                    }
-                 };
+            var familles = new Famille[] {
+                new Famille {
+                    Nom = "Roy"
+                },
+                new Famille {
+                    Nom = "Legault"
+                },
+                new Famille {
+                    Nom = "Drouin"
+                },
+                new Famille {
+                    Nom = "LeBlanc"
+                }
+                };
             //Ajout de familles à la bd
             context.Familles.AddRange(familles);
 
