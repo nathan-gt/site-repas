@@ -26,7 +26,7 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Get()
         {
             string requete = @"
-                            select Nom, Id, Categorie, Disponible from dbo.Ingredients";
+                            select Nom, Id, Categorie, Disponible, FamilleId from dbo.Ingredients";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
