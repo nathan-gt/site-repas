@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import ListeIngredients from "./ListeIngredients";
+import Autocomplete from "./Autocomplete";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 
@@ -9,6 +10,28 @@ var LOCAL_STORAGE_KEY = null;
 export default function AjoutIngredient({ listeIngredients }) {
 
     LOCAL_STORAGE_KEY = String(listeIngredients['Id']);
+
+    const tabIngr = [
+        "Farine",
+        "Jambon",
+        "Tomate",
+        "Laitue",
+        "Sucre",
+        "Sel",
+        "Boeuf",
+        "Poulet",
+        "Riz",
+        "Pâtes",
+        "Oignons",
+        "Paprika",
+        "Poivre",
+        "Persil",
+        "Coriande",
+        "Oeufs",
+        "Beurre",
+        "Huile",
+        "Lait"
+    ];
 
     // Récupération du nom de l'ingrédient (input text)
     const refNomIngredient = useRef()
@@ -73,10 +96,13 @@ export default function AjoutIngredient({ listeIngredients }) {
                 <h2 class="display-5 text-center">Vous n'avez pas encore ajouté <br/> 
                 d'ingrédients à ce plat. Ajoutez-en!</h2><br/>
 
-                <label class="form-label" for="aj-ingredient">Ajouter un ingrédient :</label>
-                <input type="search" class="form-control rounded aj-ingredient" aria-label="Search" aria-describedby="search-addon"
-                placeholder="Ingredient à ajouter" id="aj-ingredient" ref={refNomIngredient} />
-                <button type="button" class="btn btn-outline-primary aj-ingredient" onClick={gererAjoutIngr}>Ajouter</button>
+                <div class="input-group mb-3 max-w">
+                    <input type="text" class="form-control" placeholder="Ingrédient à ajouter" ref={refNomIngredient}
+                    aria-describedby="basic-addon2"/>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="button" onClick={gererAjoutIngr}>Ajouter</button>
+                    </div>
+                </div>
             </section>  
         )
     }
@@ -86,12 +112,21 @@ export default function AjoutIngredient({ listeIngredients }) {
             <h3>Liste des ingrédients :</h3>
             <ol>
                 <ListeIngredients listeIngredients={ingredients} gererSuppressionIngr={gererSuppressionIngr} />
-            </ol>
+            </ol><br/>
 
-            <label class="form-label" for="aj-ingredient">Ajouter un ingrédient :</label>
-            <input type="search" class="form-control rounded aj-ingredient" aria-label="Search" aria-describedby="search-addon"
-             placeholder="Ingredient à ajouter" id="aj-ingredient" ref={refNomIngredient} />
-            <button type="button" class="btn btn-outline-primary aj-ingredient" onClick={gererAjoutIngr}>Ajouter</button>
+            <div class="input-group mb-3 max-w">
+                <input type="text" class="form-control" placeholder="Ingrédient à ajouter" ref={refNomIngredient}
+                 aria-describedby="basic-addon2" />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button" onClick={gererAjoutIngr}>Ajouter</button>
+                </div>
+            </div>
+
+            
+            <Autocomplete suggestions={ tabIngr } />
+            
+
+            
         </section>
     )
 }

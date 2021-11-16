@@ -6,7 +6,7 @@ export class DetailPlat extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: 'default'};
+        this.state = {value: 'none'};
     
         this.handleChange = this.handleChange.bind(this);
     }
@@ -57,6 +57,7 @@ export class DetailPlat extends Component {
                 {
                     // Modifier le titre du plat dans la page
                     $("#titre-plat").text(plat['Nom']);
+                    this.state = {value: plat['Categorie']};
 
                     console.log("ID du plat à afficher " + plat['Id']);
                     console.log(plat);
@@ -75,10 +76,15 @@ export class DetailPlat extends Component {
                 <div id="details-plat">
                     <h3>Type de plat : </h3>
                     <select value={this.state.value} onChange={this.handleChange}>
-                        <option value="default">Sélectionnez un type</option>
-                        <option value="carnivore">Carnivore</option>
+                        <option value="none">Sélectionnez un type</option>
+                        <option value="americain">Américain</option>
+                        <option value="italien">Italien</option>
+                        <option value="mexicain">Méxicain</option>
+                        <option value="asiatique">Asiatique</option>
+                        <option value="libanais">Libanais</option>
+                        <option value="fruits-mer">Fruits de mer</option>
                         <option value="vegetarien">Végétarien</option>
-                        <option value="vegan">Vegan</option>
+                        <option value="vegetalien">Végétalien</option>
                     </select><br /><br />
 
                     <AjoutIngredient listeIngredients={ this.envoyerIngredients() } />

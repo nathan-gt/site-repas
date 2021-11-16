@@ -60,8 +60,14 @@ code {
   margin-left: 2px;
 }
 
-/*** DÉTAILS D'UN PLAT ***/
 
+
+
+
+
+/*****************************
+*   NOTE: DÉTAILS D'UN PLAT
+*****************************/
 ol {
   counter-reset: li; 
   list-style: none; 
@@ -91,8 +97,7 @@ ol li:before {
   background: #3788d8;
   height: 2em;
   width: 2em;
-  line-height: 2em;
-  border: .3em solid #3788d8;
+  border: .3em solid white;
   text-align: center;
   font-weight: bold;
   border-radius: 2em;
@@ -112,4 +117,58 @@ ol li:before {
 
 input {
   display: inline;
+}
+
+.max-w {
+  margin: auto;
+  max-width: 60%;
+}
+
+
+
+
+
+/*****************************
+*   NOTE: AUTO COMPLETE
+*****************************/
+body {
+  font-family: sans-serif;
+}
+
+input {
+  border: 1px solid #999;
+  padding: 0.5rem;
+  width: 300px;
+}
+
+.no-suggestions {
+  color: #999;
+  padding: 0.5rem;
+}
+
+.suggestions {
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  margin-top: 0;
+  max-height: 143px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: calc(300px + 1rem);
+}
+
+.suggestions li {
+  padding: 0.5rem;
+}
+
+.suggestion-active,
+.suggestions li:hover {
+  background-color: #008f68;
+  color: #fae042;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
 }

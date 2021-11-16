@@ -8,9 +8,9 @@ export default function Ingredient({ ingredient, gererSuppressionIngr }) {
     }
 
     return (
-        <li>
+        <li class="ingr">
             { ingredient }
-            <button type="button" class="btn btn-danger float-right"
+            <button id="suppr" type="button" class="btn btn-danger float-right"
              onClick={handleClick}>Supprimer</button>
         </li>
     )
