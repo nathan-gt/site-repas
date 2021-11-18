@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from "jspdf";
+
 export class ListeEpicerie extends Component {
     //JS et JQuery en dehors du render
     componentWillMount(){
@@ -29,9 +32,10 @@ export class ListeEpicerie extends Component {
         })
         .catch(err => console.log(err))
     }
+
     render(){
         return (
-            <div className="pageListeEpicerie">
+            <div id="PageListe" className="pageListeEpicerie">
                 <h1>Liste d'épicerie de la famille pour la semaine</h1> 
                 <div id="liste"
                     style={{
@@ -42,11 +46,28 @@ export class ListeEpicerie extends Component {
                     }}
                 >
                 </div>
+                <div>
+                    <button onClick={generatePDF}>Télécharger la liste en PDF</button>
+                </div>
             </div>
 
         );
     }
 }
+
+function generatePDF() {
+        const input = document.getElementById('PageListe');
+        html2canvas(input)
+          .then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            console.log("ALLO")
+            pdf.addImage(imgData, 'JPEG', 0, 0);
+            //pdf.output('dataurlnewwindow');
+            pdf.save("download.pdf");
+          })
+        ;
+    }
 function addExternal(id, nom){
     var event = document.createElement("div");
     event.classList.add("mb-2");
