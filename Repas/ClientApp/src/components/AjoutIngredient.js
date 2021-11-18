@@ -66,9 +66,9 @@ export default function AjoutIngredient({ listeIngredients }) {
 
     // Fonction qui gère le click sur 
     // le bouton d'ajout d'un ingrédient.
-    function gererAjoutIngr() {
+    function gererAjoutIngr(nomIngr) {
         // Récupération du contenu du TextBox
-        const name = refNomIngredient.current.value;
+        const name = nomIngr //refNomIngredient.current.value;
         // Vérification si le contenu du 
         // TextBox n'est pas vide
         if (name === '') return
@@ -123,7 +123,7 @@ export default function AjoutIngredient({ listeIngredients }) {
             </div>
 
             
-            <Autocomplete suggestions={ tabIngr } />
+            <Autocomplete suggestions={ tabIngr }  noGererAjoutIngr={ gererAjoutIngr } />
             
 
             
