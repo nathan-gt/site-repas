@@ -14,6 +14,7 @@ class Autocomplete extends Component {
 
     onChange = e => {
         const { suggestions } = this.props;
+        console.log(suggestions);
         const userInput = e.currentTarget.value;
     
         const filteredSuggestions = suggestions.filter(
@@ -62,6 +63,13 @@ class Autocomplete extends Component {
             this.setState({ activeSuggestion: activeSuggestion + 1 });
         }
     };
+
+    ClickAjoutIngr = e => {
+        const userInput = e.currentTarget.value;
+        const noGererAjoutIngr = (this.props.noGererAjoutIngr);
+
+        noGererAjoutIngr(userInput);
+    }
 
     render() {
         const {
@@ -120,7 +128,7 @@ class Autocomplete extends Component {
                         onKeyDown={onKeyDown}
                         value={userInput}
                     />
-                    <button class="btn btn-outline-primary" type="button" /*onClick={gererAjoutIngr}*/>Ajouter</button>
+                    <button class="btn btn-outline-primary" type="button" onClick={this.ClickAjoutIngr}>Ajouter</button>
                 </section>
                 <section class="input-group mb-3 max-w">
                     {suggestionsListComponent}
