@@ -8,15 +8,15 @@ import Alert from "sweetalert2";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
-import $, { data } from "jquery";
-
+import $, { data, get } from "jquery";
 
 export class Calendar extends Component {
-  
+
   calendarRef = React.createRef()
-  
+
   // Get élément dans la base de donnée repas
   componentWillMount(){
+    
     fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
     {
         method: "get",
@@ -32,22 +32,24 @@ export class Calendar extends Component {
       this.setState({repasList})
 
       repasList.forEach(element =>{
-
-        if(element.DateCalendrier.toString().startsWith("0")){
-          addExternal(element.Id, element.Nom, element.Categorie);
-        }else{
-          const api = this.calendarRef.current.getApi();
-          api.addEvent({
-              id: element.Id,
-              title: element.Nom,
-              start: element.DateCalendrier,
-              classNames: element.Categorie,
-              display: 'block'
-          });
+        if(element.IdFamille == localStorage.getItem('familleId')){
+          if(element.DateCalendrier.toString().startsWith("0")){
+            addExternal(element.Id, element.Nom, element.Categorie);
+          }else{
+            const api = this.calendarRef.current.getApi();
+            api.addEvent({
+                id: element.Id,
+                title: element.Nom,
+                start: element.DateCalendrier,
+                classNames: element.Categorie,
+                display: 'block'
+            });
+          }
         }
       });
     })
     .catch(err => console.log(err))
+    
   }
   
   // Ajout de valeur hardcodé
@@ -59,7 +61,7 @@ export class Calendar extends Component {
   /**
    * Ajout du draggable avec javascript
    */
-  componentDidMount() {
+   componentDidMount() {
     let draggableEl = document.getElementById("external-events");
     new Draggable(draggableEl, {
       itemSelector: ".fc-event",
@@ -97,11 +99,6 @@ export class Calendar extends Component {
         eventClick.event.classNames +
         `</td>
       </tr>
-      <tr>
-      <td>Ingredients</td>
-        <td>
-        </td>
-      </tr>
       </tbody>
       </table>
       <a href="` +process.env.REACT_APP_BASE_URL+ `/plat/` + eventClick.event.id +`">Détail du repas</a>
@@ -132,14 +129,15 @@ export class Calendar extends Component {
 // Liste de repas à gauche et calendrier
   render() {
     return (
-      <div className="animated fadeIn p-4 demo-app">
+      <div className="animated fadeIn p-4 demo-app lstRepas">
         <Row>
           <Col lg={3} sm={3} md={3}>
+            <div id="side">
             <div
               id="external-events"
               style={{
-                padding: "10px",
-                width: "80%",
+                padding: "8px",
+                width: "85%",
                 height: "auto",
                 maxHeight: "-webkit-fill-available",
               }}
@@ -150,17 +148,20 @@ export class Calendar extends Component {
               <a className="fc font-weight-bold mb-3" onClick={addRepas}>Ajouter un repas</a>
 
               <div className="d-flex">
-                <input type="text" size="15" className="mb-2" placeholder="Rechercher" id="searchText"/>
-                <img src={process.env.REACT_APP_BASE_URL + '/search.png'} id="search" width="25" height="25"/>
+                <input type="text" size="21" className="mb-2" placeholder="Rechercher" id="searchText"/>
               </div>
 
               <label htmlFor="categorie">Catégorie:</label>
-              <select className="form-select mb-3 ml-1" name="categorie" id="categorie">
+              <select className="form-select mb-3" name="categorie" id="categorie">
                 <option value="None"></option>
+                <option value="Végétarien">Végétarien</option>
+                <option value="Végétalien">Végétalien</option>
                 <option value="Américain">Américain</option>
                 <option value="Italien">Italien</option>
-                <option value="Carnivore">Carnivore</option>
-                <option value="Québécois">Québécois</option>
+                <option value="Méxicain">Méxicain</option>
+                <option value="Asiatique">Asiatique</option>
+                <option value="Libanais">Libanais</option>
+                <option value="Fruits de mer">Fruits de mer</option>
               </select>
               {this.state.events.map(event => (
                 <div
@@ -173,7 +174,7 @@ export class Calendar extends Component {
                 </div>
               ))}
             </div>
-            
+            </div>
           </Col>
           <Col lg={9} sm={9} md={9}>
             <div>
@@ -187,7 +188,6 @@ export class Calendar extends Component {
                 weekends={this.state.calendarWeekends}
                 events={this.state.calendarEvents}
                 eventDrop={function(info){
-
                   // Ajout du repas à la base de donnée
                   fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + info.event.id, {
                     method: 'POST',
@@ -200,7 +200,6 @@ export class Calendar extends Component {
                 }}
                 drop={this.drop}
                 eventReceive={function(info){
-
                   // Ajout du repas à la base de donnée
                   fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
                     method: 'POST',
@@ -208,7 +207,7 @@ export class Calendar extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start})
+                    body: JSON.stringify({Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start, IdFamille: localStorage.getItem('familleId')})
                   });
 
                   var events = this.getEvents();
@@ -222,6 +221,7 @@ export class Calendar extends Component {
             </div>
           </Col>
         </Row>
+        <div id="foot"></div>
       </div>
     );
   }
@@ -237,10 +237,14 @@ function addRepas() {
       '<label htmlFor="swal-input2">Catégorie:</label>' +
       '<select id="swal-input2" class="swal2-input selectCategorie">' +
                 '<option value="None"></option>' +
+                '<option value="Végétarien">Végétarien</option>' +
+                '<option value="Végétalien">Végétalien</option>' +
                 '<option value="Américain">Américain</option>' +
                 '<option value="Italien">Italien</option>' +
-                '<option value="Carnivore">Carnivore</option>' +
-                '<option value="Québécois">Québécois</option>' +
+                '<option value="Méxicain">Méxicain</option>' +
+                '<option value="Asiatique">Asiatique</option>' +
+                '<option value="Libanais">Libanais</option>' +
+                '<option value="Fruits de mer">Fruits de mer</option>' +
       '</select>',
       preConfirm: function () {
         return new Promise(function (resolve) {
@@ -265,7 +269,7 @@ function addRepas() {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({Nom: result.value[0], Categorie: result.value[1], DateCalendrier:'0001-01-01 00:00:00'})
+            body: JSON.stringify({Nom: result.value[0], Categorie: result.value[1], DateCalendrier:'0001-01-01 00:00:00', IdFamille: localStorage.getItem('familleId')})
           });
 
           setTimeout(function(){
@@ -341,7 +345,7 @@ function refreshBD(info, events, calendarApi){
     var date = String(info.event.start.toISOString()).slice(0,10);
 
     data.forEach(element =>{
-      if(String(element.DateCalendrier).slice(0,10) === date){
+      if(String(element.DateCalendrier).slice(0,10) === date && element.IdFamille == localStorage.getItem('familleId')){
         calendarApi.addEvent({
           id: element.Id,
           title: element.Nom,
@@ -350,13 +354,26 @@ function refreshBD(info, events, calendarApi){
           display: 'block'
         });
       }
-        
     });
   })
 }
 
 
 $( document ).ready(function() {
+
+  if ($(window).width() <= 995) {
+    $('#external-events').appendTo('#foot');
+  }else{
+    $('#external-events').appendTo('#side');
+  }
+
+  $( window ).resize(function() {
+    if ($(window).width() <= 995) {
+      $('#external-events').appendTo('#foot');
+    }else{
+      $('#external-events').appendTo('#side');
+    }
+  });
 
   $(document).on("click", ".del", function () {
     if (confirm("Êtes-vous certain de vouloir surprimmer le repas " + this.title.toLowerCase() + "?")){
@@ -374,7 +391,7 @@ $( document ).ready(function() {
     }
   });
 
-  $(document).on("click", "#search", () => {
+  $(document).on("keyup", "#searchText", () => {
     doSearch();
   });
 
@@ -384,6 +401,8 @@ $( document ).ready(function() {
 
   function doSearch(){
     var value = $("#searchText").val();
+    value = value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    value = value.toLocaleLowerCase();
     var select = $("#categorie").val();
     $( ".external" ).remove();
     if (value && select !== "None"){
@@ -395,9 +414,10 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
-            var nom = element.Nom.toLowerCase()
-            if (nom.includes(value.toLocaleLowerCase()) && element.Categorie === select){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
+            var nom = element.Nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nom = nom.toLowerCase()
+            if (nom.includes(value) && element.Categorie === select){
               addExternal(element.Id, element.Nom, element.Categorie);
             }
           }
@@ -413,7 +433,7 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
             if (element.Categorie === select){
               addExternal(element.Id, element.Nom, element.Categorie);
             }
@@ -429,9 +449,10 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
-            var nom = element.Nom.toLowerCase()
-            if (nom.includes(value.toLocaleLowerCase())){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
+            var nom = element.Nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nom = nom.toLowerCase();
+            if (nom.includes(value)){
               addExternal(element.Id, element.Nom, element.Categorie);
             }
           }
@@ -446,7 +467,7 @@ $( document ).ready(function() {
       .then((res) => res.json())
       .then((data) => { 
         data.forEach(element => {
-          if(element.DateCalendrier.toString().startsWith("0")){
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
             addExternal(element.Id, element.Nom, element.Categorie);
           }
         });

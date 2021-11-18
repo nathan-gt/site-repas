@@ -46,6 +46,15 @@
 			"response": []
 		},
 		{
+			"name": "Get ingrédients d'un repas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
 			"name": "Get un repas",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -282,7 +291,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Id\" : 18\r\n}",
+					"raw": "{\r\n    \"Id\" : 19\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

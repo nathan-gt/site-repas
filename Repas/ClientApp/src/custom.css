@@ -44,14 +44,33 @@ code {
 }
 
 .selectCategorie{
-  margin-right: 150px;
-  margin-left: 5px;
+  margin-right: 135px;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 1200px){
+  #categorie{
+    width:120px;
+    margin-left: 0px !important;
+  }
+
+  #searchText{
+    width: 150px;
+  }
+}
+
+@media only screen and (max-width: 1000px){
+  #external-events{
+    width: 200px !important;
+    margin-left: 125px !important;
+    height: 500px !important;
+  }
 }
 
 @media only screen and (max-width: 765px){
   .selectCategorie{
-    margin-right: 130px;
-    margin-left: 5px;
+    margin-right: 125px;
+    margin-left: 15px;
   }
 }
 
@@ -60,6 +79,16 @@ code {
   margin-left: 2px;
 }
 
+#categorie{
+  width:120px;
+  margin-left: 4px;
+}
+
+#foot{
+  margin-top: 25px;
+}
+
+/*** DÉTAILS D'UN PLAT ***/
 
 
 
@@ -115,7 +144,30 @@ ol li:before {
   margin: 1em 0em 1em 1em;
 }
 
-input {
+.admin-text
+{
+  color:rgba(255, 255, 255, 0.5); 
+  font-style: italic;
+}
+
+.delete-buttons {
+  display: none;
+}
+
+.table td {
+  min-width: 100px;
+}
+
+.x-button {
+  color:red;
+  background-color: transparent;
+  border-style: none;
+  font-size:x-large;
+
+  padding-right: 40px;
+}
+
+.input {
   display: inline;
 }
 

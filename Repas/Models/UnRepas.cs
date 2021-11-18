@@ -27,11 +27,13 @@ namespace SiteRepas.Models
         public string Categorie { get; set;}
 
         /// <summary>
-        /// Liste d'ingrédients pour le repas
+        /// Date à laquelle le repas est assigné dans le calendrier
         /// </summary>
-        public ICollection<Ingredient> Ingredients { get; set;}
-
-
         public DateTime DateCalendrier { get; set; }
+
+        /// <summary>
+        /// Identifiant d'une famille reliée au repas
+        /// </summary>
+        public int IdFamille { get; set; }
     }
 }

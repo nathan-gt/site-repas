@@ -1,13 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import authService from './api-authorization/AuthorizeService';
-//import { toast } from 'react-toastify';
-import { data } from 'jquery';
+// import { toast } from 'react-toastify';
+import $  from 'jquery';
 
 let dataFamille;
 
 export class DetailsFamille extends Component {
     
-    componentWillMount(){
+    componentDidMount(){
+
+        let isAdmin = false
         authService.getUser()
         .then((user) => {
             fetch(process.env.REACT_APP_BASE_URL + '/api/famille/byUserId/' + user.sub,
@@ -17,13 +19,34 @@ export class DetailsFamille extends Component {
                     'Content-Type': 'application/json'
                   })
             })
-            .then((res) => res.json())
+            .then((res) =>res.json())
             .then((data) => {
                 if(data["errors"]) {
                     throw new Error("Error while trying to load data from famille");
                 }
-                dataFamille = data;
                 console.log(data);
+
+                isAdmin = (data.find(member => {
+                    return member.Id === user.sub;
+                  })).IsAdminFamille
+
+                data.forEach(member => {
+                    let admin = "";
+                    let btn = "";
+                    admin = (member.IsAdminFamille ? "Admin" : "");
+                    btn = (isAdmin && !member.IsAdminFamille ? '' : "");
+                    btn = (isAdmin && !member.IsAdminFamille ? '<td class="w-25"><button class="x-button">&#x2715</button></td>' : "");
+
+                    $("#body").append(
+                        $(`
+                        <tr>
+                            <td style=text-align:center; >${member.Username}</td>
+                            <td style=line-height: 309px; class="admin-text">${admin}</td>
+                            ${btn}
+                        </tr>
+                        `)
+                    );
+                });                
             })        
             .catch((err) =>
             {
@@ -40,12 +63,14 @@ export class DetailsFamille extends Component {
     }
 
     render(){
-        //console.log(!!authService.isAuthenticated());
-        //console.log(authService.getAccessToken());
         return (
-            <div>Hello World
-                {dataFamille}
+            <div>
+                <table class="table table-dark">
+                  <tbody id="body"></tbody>
+                </table>
+                <button class="btn btn-success">Ajouter un membre</button>
             </div>
+            
     )
     }
 }

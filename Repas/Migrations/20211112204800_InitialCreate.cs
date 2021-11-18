@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteSiteRepas.Migrations
 {
-    public partial class FamilleFK : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,37 @@ namespace SiteSiteRepas.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Disponible = table.Column<bool>(type: "bit", nullable: false),
+                    UnRepasId = table.Column<int>(type: "int", nullable: false),
+                    FamilleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JointureRepasIngredients",
+                columns: table => new
+                {
+                    IdJointure = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FK_IdRepas = table.Column<int>(type: "int", nullable: false),
+                    FK_IdIngredient = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JointureRepasIngredients", x => x.IdJointure);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersistedGrants",
                 columns: table => new
                 {
@@ -71,6 +102,22 @@ namespace SiteSiteRepas.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Repas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateCalendrier = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IdFamille = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Repas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,6 +147,7 @@ namespace SiteSiteRepas.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FamilleId = table.Column<int>(type: "int", nullable: true),
+                    IsAdminFamille = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -120,28 +168,6 @@ namespace SiteSiteRepas.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Familles_FamilleId",
-                        column: x => x.FamilleId,
-                        principalTable: "Familles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Repas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateCalendrier = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FamilleId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Repas", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Repas_Familles_FamilleId",
                         column: x => x.FamilleId,
                         principalTable: "Familles",
                         principalColumn: "Id",
@@ -233,35 +259,6 @@ namespace SiteSiteRepas.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Ingredients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nom = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Disponible = table.Column<bool>(type: "bit", nullable: false),
-                    FamilleId = table.Column<int>(type: "int", nullable: true),
-                    UnRepasId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ingredients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ingredients_Familles_FamilleId",
-                        column: x => x.FamilleId,
-                        principalTable: "Familles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Ingredients_Repas_UnRepasId",
-                        column: x => x.UnRepasId,
-                        principalTable: "Repas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -318,21 +315,11 @@ namespace SiteSiteRepas.Migrations
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_FamilleId",
-                table: "Ingredients",
-                column: "FamilleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_Nom",
                 table: "Ingredients",
                 column: "Nom",
                 unique: true,
                 filter: "[Nom] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_UnRepasId",
-                table: "Ingredients",
-                column: "UnRepasId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
@@ -348,11 +335,6 @@ namespace SiteSiteRepas.Migrations
                 name: "IX_PersistedGrants_SubjectId_SessionId_Type",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "SessionId", "Type" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Repas_FamilleId",
-                table: "Repas",
-                column: "FamilleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -379,16 +361,19 @@ namespace SiteSiteRepas.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
+                name: "JointureRepasIngredients");
+
+            migrationBuilder.DropTable(
                 name: "PersistedGrants");
+
+            migrationBuilder.DropTable(
+                name: "Repas");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Repas");
 
             migrationBuilder.DropTable(
                 name: "Familles");
