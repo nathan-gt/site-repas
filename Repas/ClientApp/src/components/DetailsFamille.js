@@ -9,28 +9,110 @@ let dataFamille;
 
 export class DetailsFamille extends Component {
 
-    async handleClickX(event) {
+    componentDidMount(){
+
+        authService.getUser()
+        .then((user) => {
+            fetch(process.env.REACT_APP_BASE_URL + '/api/famille/byUserId/' + user.sub,
+            {
+                method: "get",
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                  })
+            })
+            .then((res) =>res.json())
+            .then((data) => {
+                if(data["errors"]) {
+                    throw new Error("Error while trying to load data from famille");
+                }
+                else if(data.length == 0)
+                {
+                    this.handleNoFam(user);
+                }
+                else {
+                    this.handleFam(data, user);
+                }             
+            })        
+            .catch((err) =>
+            {
+                //toast.error("Erreur lors du fetch des données de la famille.")
+                throw (err);
+            });
+        })
+        .catch((err) =>
+        {
+            //toast.error("Erreur lors du fetch des données de la famille.")
+            throw (err);
+        });
+        
+    }
+
+    handleNoFam(user) {
+        $('#noFamily').show();
         authService.getAccessToken()
         .then((token) => {
-            fetch(process.env.REACT_APP_BASE_URL + '/api/famille/removeFromFamily/' + event.data.member, 
+            fetch(process.env.REACT_APP_BASE_URL + '/api/user/current/invite', 
             {
-                method: "patch",
+                method: "get",
                 headers: new Headers({
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 })
             })
-            .then((res) => {
-                if(res.ok) {
-                    return;
+            .then((res) =>res.json())
+            .then((data) => {
+                if (!data || data["errors"])
+                {
+                    throw new Error("Un problème est arrivé lors de la demande des invitations");
                 }
-                else throw new Error("Un problème est arrivé lors de la demande");
+                else if(data.length == 0)
+                {
+                    $('#body-noFamily').append("<h5>Aucune invitation<h5>");
+                }
+                else {
+                    $('#body-noFamily').append(`
+                         <td style=text-align:center; >${data[0].Nom}</td>
+                         <td style=line-height: 309px;>${data[0].Id}</td>
+                         <td class='w-25'><button id="btnInvite" class="btn btn-outline-primary">Accepter l'invitation</button></td>
+                         <td class='w-25'><button id='X-invite' class='x-button'>&#x2715</button></td>
+                    `);
+                    $("#btnInvite").on("click", (event) => {
+                        fetch(process.env.REACT_APP_BASE_URL + '/api/user/', 
+                        {
+                            method: "put",
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + token
+                            })
+                        })
+                        .then((res) => {
+                            console.log(res);
+                            if(res.ok) {
+                                window.location.reload(false);
+                            }
+                            else throw new Error("Un problème est arrivé lors de la demande");
+                        });
+                    });
+                    $("#X-invite").on("click", (event) => {
+                        fetch(process.env.REACT_APP_BASE_URL + '/api/user/invite', 
+                        {
+                            method: "delete",
+                            headers: new Headers({
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + token
+                            })
+                        })
+                        .then((res) => {
+                            console.log(res);
+                            if(res.ok) {
+                                window.location.reload(false);
+                            }
+                            else throw new Error("Un problème est arrivé lors de la demande");
+                        });
+                    });
+                }             
             });
-        })
-
-    }
-    handleNoFam(currentUser) {
-        $('#noFamily').show();
+        });
     }
 
     handleFam(data, user) {
@@ -73,43 +155,25 @@ export class DetailsFamille extends Component {
             })
         });
     }
-    
-    componentDidMount(){
-
-        authService.getUser()
-        .then((user) => {
-            fetch(process.env.REACT_APP_BASE_URL + '/api/famille/byUserId/' + user.sub,
+        
+    async handleClickX(event) {
+        authService.getAccessToken()
+        .then((token) => {
+            fetch(process.env.REACT_APP_BASE_URL + '/api/famille/removeFromFamily/' + event.data.member, 
             {
-                method: "get",
+                method: "patch",
                 headers: new Headers({
-                    'Content-Type': 'application/json'
-                  })
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                })
             })
-            .then((res) =>res.json())
-            .then((data) => {
-                if(data["errors"]) {
-                    throw new Error("Error while trying to load data from famille");
+            .then((res) => {
+                if(res.ok) {
+                    return;
                 }
-                else if(data.length == 0)
-                {
-                    this.handleNoFam(user);
-                }
-                else {
-                    this.handleFam(data, user);
-                }             
-            })        
-            .catch((err) =>
-            {
-                //toast.error("Erreur lors du fetch des données de la famille.")
-                throw (err);
+                else throw new Error("Un problème est arrivé lors de la demande");
             });
         })
-        .catch((err) =>
-        {
-            //toast.error("Erreur lors du fetch des données de la famille.")
-            throw (err);
-        });
-        
     }
 
     render(){
@@ -132,7 +196,7 @@ export class DetailsFamille extends Component {
                     cliquant le bouton "Créer une famille". <br /><br />
                     <h5 >Votre invitation:</h5>
                     <div id="invites">
-                        <table className="table">
+                        <table className="table" >
                             <tbody id="body-noFamily"></tbody>
                         </table>
                     </div>

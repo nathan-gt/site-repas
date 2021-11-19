@@ -167,7 +167,7 @@ namespace SiteSiteRepas.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Famille modifiée avec succès.");
+            return new JsonResult("Famille supprimée avec succès");
         }
 
 
@@ -205,7 +205,7 @@ namespace SiteSiteRepas.Controllers
                          WHERE Id = '" + id + "'";
                 }
                 else {
-                    return Unauthorized();
+                    return NoContent();
                 }
             }
 
@@ -251,50 +251,6 @@ namespace SiteSiteRepas.Controllers
                 }
             }
             return new JsonResult("Famille supprimée avec succès");
-        }
-
-        /// <summary>
-        /// Crée une invitation à une famille si le user visé n'a pas d'invitation déjà et
-        /// le user envoyant la requête fait partie de la famille de l'invitation
-        /// </summary>
-        /// <param name="familleNom"></param>
-        /// <returns></returns>
-        [HttpPatch("invite/{idUser}")]
-        public IActionResult CreateInvite(string idUser, int? idFamille)
-        {
-            if(idFamille == null) {
-                return BadRequest();
-            }
-            string connectedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (connectedUserId == null) {
-                return Unauthorized();
-            }
-
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            DataTable infoUsers = GetInfoUsers(new string[] { connectedUserId }, sqlDataSource);
-            var connectedUserFID = infoUsers.Rows.Find(connectedUserId).Field<int?>("FamilleId");
-
-            if (connectedUserFID != idFamille) { // user connecté est en train de faire une demande pour une autre famille
-                return Unauthorized();
-            }
-
-            string requete = @"
-                                UPDATE dbo.AspNetUsers SET FamilleInviteId = 1 
-                                WHERE Id = '" + idFamille + "' AND FamilleInviteId is NULL";
-            DataTable table = new DataTable();
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader); ;
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Famille ajoutée avec succès.");
         }
 
     }
