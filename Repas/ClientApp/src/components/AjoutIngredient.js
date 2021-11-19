@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ListeIngredients from "./ListeIngredients";
 import Autocomplete from "./Autocomplete";
 import "bootstrap/dist/css/bootstrap.min.css";
