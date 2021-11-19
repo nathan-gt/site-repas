@@ -23,6 +23,7 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <AuthorizeRoute path='/calendar' component={Calendar} />
         <AuthorizeRoute path='/plat/:id' component={DetailPlat} />
+        <AuthorizeRoute path='/ListeEpicerie' component={ListeEpicerie} />
         <AuthorizeRoute path='/DetailsFamille' component={DetailsFamille} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>

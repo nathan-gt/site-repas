@@ -41,24 +41,32 @@ namespace SiteRepas.Models
                 new Ingredient {
                     Nom = "Pâte à pizza",
                     Categorie = "Pâte",
-                    UnRepasId = 10
+                    UnRepasId = 10,
+                    FamilleId = 1,
+                    Disponible = true
                 },
                 new Ingredient {
                     Nom = "Sauce marinara",
                     Categorie = "Sauce",
-                    UnRepasId = 10
+                    UnRepasId = 10,
+                    FamilleId = 1,
+                    Disponible = false
                 },
                 new Ingredient {
                     Nom = "Poivron vert",
                     Categorie = "Légume",
-                    UnRepasId = 10
+                    UnRepasId = 10,
+                    FamilleId = 1,
+                    Disponible = true
                 },
                 new Ingredient {
                     Nom = "Fromage",
                     Categorie = "Laitié",
-                    UnRepasId = 10
+                    UnRepasId = 10,
+                    FamilleId = 1,
+                    Disponible = false
                 }
-            );
+            ); ;
             context.SaveChanges();
             //Ajout de plats à la bd
             context.Repas.AddRange(
@@ -110,7 +118,8 @@ namespace SiteRepas.Models
                 new UnRepas {
                     Nom = "Pizza",
                     Categorie = "Italien",
-                    IdFamille = 1
+                    IdFamille = 1,
+                    DateCalendrier = new DateTime(2021, 11, 19)
                 });
 
             var familles = new Famille[] {
