@@ -79,8 +79,8 @@ jobs:
 
       - name: Replace faulty .dll to build folder
         run: >-
-          del ${{env.DOTNET_ROOT}}/myapp/Newtonsoft.Json.dll
-          mv Newtonsoft.Json.dll ${{env.DOTNET_ROOT}}/myapp
+          del ${{env.DOTNET_ROOT}}/myapp/Newtonsoft.Json.dll;
+          mv Newtonsoft.Json.dll ${{env.DOTNET_ROOT}}/myapp;
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
