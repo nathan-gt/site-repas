@@ -26,7 +26,7 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Get()
         {
             string requete = @"
-                            select Nom, Id, Categorie, Disponible, FamilleId from dbo.Ingredients";
+                            select * from dbo.Ingredients";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -44,14 +44,15 @@ namespace SiteSiteRepas.Controllers
             return new JsonResult(table);
         }
 
-
+        //Méthode pour ajouter un ingrédient à la base de données
+        //à l'aide d'un HTTP POST
         [HttpPost]
         public JsonResult Post(Ingredient ingredient)
         {
             string requete = @"
-                            insert into dbo.Ingredients (Nom, Categorie, Disponible) values
-                             ('" + ingredient.Nom + @"','" + ingredient.Categorie + @"','" + ingredient.Disponible + @"')
-                            ";
+                            insert into dbo.Ingredients (Nom, Categorie, Disponible, FamilleId, UnRepasId) values
+                             ('" + ingredient.Nom + @"','" + ingredient.Categorie + @"','" + 
+                             ingredient.Disponible + @"','"+ingredient.FamilleId+@"','" + ingredient.UnRepasId+@"')";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;

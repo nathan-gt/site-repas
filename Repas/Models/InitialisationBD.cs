@@ -118,7 +118,8 @@ namespace SiteRepas.Models
                 new UnRepas {
                     Nom = "Pizza",
                     Categorie = "Italien",
-                    IdFamille = 1
+                    IdFamille = 1,
+                    DateCalendrier = new DateTime(2021, 11, 19)
                 });
 
             var familles = new Famille[] {
