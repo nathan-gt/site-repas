@@ -14,7 +14,6 @@ class Autocomplete extends Component {
 
     onChange = e => {
         const { suggestions } = this.props;
-        console.log(suggestions);
         const userInput = e.currentTarget.value;
     
         const filteredSuggestions = suggestions.filter(
@@ -65,10 +64,14 @@ class Autocomplete extends Component {
     };
 
     ClickAjoutIngr = e => {
-        const userInput = e.currentTarget.value;
+        let nomIngr = document.getElementById("txtNomIngr").value;
         const noGererAjoutIngr = (this.props.noGererAjoutIngr);
-
-        noGererAjoutIngr(userInput);
+        // Ajout de l'ingrédient à la liste 
+        noGererAjoutIngr(nomIngr);
+        // Vidage du input
+        this.setState({
+            userInput: ""
+        });
     }
 
     render() {
@@ -122,6 +125,7 @@ class Autocomplete extends Component {
             <Fragment>
                 <section class="input-group mb-3 max-w">
                     <input
+                        id="txtNomIngr"
                         type="text" class="form-control" placeholder="Ingrédient à ajouter"
                         aria-describedby="basic-addon2"
                         onChange={onChange}
