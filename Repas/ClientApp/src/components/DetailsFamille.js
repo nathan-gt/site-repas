@@ -4,6 +4,7 @@ import authService from './api-authorization/AuthorizeService';
 import $ from 'jquery';
 import Popup from 'reactjs-popup';
 import CreerFamille from './CreerFamille';
+import ChercherMembre from './ChercherUsers';
 
 let dataFamille;
 
@@ -185,7 +186,7 @@ export class DetailsFamille extends Component {
                       <tbody id="body"></tbody>
                     </table>
                     <div id="detailsFamille-buttons">
-                        <button className="btn btn-success">Ajouter un membre</button>
+                        <ChercherMembre></ChercherMembre>
                         <button id="btn-leave" className = "btn btn-danger">Quitter la famille</button>
                     </div>
                 </div>

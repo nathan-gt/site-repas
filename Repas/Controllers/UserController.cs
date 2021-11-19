@@ -64,17 +64,13 @@ namespace SiteSiteRepas.Controllers
 
 
         /// <summary>
-        /// Crée une invitation à une famille si le user visé n'a pas d'invitation déjà et
-        /// le user envoyant la requête fait partie de la famille de l'invitation
+        /// Crée une invitation pour un user à la famille du user connecté
         /// </summary>
-        /// <param name="familleNom"></param>
+        /// <param name="idUser"></param>
         /// <returns></returns>
-        [HttpPatch("invite/{idUser}")]
-        public IActionResult CreateInvite(string idUser, int? idFamille)
+        [HttpPatch("invite/{nomUser}")]
+        public IActionResult CreateInvite(string nomUser)
         {
-            if (idFamille == null) {
-                return BadRequest();
-            }
             string connectedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (connectedUserId == null) {
@@ -83,15 +79,15 @@ namespace SiteSiteRepas.Controllers
 
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             DataTable infoUsers = GetInfoUsers(new string[] { connectedUserId }, sqlDataSource);
-            var connectedUserFID = infoUsers.Rows.Find(connectedUserId).Field<int?>("FamilleId");
+            var idFamille = infoUsers.Rows.Find(connectedUserId).Field<int?>("FamilleId");
 
-            if (connectedUserFID != idFamille) { // user connecté est en train de faire une demande pour une autre famille
-                return Unauthorized();
+            if (idFamille == null) {
+                return BadRequest();
             }
 
             string requete = @"
                                 UPDATE dbo.AspNetUsers SET FamilleInviteId = " + idFamille + @"
-                                WHERE Id = '" + idUser + "' AND FamilleInviteId is NULL";
+                                WHERE Username = '" + nomUser + "' AND FamilleInviteId is NULL";
             DataTable table = new DataTable();
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
@@ -122,41 +118,6 @@ namespace SiteSiteRepas.Controllers
             }
 
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            string requete = @"
-                                UPDATE dbo.AspNetUsers SET FamilleInviteId = NULL
-                                WHERE Id = '" + connectedUserId + "'";
-            DataTable table = new DataTable();
-            SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader); ;
-
-                    myReader.Close();
-                    myCon.Close();
-                }
-            }
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Remet l'idInvite du user connecté à NULL
-        /// </summary>
-        /// <param name="familleNom"></param>
-        /// <returns></returns>
-        [HttpPatch("invite")]
-        public IActionResult GetInvite()
-        {
-            string connectedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (connectedUserId == null) {
-                return Unauthorized();
-            }
-
-            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
-            DataTable infoUsers = GetInfoUsers(new string[] { connectedUserId }, sqlDataSource);
-
             string requete = @"
                                 UPDATE dbo.AspNetUsers SET FamilleInviteId = NULL
                                 WHERE Id = '" + connectedUserId + "'";
