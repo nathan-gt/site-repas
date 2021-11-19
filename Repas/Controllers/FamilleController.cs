@@ -99,14 +99,37 @@ namespace SiteSiteRepas.Controllers
             return new JsonResult(table);
         }
 
+        /// <summary>
+        /// Crée une famille avec familleNom et attribue le user connecté à celle-ci, si user n'a pas de famille
+        /// </summary>
+        /// <param name="familleNom"></param>
+        /// <returns></returns>
         [HttpPost]
-        public JsonResult Post(Famille famile)
+        public IActionResult Post(string familleNom)
         {
-            string requete = @"
-                            insert into dbo.Familles (Nom) values
-                             ('" + famile.Nom + @"')";
-            DataTable table = new DataTable();
+            if (string.IsNullOrEmpty(familleNom)) {
+                return BadRequest();
+            }
+
+            string connectedUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (connectedUserId == null) {
+                return Unauthorized();
+            }
+
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            DataTable infoUsers = GetInfoUsers(new string[] { connectedUserId }, sqlDataSource);
+
+            if (infoUsers.Rows.Find(connectedUserId).Field<int?>("FamilleId") != null) { // User a déjà une famille
+                return Unauthorized();
+            }
+
+            string requete = @"
+                            INSERT INTO dbo.Familles (Nom) VALUES ('" + familleNom + @"');
+                            UPDATE dbo.AspNetUsers 
+                            SET IsAdminFamille = 1, FamilleId = (SCOPE_IDENTITY())
+                            WHERE Id = '" + connectedUserId + "';";
+            DataTable table = new DataTable();
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
                 myCon.Open();
@@ -118,13 +141,13 @@ namespace SiteSiteRepas.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Famille ajouté avec succès.");
+            return new JsonResult("Famille ajoutée avec succès.");
         }
 
         //Méthode pour mettre à jour une famille dans la base de données 
         //à l'aide d'un HTTP POST
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         public JsonResult PostModif(Famille famille)
         {
             string requete = @"
@@ -144,7 +167,7 @@ namespace SiteSiteRepas.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Famille modifié avec succès.");
+            return new JsonResult("Famille supprimée avec succès");
         }
 
 
@@ -160,35 +183,33 @@ namespace SiteSiteRepas.Controllers
 
             if (connectedUserId == id) { // User requesting to leave their own family
                 requete = @"
-                         UPDATE dbo.Users
-                         SET IdFamille = NULL
-                         WHERE Id = " + id;
+                         UPDATE AspNetUsers
+                         SET FamilleId = NULL, IsAdminFamille = 0
+                         WHERE Id = '" + id + "'";
             }
             else { // the admin of the family is the one requesting
                 DataTable infoUsers = GetInfoUsers(new string[]{connectedUserId , id }, _configuration.GetConnectionString("DefaultConnection"));
+
                 if(infoUsers.Rows.Count < 2) {
                     return NotFound();
                 }
 
-                var penis = infoUsers.Rows.Find(connectedUserId).Field<bool>("IsAdminFamille");
-                var kfkf = infoUsers.Rows.Find(connectedUserId).Field<Famille>("FamilleId");
-                var irfkifr = infoUsers.Rows.Find(id).Field<Famille>("FamilleId");
-                // if (infoUsers.Rows.Find(connectedUserId).Field<bool>("IsAdminFamille") &&
-                //    infoUsers.Rows.Find(connectedUserId).Field<Famille>("FamilleId") == 
-                //    infoUsers.Rows.Find(id).Field<Famille>("FamilleId")) {
+                bool isAdmin = infoUsers.Rows.Find(connectedUserId).Field<bool>("IsAdminFamille");
+                int familleId_A = infoUsers.Rows.Find(connectedUserId).Field<int>("FamilleId");
+                int familleId_B = infoUsers.Rows.Find(id).Field<int>("FamilleId");
 
-                // }
-                //else {
-                //    return Unauthorized();
-                //}
-
-                requete = @"
-                         UPDATE dbo.Users
-                         SET IdFamille = NULL
-                         WHERE Id = " + id;
+                if (isAdmin && familleId_A == familleId_B) {
+                    requete = @"
+                         UPDATE AspNetUsers
+                         SET FamilleId = NULL
+                         WHERE Id = '" + id + "'";
+                }
+                else {
+                    return NoContent();
+                }
             }
 
-            
+
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -202,17 +223,20 @@ namespace SiteSiteRepas.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Famille modifié avec succès.");
+            return new JsonResult("Famille modifiée avec succès.");
         }
 
         //Méthode pour supprimer des données dans la base de données
         //à l'aide d'un HTTP DELETE
 
         [HttpDelete]
-        public JsonResult Delete(Famille famille)
+        public JsonResult Delete(int familleId)
         {
             string requete = @"
-                            delete from dbo.Familles where id = " + famille.Id;
+                            UPDATE dbo.AspNetUsers 
+                            SET FamilleId = NULL, FamilleInviteId = NULL 
+                            WHERE FamilleId = "+ familleId +  @";  
+                            DELETE FROM dbo.Familles WHERE id = " + familleId + ";";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -226,7 +250,8 @@ namespace SiteSiteRepas.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Famille supprimé avec succès");
+            return new JsonResult("Famille supprimée avec succès");
         }
+
     }
 }
