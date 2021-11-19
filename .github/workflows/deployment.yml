@@ -27,7 +27,7 @@ jobs:
           $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
           $JSON.ConnectionStrings.DefaultConnection = '${{ secrets.CONNECTION_STRING }}';
           $key = [ordered]@{key=@{Type="File";FilePath="./certificate.pfx";Password="localhost"}};
-          $JSON.IdentityServer | Add-Member -NotePropertyMembers $key;
+          $JSON.IdentityServer | Add-Member -NotePropertyMembers $key -Force;
           ConvertTo-Json $json | Out-File appsettings.json;
           del appsettings.Development.json
       
