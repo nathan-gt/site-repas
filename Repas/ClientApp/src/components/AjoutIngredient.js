@@ -11,30 +11,11 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
 
     LOCAL_STORAGE_KEY = String(listeIngredients['Id']);
 
+    // Liste des ingrédients de la famille du user.
     const tabIngrFamille = [];
 
-    const tabIngr = [
-        "Farine",
-        "Jambon",
-        "Tomate",
-        "Laitue",
-        "Sucre",
-        "Sel",
-        "Boeuf",
-        "Poulet",
-        "Riz",
-        "Pâtes",
-        "Oignons",
-        "Paprika",
-        "Poivre",
-        "Persil",
-        "Coriande",
-        "Oeufs",
-        "Beurre",
-        "Huile",
-        "Lait"
-    ];
-
+    // Requête pour récupérer les ingrédients de la famille
+    // dans le but de templir l'autocomplete.
     fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient',
     {
         method: "GET",
@@ -42,12 +23,12 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
     })
     .then((res) => res.json())
     .then((data) => {
-        console.log(data);
-
-        data.array.forEach(ingredient => {
-            /*if (ingredient.IdFamille == idFamille) {
+        // Tri des ingredients en fonction du d'identifiant
+        // de la famille 
+        data.forEach(ingredient => {
+            if (ingredient.IdFamille == idFamille) {
                 tabIngrFamille.push(ingredient.Nom)
-            }*/
+            }
         });
     })
     .catch(err => console.log(err))
