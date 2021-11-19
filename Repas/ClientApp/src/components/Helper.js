@@ -3,7 +3,7 @@ import authService from './api-authorization/AuthorizeService';
 export function getFamilleId(){
     authService.getUser()
     .then((user) => {
-        if(user){
+        if(user && user.sub){
             fetch(process.env.REACT_APP_BASE_URL + '/api/famille/byUserId/' + user.sub,
             {
                 method: "get",
@@ -13,7 +13,10 @@ export function getFamilleId(){
             })
             .then((res) =>res.json())
             .then((data) => {
-            localStorage.setItem('familleId', parseInt(data[0].FamilleId));
+                if(data.length > 0)
+                {
+                    localStorage.setItem('familleId', parseInt(data[0].FamilleId));
+                }
             })
         }
     })

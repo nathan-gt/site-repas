@@ -184,9 +184,6 @@ ol li:before {
 /*****************************
 *   NOTE: AUTO COMPLETE
 *****************************/
-body {
-  font-family: sans-serif;
-}
 
 input {
   border: 1px solid #999;
