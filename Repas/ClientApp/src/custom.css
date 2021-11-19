@@ -173,6 +173,7 @@ ol li:before {
 
 .max-w {
   margin: auto;
+  margin-bottom: 0%;
   max-width: 60%;
 }
 
@@ -202,11 +203,11 @@ input {
   border: 1px solid #999;
   border-top-width: 0;
   list-style: none;
-  margin-top: 0;
+  margin-top: -15px;
   max-height: 143px;
   overflow-y: auto;
   padding-left: 0;
-  width: calc(300px + 1rem);
+  width: 88%;
 }
 
 .suggestions li {
@@ -215,8 +216,8 @@ input {
 
 .suggestion-active,
 .suggestions li:hover {
-  background-color: #008f68;
-  color: #fae042;
+  background-color: #ebe6e1;
+  color: black;
   cursor: pointer;
   font-weight: 700;
 }

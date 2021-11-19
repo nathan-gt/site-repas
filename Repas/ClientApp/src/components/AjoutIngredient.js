@@ -7,11 +7,13 @@ import "../custom.css";
 // Clé pour le local storage des ingrédients
 var LOCAL_STORAGE_KEY = null;
 
-export default function AjoutIngredient({ listeIngredients }) {
+export default function AjoutIngredient({ listeIngredients, idFamille }) {
 
     LOCAL_STORAGE_KEY = String(listeIngredients['Id']);
 
-    const tabIngrFamille = [
+    const tabIngrFamille = [];
+
+    const tabIngr = [
         "Farine",
         "Jambon",
         "Tomate",
@@ -33,8 +35,22 @@ export default function AjoutIngredient({ listeIngredients }) {
         "Lait"
     ];
 
-    // Récupération du nom de l'ingrédient (input text)
-    const refNomIngredient = useRef()
+    fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient',
+    {
+        method: "GET",
+        dataType: 'JSON',
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+
+        data.array.forEach(ingredient => {
+            /*if (ingredient.IdFamille == idFamille) {
+                tabIngrFamille.push(ingredient.Nom)
+            }*/
+        });
+    })
+    .catch(err => console.log(err))
 
     // Création d'une liste d'ingrédients fictive
     const [ingredients, setIngredients] = useState(listeIngredients['LesIngredients'])

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import AjoutIngredient from './AjoutIngredient';
-import $, { data } from "jquery";
+import $ from "jquery";
 
 export class DetailPlat extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: 'none'};
-    
+        this.state = {
+            value: 'none',
+            IdFamille: 0
+        };
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -53,14 +55,11 @@ export class DetailPlat extends Component {
         .then((data) => {
             // Parcours des plats pour retrouver celui qu'on veut afficher
             data.forEach(plat => {
-                if (plat['Id'] == GET_ID_PLAT)
-                {
+                if (plat['Id'] == GET_ID_PLAT) {
                     // Modifier le titre du plat dans la page
                     $("#titre-plat").text(plat['Nom']);
                     this.state = {value: plat['Categorie']};
-
-                    console.log("ID du plat à afficher " + plat['Id']);
-                    console.log(plat);
+                    this.state = {IdFamille: plat['IdFamille']}
                 }
             });
         });
@@ -87,7 +86,7 @@ export class DetailPlat extends Component {
                         <option value="vegetalien">Végétalien</option>
                     </select><br /><br />
 
-                    <AjoutIngredient listeIngredients={ this.envoyerIngredients() } />
+                    <AjoutIngredient listeIngredients={ this.envoyerIngredients() } ifFamille={this.state.IdFamille}/>
                 </div>
             </div>
         )
