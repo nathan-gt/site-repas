@@ -173,7 +173,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Nom\" : \"Test\",\r\n    \"Categorie\" : \"Test\",\r\n    \"Disponible\" : 1\r\n}",
+					"raw": "{\r\n    \"Nom\" : \"Test\",\r\n    \"Categorie\" : \"Test\",\r\n    \"Disponible\" : 1,\r\n    \"FamilleId\" : 1,\r\n    \"UnRepasId\" : 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -190,6 +190,36 @@
 					"path": [
 						"api",
 						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modification disponibilité ingrédient pour épicerie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\" : 5,\r\n    \"Disponible\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/jointure/id",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"jointure",
+						"id"
 					]
 				}
 			},
