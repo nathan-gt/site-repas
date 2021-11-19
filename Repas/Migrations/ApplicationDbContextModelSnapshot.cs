@@ -470,7 +470,8 @@ namespace SiteSiteRepas.Migrations
 
                     b.HasOne("SiteRepas.Models.Famille", "FamilleInvite")
                         .WithMany()
-                        .HasForeignKey("FamilleInviteId");
+                        .HasForeignKey("FamilleInviteId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Famille");
 

@@ -125,13 +125,13 @@ namespace SiteSiteRepas.Migrations
                         column: x => x.FamilleId,
                         principalTable: "Familles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_AspNetUsers_Familles_FamilleInviteId",
                         column: x => x.FamilleInviteId,
                         principalTable: "Familles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(

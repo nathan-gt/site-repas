@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace SiteRepas.Models
         /// <summary>
         /// famille associé au compte
         /// </summary>
+        [ForeignKey("FamilleId")]
         public Famille Famille { get; set; }
 
         /// <summary>

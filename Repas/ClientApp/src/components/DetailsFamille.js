@@ -48,13 +48,13 @@ export class DetailsFamille extends Component {
             admin = (member.IsAdminFamille ? "Admin" : "");
             btn = (isAdmin && !member.IsAdminFamille ? '' : "");
             btn = (isAdmin && !member.IsAdminFamille ? 
-                "<td class='w-25'><button id='"+ member.Id +"' value='" + member.Id + "' class='x-button'>&#x2715</button></td>" : "");
+                "<button id='"+ member.Id +"' value='" + member.Id + "' class='x-button'>&#x2715</button>" : "");
             $("#body").append(
                 $(`
                 <tr>
                     <td style=text-align:center; >${member.Username}</td>
                     <td style=line-height: 309px; class="admin-text">${admin}</td>
-                    ${btn}
+                    <td class='w-25'>${btn}</td>
                 </tr>
                 `)
             );
@@ -76,7 +76,6 @@ export class DetailsFamille extends Component {
     
     componentDidMount(){
 
-        let isAdmin = false
         authService.getUser()
         .then((user) => {
             fetch(process.env.REACT_APP_BASE_URL + '/api/famille/byUserId/' + user.sub,
@@ -116,27 +115,25 @@ export class DetailsFamille extends Component {
     render(){
         return (
             <div>
-                <div class ="lead" style={{display : "none"}} id="hasFamily">
-                    <h1 id="titreFamille" class="display-3"></h1> <br />
-                    <table class="table table-dark">
+                <div className ="lead" style={{display : "none"}} id="hasFamily">
+                    <h1 id="titreFamille" className = "display-3"></h1> <br />
+                    <table className = "table table-dark">
                       <tbody id="body"></tbody>
                     </table>
                     <div id="detailsFamille-buttons">
-                        <button class="btn btn-success">Ajouter un membre</button>
-                        <button id="btn-leave" class="btn btn-danger">Quitter la famille</button>
+                        <button className="btn btn-success">Ajouter un membre</button>
+                        <button id="btn-leave" className = "btn btn-danger">Quitter la famille</button>
                     </div>
                 </div>
-                <div class ="lead" style={{display : "none"}} id="noFamily">
-                    <h1 class="display-3">Vous n'avez pas de famille</h1>
+                <div className ="lead" style={{display : "none"}} id="noFamily">
+                    <h1 className = "display-3">Vous n'avez pas de famille</h1>
                     Vous n'avez pas encore de famille, attendez de recevoir 
                     une invitation pour en rejoindre une ou bien créez-en une en 
                     cliquant le bouton "Créer une famille". <br /><br />
                     <h5 >Votre invitation:</h5>
                     <div id="invites">
-                        <table class="table">
-                            <tbody>
-                                <tbody id="body-noFamily"></tbody>
-                            </tbody>
+                        <table className="table">
+                            <tbody id="body-noFamily"></tbody>
                         </table>
                     </div>
                     <CreerFamille></CreerFamille>
