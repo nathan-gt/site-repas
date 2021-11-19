@@ -279,6 +279,12 @@ namespace SiteSiteRepas.Migrations
                     b.Property<int?>("FamilleId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FamilleInviteId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAdminFamille")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -316,6 +322,8 @@ namespace SiteSiteRepas.Migrations
 
                     b.HasIndex("FamilleId");
 
+                    b.HasIndex("FamilleInviteId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -335,7 +343,6 @@ namespace SiteSiteRepas.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -356,24 +363,20 @@ namespace SiteSiteRepas.Migrations
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("FamilleId")
+                    b.Property<int>("FamilleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("UnRepasId")
+                    b.Property<int>("UnRepasId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FamilleId");
-
                     b.HasIndex("Nom")
-                        .IsUnique();
-
-                    b.HasIndex("UnRepasId");
+                        .IsUnique()
+                        .HasFilter("[Nom] IS NOT NULL");
 
                     b.ToTable("Ingredients");
                 });
@@ -391,18 +394,33 @@ namespace SiteSiteRepas.Migrations
                     b.Property<DateTime>("DateCalendrier")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("FamilleId")
+                    b.Property<int>("IdFamille")
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FamilleId");
-
                     b.ToTable("Repas");
+                });
+
+            modelBuilder.Entity("SiteSiteRepas.Models.JointureRepasIngredients", b =>
+                {
+                    b.Property<int>("IdJointure")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("FK_IdIngredient")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FK_IdRepas")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdJointure");
+
+                    b.ToTable("JointureRepasIngredients");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -458,41 +476,17 @@ namespace SiteSiteRepas.Migrations
 
             modelBuilder.Entity("SiteRepas.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("SiteRepas.Models.Famille", null)
-                        .WithMany("utilisateurs")
-                        .HasForeignKey("FamilleId");
-                });
-
-            modelBuilder.Entity("SiteRepas.Models.Ingredient", b =>
-                {
-                    b.HasOne("SiteRepas.Models.Famille", null)
-                        .WithMany("Ingredients")
+                    b.HasOne("SiteRepas.Models.Famille", "Famille")
+                        .WithMany()
                         .HasForeignKey("FamilleId");
 
-                    b.HasOne("SiteRepas.Models.UnRepas", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("UnRepasId");
-                });
+                    b.HasOne("SiteRepas.Models.Famille", "FamilleInvite")
+                        .WithMany()
+                        .HasForeignKey("FamilleInviteId");
 
-            modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
-                {
-                    b.HasOne("SiteRepas.Models.Famille", null)
-                        .WithMany("DesRepas")
-                        .HasForeignKey("FamilleId");
-                });
+                    b.Navigation("Famille");
 
-            modelBuilder.Entity("SiteRepas.Models.Famille", b =>
-                {
-                    b.Navigation("DesRepas");
-
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("utilisateurs");
-                });
-
-            modelBuilder.Entity("SiteRepas.Models.UnRepas", b =>
-                {
-                    b.Navigation("Ingredients");
+                    b.Navigation("FamilleInvite");
                 });
 #pragma warning restore 612, 618
         }

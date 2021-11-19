@@ -42,3 +42,222 @@ code {
 .fc-daygrid-event-dot{
   display: none;
 }
+
+.selectCategorie{
+  margin-right: 135px;
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 1200px){
+  #categorie{
+    width:120px;
+    margin-left: 0px !important;
+  }
+
+  #searchText{
+    width: 150px;
+  }
+}
+
+@media only screen and (max-width: 1000px){
+  #external-events{
+    width: 200px !important;
+    margin-left: 125px !important;
+    height: 500px !important;
+  }
+}
+
+@media only screen and (max-width: 765px){
+  .selectCategorie{
+    margin-right: 125px;
+    margin-left: 15px;
+  }
+}
+
+#search{
+  margin-top: 4px;
+  margin-left: 2px;
+}
+
+#categorie{
+  width:120px;
+  margin-left: 4px;
+}
+
+#foot{
+  margin-top: 25px;
+}
+
+/*** DÉTAILS D'UN PLAT ***/
+
+
+
+
+
+/*****************************
+*   NOTE: DÉTAILS D'UN PLAT
+*****************************/
+ol {
+  counter-reset: li; 
+  list-style: none; 
+  padding: 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+ol li {
+  position: relative;
+  display: block;
+  padding: .4em .4em .4em 2em;
+  margin: .5em 0;
+  background: #ebe6e1;
+  color: #444;
+  font-size: large;
+  border-radius: .3em;
+  transition: .3s ease-out;
+}
+
+ol li:before {
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  left: -1.3em;
+  top: 50%;
+  margin-top: -1.3em;
+  background: #4484a8;
+  height: 2em;
+  width: 2em;
+  border: .3em solid white;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 2em;
+  transition: all .3s ease-out;
+  color: white;
+}
+
+#details-plat {
+  margin-bottom: 100px;
+}
+
+.aj-ingredient {
+  display: inline;
+  width:max-content;
+  margin: 1em 0em 1em 1em;
+}
+
+.admin-text
+{
+  color:rgba(255, 255, 255, 0.5); 
+  font-style: italic;
+}
+
+.delete-buttons {
+  display: none;
+}
+
+.table td {
+  min-width: 100px;
+}
+
+.x-button {
+  color:red;
+  background-color: transparent;
+  border-style: none;
+  font-size:x-large;
+
+  padding-right: 40px;
+}
+
+.input {
+  display: inline;
+}
+
+.max-w {
+  margin: auto;
+  margin-bottom: 0%;
+  max-width: 60%;
+}
+
+
+
+
+
+/*****************************
+*   NOTE: AUTO COMPLETE
+*****************************/
+
+input {
+  border: 1px solid #999;
+  padding: 0.5rem;
+  width: 300px;
+}
+
+.no-suggestions {
+  color: #999;
+  padding: 0.5rem;
+}
+
+.suggestions {
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  margin-top: -15px;
+  max-height: 143px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: 88%;
+}
+
+.suggestions li {
+  padding: 0.5rem;
+}
+
+.suggestion-active,
+.suggestions li:hover {
+  background-color: #ebe6e1;
+  color: black;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+}
+
+#detailsFamille-buttons {
+  display: flex;
+  gap: 25px;
+}
+
+.modal {
+  font-size: 12px;
+}
+.modal > .header {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+}
+.modal > .content {
+  width: 100%;
+  padding: 10px 5px;
+}
+.modal > .actions {
+  width: 100%;
+  padding: 10px 5px;
+  margin: auto;
+  text-align: center;
+}
+.modal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}

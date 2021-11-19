@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SiteRepas.Models
 {
@@ -21,18 +22,13 @@ namespace SiteRepas.Models
         public string Nom { get; set; }
 
         /// <summary>
+        /// Admin de la famille
+        /// </summary>
+        /// public ApplicationUser Admin { get; set; }
+
+        /// <summary>
         /// Liste d'utilisateurs dans une famille
         /// </summary>
-        public ICollection<ApplicationUser> utilisateurs { get; set;}
-
-        /// <summary>
-        /// Liste d'ingrédients dans une famille
-        /// </summary>
-        public ICollection<Ingredient> Ingredients { get; set;}
-
-        /// <summary>
-        /// Liste de repas dans une famille
-        /// </summary>
-        public ICollection<UnRepas> DesRepas { get; set;}
+        //public ICollection<ApplicationUser> utilisateurs { get; set;}
     }
 }

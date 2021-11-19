@@ -8,16 +8,15 @@ import Alert from "sweetalert2";
 import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
-import $, { data } from "jquery";
-import { Tab } from "bootstrap";
+import $, { data, get } from "jquery";
 
+export class Calendar extends Component {
 
-export class Calendar extends React.Component {
-  
   calendarRef = React.createRef()
-  
+
   // Get élément dans la base de donnée repas
   componentWillMount(){
+    
     fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
     {
         method: "get",
@@ -33,26 +32,24 @@ export class Calendar extends React.Component {
       this.setState({repasList})
 
       repasList.forEach(element =>{
-        var tag = document.createElement("div");
-        tag.classList.add("fc-event");
-        tag.title = element.Nom;
-        var text = document.createTextNode(element.Nom);
-        tag.appendChild(text);
-        var elements = document.getElementById("external-events");
-        elements.appendChild(tag);
-
-        if(!element.DateCalendrier.toString().startsWith("0")){
-          const api = this.calendarRef.current.getApi();
-          api.addEvent({
-              id: element.Id,
-              title: element.Nom,
-              start: element.DateCalendrier,
-              display: 'block'
-          });
+        if(element.IdFamille == localStorage.getItem('familleId')){
+          if(element.DateCalendrier.toString().startsWith("0")){
+            addExternal(element.Id, element.Nom, element.Categorie);
+          }else{
+            const api = this.calendarRef.current.getApi();
+            api.addEvent({
+                id: element.Id,
+                title: element.Nom,
+                start: element.DateCalendrier,
+                classNames: element.Categorie,
+                display: 'block'
+            });
+          }
         }
       });
     })
     .catch(err => console.log(err))
+    
   }
   
   // Ajout de valeur hardcodé
@@ -64,7 +61,7 @@ export class Calendar extends React.Component {
   /**
    * Ajout du draggable avec javascript
    */
-  componentDidMount() {
+   componentDidMount() {
     let draggableEl = document.getElementById("external-events");
     new Draggable(draggableEl, {
       itemSelector: ".fc-event",
@@ -73,7 +70,8 @@ export class Calendar extends React.Component {
         let id = eventEl.getAttribute("data");
         return {
           title: title,
-          id: id
+          id: id,
+          classNames: eventEl.id
         };
       }
     });
@@ -96,13 +94,14 @@ export class Calendar extends React.Component {
         `</strong></td>
       </tr>
       <tr >
-      <td>Ingredients</td>
-        <td>
-        </td>
+      <td>Catégorie</td>
+        <td>` +
+        eventClick.event.classNames +
+        `</td>
       </tr>
       </tbody>
       </table>
-      <a href="` +process.env.REACT_APP_BASE_URL+ `/plat">Détail du repas</a>
+      <a href="` +process.env.REACT_APP_BASE_URL+ `/plat/` + eventClick.event.id +`">Détail du repas</a>
       </div>`,
 
       showCancelButton: true,
@@ -130,14 +129,15 @@ export class Calendar extends React.Component {
 // Liste de repas à gauche et calendrier
   render() {
     return (
-      <div className="animated fadeIn p-4 demo-app">
+      <div className="animated fadeIn p-4 demo-app lstRepas">
         <Row>
           <Col lg={3} sm={3} md={3}>
+            <div id="side">
             <div
               id="external-events"
               style={{
-                padding: "10px",
-                width: "80%",
+                padding: "8px",
+                width: "85%",
                 height: "auto",
                 maxHeight: "-webkit-fill-available",
               }}
@@ -145,7 +145,24 @@ export class Calendar extends React.Component {
               <p align="center">
                 <strong> Liste de repas</strong>
               </p>
-              <a class="fc font-weight-bold" onClick={addRepas}>Ajouter un repas</a>
+              <a className="fc font-weight-bold mb-3" onClick={addRepas}>Ajouter un repas</a>
+
+              <div className="d-flex">
+                <input type="text" size="21" className="mb-2" placeholder="Rechercher" id="searchText"/>
+              </div>
+
+              <label htmlFor="categorie">Catégorie:</label>
+              <select className="form-select mb-3" name="categorie" id="categorie">
+                <option value="None"></option>
+                <option value="Végétarien">Végétarien</option>
+                <option value="Végétalien">Végétalien</option>
+                <option value="Américain">Américain</option>
+                <option value="Italien">Italien</option>
+                <option value="Méxicain">Méxicain</option>
+                <option value="Asiatique">Asiatique</option>
+                <option value="Libanais">Libanais</option>
+                <option value="Fruits de mer">Fruits de mer</option>
+              </select>
               {this.state.events.map(event => (
                 <div
                   className="fc-event"
@@ -157,18 +174,11 @@ export class Calendar extends React.Component {
                 </div>
               ))}
             </div>
-            
+            </div>
           </Col>
           <Col lg={9} sm={9} md={9}>
             <div>
               <FullCalendar
-                id="calendar"
-                defaultView="dayGridMonth"
-                header={{
-                  left: "prev,next today",
-                  center: "title",
-                  right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek"
-                }}
                 rerenderDelay={10}
                 eventDurationEditable={false}
                 editable={true}
@@ -178,34 +188,18 @@ export class Calendar extends React.Component {
                 weekends={this.state.calendarWeekends}
                 events={this.state.calendarEvents}
                 eventDrop={function(info){
-
                   // Ajout du repas à la base de donnée
-                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
-                    method: 'DELETE',
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({Id: info.event.id})
-                  });
-
-                  // Ajout du repas à la base de donnée
-                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + info.event.id, {
                     method: 'POST',
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({Nom: info.event.title, Categorie: 'None', DateCalendrier:info.event.start})
+                    body: JSON.stringify({Id: info.event.id, Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start})
                   });
-
-                  var events = this.getEvents();
-                  var calendarApi = this;
-                  setTimeout(function(){refreshBD(info, events, calendarApi, true)},100);
                 }}
                 drop={this.drop}
                 eventReceive={function(info){
-
                   // Ajout du repas à la base de donnée
                   fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
                     method: 'POST',
@@ -213,12 +207,12 @@ export class Calendar extends React.Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({Nom: info.event.title, Categorie: 'None', DateCalendrier:info.event.start})
+                    body: JSON.stringify({Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start, IdFamille: localStorage.getItem('familleId')})
                   });
 
                   var events = this.getEvents();
                   var calendarApi = this;
-                  setTimeout(function(){refreshBD(info, events, calendarApi, false)},100);
+                  setTimeout(function(){refreshBD(info, events, calendarApi)},100);
 
                 }}
                 eventClick={this.eventClick}
@@ -227,6 +221,7 @@ export class Calendar extends React.Component {
             </div>
           </Col>
         </Row>
+        <div id="foot"></div>
       </div>
     );
   }
@@ -236,47 +231,107 @@ export class Calendar extends React.Component {
 function addRepas() {
   Alert.fire({
     title: 'Ajouter un repas',
-    input: 'text',
-    inputAttributes: {
-      autocapitalize: 'on'
-    },
-    showCancelButton: true,
-    confirmButtonText: 'Ajouter',
-    cancelButtonText: 'Annuler',
-    closeOnConfirm: false,
-    showLoaderOnConfirm: true,
-  }).then((result) => {
-    if (result.value) {
-        var tag = document.createElement("div");
-        tag.classList.add("fc-event");
-        tag.title = result.value;
-        var text = document.createTextNode(result.value);
-        tag.appendChild(text);
-        var element = document.getElementById("external-events");
-        element.appendChild(tag);
-
-        // Ajout du repas à la base de donnée
-        fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+    html:
+      '<label htmlFor="swal-input1">Nom:</label>' +
+      '<input id="swal-input1" class="swal2-input"><br>' +
+      '<label htmlFor="swal-input2">Catégorie:</label>' +
+      '<select id="swal-input2" class="swal2-input selectCategorie">' +
+                '<option value="None"></option>' +
+                '<option value="Végétarien">Végétarien</option>' +
+                '<option value="Végétalien">Végétalien</option>' +
+                '<option value="Américain">Américain</option>' +
+                '<option value="Italien">Italien</option>' +
+                '<option value="Méxicain">Méxicain</option>' +
+                '<option value="Asiatique">Asiatique</option>' +
+                '<option value="Libanais">Libanais</option>' +
+                '<option value="Fruits de mer">Fruits de mer</option>' +
+      '</select>',
+      preConfirm: function () {
+        return new Promise(function (resolve) {
+          resolve([
+            $('#swal-input1').val(),
+            $('#swal-input2').val()
+          ])
+        })
+      },
+      inputAttributes: {
+        autocapitalize: 'on'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Ajouter',
+      cancelButtonText: 'Annuler',
+      }).then(function (result) {
+        if(result.value && result.value[0] !== ""){
+          // Ajout du repas à la base de donnée
+          fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({Nom: result.value, Categorie: 'None', DateCalendrier:'0001-01-01 00:00:00'})
-        });
-    }
-  })
+            body: JSON.stringify({Nom: result.value[0], Categorie: result.value[1], DateCalendrier:'0001-01-01 00:00:00', IdFamille: localStorage.getItem('familleId')})
+          });
+
+          setTimeout(function(){
+          fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+          {
+              method: "get",
+              dataType: 'json',
+          })
+          .then((res) => res.json())
+          .then((data) => {
+            addExternal(data[data.length-1].Id, result.value[0],result.value[1]);
+          })},100);
+
+          $("#searchText").val("");
+          $("#categorie").val("None");
+          $('#search').click();
+        }
+      }).catch()
 };
 
-function refreshBD(info, events, calendarApi, drag){
+function addExternal(id, nom, cat){
+  var event = document.createElement("div");
+  event.classList.add("external");
+  event.classList.add("mb-2");
 
-  if(!drag){
-    events[events.length - 1].remove();
-  }
+  var del = document.createElement("div");
+  del.classList.add("d-inline");
+  del.classList.add("bg-danger");
+  del.classList.add("mr-1");
+  del.classList.add("rounded");
+  del.classList.add("p-1");
+  del.classList.add("del");
+  del.id = id;
+  del.title = nom;
+
+  var x = document.createTextNode("X");
+  del.appendChild(x);
+
+  var tag = document.createElement("div");
+  tag.classList.add("d-inline")
+  tag.classList.add("fc-event");
+  tag.classList.add("p-1");
+  tag.title = nom;
+  tag.id = cat;
+
+  var text = document.createTextNode(nom);
+  tag.appendChild(text);
+
+  event.appendChild(del);
+  event.appendChild(tag);
+
+  var elements = document.getElementById("external-events");
+  elements.appendChild(event);
+}
+
+function refreshBD(info, events, calendarApi){
+
+  events[events.length - 1].remove();
 
   events.forEach(event => {
     if (String(event.start).slice(0,10) === String(info.event.start).slice(0,10)){
-        event.remove();
+      event.remove();
     }
   });
 
@@ -290,14 +345,134 @@ function refreshBD(info, events, calendarApi, drag){
     var date = String(info.event.start.toISOString()).slice(0,10);
 
     data.forEach(element =>{
-      if(String(element.DateCalendrier).slice(0,10) === date)
+      if(String(element.DateCalendrier).slice(0,10) === date && element.IdFamille == localStorage.getItem('familleId')){
         calendarApi.addEvent({
-            id: element.Id,
-            title: element.Nom,
-            start: date,
-            display: 'block'
+          id: element.Id,
+          title: element.Nom,
+          start: date,
+          classNames: element.Categorie,
+          display: 'block'
         });
+      }
     });
   })
-  
 }
+
+
+$( document ).ready(function() {
+
+  if ($(window).width() <= 995) {
+    $('#external-events').appendTo('#foot');
+  }else{
+    $('#external-events').appendTo('#side');
+  }
+
+  $( window ).resize(function() {
+    if ($(window).width() <= 995) {
+      $('#external-events').appendTo('#foot');
+    }else{
+      $('#external-events').appendTo('#side');
+    }
+  });
+
+  $(document).on("click", ".del", function () {
+    if (confirm("Êtes-vous certain de vouloir surprimmer le repas " + this.title.toLowerCase() + "?")){
+      // Suppresion du repas à la base de donnée
+      fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({Id: this.id})
+      });
+
+      $(this).parent().remove();
+    }
+  });
+
+  $(document).on("keyup", "#searchText", () => {
+    doSearch();
+  });
+
+  $(document).on("change", "#categorie", (event) => {
+    doSearch();
+  });
+
+  function doSearch(){
+    var value = $("#searchText").val();
+    value = value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    value = value.toLocaleLowerCase();
+    var select = $("#categorie").val();
+    $( ".external" ).remove();
+    if (value && select !== "None"){
+      fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+      {
+          method: "get",
+          dataType: 'json',
+      })
+      .then((res) => res.json())
+      .then((data) => { 
+        data.forEach(element => {
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
+            var nom = element.Nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nom = nom.toLowerCase()
+            if (nom.includes(value) && element.Categorie === select){
+              addExternal(element.Id, element.Nom, element.Categorie);
+            }
+          }
+          
+        });
+      })
+    }else if (select !== "None"){
+      fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+      {
+          method: "get",
+          dataType: 'json',
+      })
+      .then((res) => res.json())
+      .then((data) => { 
+        data.forEach(element => {
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
+            if (element.Categorie === select){
+              addExternal(element.Id, element.Nom, element.Categorie);
+            }
+          }
+        });
+      })
+    }else if (value){
+      fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+      {
+          method: "get",
+          dataType: 'json',
+      })
+      .then((res) => res.json())
+      .then((data) => { 
+        data.forEach(element => {
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
+            var nom = element.Nom.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            nom = nom.toLowerCase();
+            if (nom.includes(value)){
+              addExternal(element.Id, element.Nom, element.Categorie);
+            }
+          }
+        });
+      })
+    }else{
+      fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+      {
+          method: "get",
+          dataType: 'json',
+      })
+      .then((res) => res.json())
+      .then((data) => { 
+        data.forEach(element => {
+          if(element.DateCalendrier.toString().startsWith("0") && element.IdFamille == localStorage.getItem('familleId')){
+            addExternal(element.Id, element.Nom, element.Categorie);
+          }
+        });
+      })
+    }
+  }
+
+});

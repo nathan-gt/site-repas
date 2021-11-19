@@ -47,6 +47,7 @@ namespace SiteRepas
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
+
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
@@ -87,7 +88,7 @@ namespace SiteRepas
                 //app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 

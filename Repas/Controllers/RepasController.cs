@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using SiteRepas.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace SiteSiteRepas.Controllers
 {
@@ -27,15 +28,39 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Get()
         {
             string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, FamilleId from dbo.Repas";
+                            select Id, Nom, Categorie, DateCalendrier, IdFamille from dbo.Repas";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
-            using(SqlConnection myCon=new SqlConnection(sqlDataSource)) 
-            {
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
                 myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) 
-                {
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            return new JsonResult(table);
+        }
+
+        //Méthode pour l'obtention d'un repas à l'aide d'un HTTP GET
+        [HttpGet("{id}")]
+        public JsonResult GetUnRepas(int id)
+        {
+            string requete = @"
+                            select Id, Nom, Categorie, DateCalendrier, IdFamille 
+                            from dbo.Repas
+                            where Id = " + id;
+            
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader); ;
 
@@ -53,8 +78,8 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Post(UnRepas repas)
         {
             string requete = @"
-                            insert into dbo.Repas (Nom, Categorie, dateCalendrier) values
-                             ('" + repas.Nom + @"','"+repas.Categorie+@"','" + repas.DateCalendrier + @"')";
+                            insert into dbo.Repas (Nom, Categorie, dateCalendrier, IdFamille) values
+                             ('" + repas.Nom + @"','" + repas.Categorie + @"','" + repas.DateCalendrier + @"','" + repas.IdFamille + @"')";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -69,6 +94,32 @@ namespace SiteSiteRepas.Controllers
                 }
             }
             return new JsonResult("Repas ajouté avec succès.");
+        }
+
+        //Méthode pour mettre à jour un repas dans la base de données 
+        //à l'aide d'un HTTP POST
+
+        [HttpPost("{id}")]
+        public JsonResult PostModif(UnRepas repas)
+        {
+            string requete = @"
+                            UPDATE dbo.Repas
+                            SET Nom = '"+repas.Nom+@"', Categorie = '"+repas.Categorie+@"', DateCalendrier = '"+repas.DateCalendrier + @"'
+                            WHERE Id = " + repas.Id;
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Repas modifié avec succès.");
         }
 
         //Méthode pour supprimer des données dans la base de données
