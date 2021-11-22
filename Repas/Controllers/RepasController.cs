@@ -28,7 +28,7 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Get()
         {
             string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, IdFamille from dbo.Repas";
+                            select * from dbo.Repas";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -51,7 +51,7 @@ namespace SiteSiteRepas.Controllers
         public JsonResult GetUnRepas(int id)
         {
             string requete = @"
-                            select Id, Nom, Categorie, DateCalendrier, IdFamille 
+                            select *
                             from dbo.Repas
                             where Id = " + id;
             
@@ -78,8 +78,8 @@ namespace SiteSiteRepas.Controllers
         public JsonResult Post(UnRepas repas)
         {
             string requete = @"
-                            insert into dbo.Repas (Nom, Categorie, dateCalendrier, IdFamille) values
-                             ('" + repas.Nom + @"','" + repas.Categorie + @"','" + repas.DateCalendrier + @"','" + repas.IdFamille + @"')";
+                            insert into dbo.Repas (Nom, Categorie, dateCalendrier, IdFamille, Responsable) values
+                             ('" + repas.Nom + @"','" + repas.Categorie + @"','" + repas.DateCalendrier + @"','" + repas.IdFamille + @"','" + repas.Responsable + @"')";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -104,7 +104,7 @@ namespace SiteSiteRepas.Controllers
         {
             string requete = @"
                             UPDATE dbo.Repas
-                            SET Nom = '"+repas.Nom+@"', Categorie = '"+repas.Categorie+@"', DateCalendrier = '"+repas.DateCalendrier + @"'
+                            SET Nom = '"+repas.Nom+@"', Categorie = '"+repas.Categorie+@"', DateCalendrier = '"+repas.DateCalendrier + @"', Responsable = '"+repas.Responsable + @"'
                             WHERE Id = " + repas.Id;
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");

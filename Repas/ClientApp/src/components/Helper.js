@@ -4,6 +4,9 @@ export function getFamilleId(){
     authService.getUser()
     .then((user) => {
         if(user && user.sub){
+            
+            localStorage.setItem('currentUser', user.name);
+
             fetch(process.env.REACT_APP_BASE_URL + '/api/famille/byUserId/' + user.sub,
             {
                 method: "get",
@@ -16,7 +19,18 @@ export function getFamilleId(){
                 if(data.length > 0)
                 {
                     localStorage.setItem('familleId', parseInt(data[0].FamilleId));
+
+                    var userList = [];
+
+                    for(var i=0; i < data.length; i++){
+                        var userTempo = data[i].Username;
+                        userList.push(userTempo);
+                    }
+
+                    localStorage.setItem('familleUser', userList);
                 }
+
+                
             })
         }
     })
