@@ -47,19 +47,19 @@ export class LoginMenu extends Component {
     authenticatedView(userName, profilePath, logoutPath) {
         return (<Fragment>
             <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/calendar">Calendar</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/calendar">Calendrier</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/ListeEpicerie">Liste d'épicerie</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/ListeEpicerie">Liste d'ingrédients</NavLink>
             </NavItem>
             <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/DetailsFamille">Famille</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to={profilePath}>Hello {userName}</NavLink>
+                <NavLink tag={Link} className="text-dark" to={profilePath}>Bonjour  {userName}</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to={logoutPath}>Logout</NavLink>
+                <NavLink tag={Link} className="text-dark" to={logoutPath}>Déconnexion</NavLink>
             </NavItem>
         </Fragment>);
 
@@ -68,10 +68,10 @@ export class LoginMenu extends Component {
     anonymousView(registerPath, loginPath) {
         return (<Fragment>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to={registerPath}>Register</NavLink>
+                <NavLink tag={Link} className="text-dark" to={registerPath}>Se créer un compte</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink tag={Link} className="text-dark" to={loginPath}>Login</NavLink>
+                <NavLink tag={Link} className="text-dark" to={loginPath}>Connexion</NavLink>
             </NavItem>
         </Fragment>);
     }
