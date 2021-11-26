@@ -212,7 +212,6 @@ export class Calendar extends Component {
                   })
                   .then((res) => res.json())
                   .then((data) => { 
-                    console.log(data);
                     putRepas(data);
                   })
                   }
