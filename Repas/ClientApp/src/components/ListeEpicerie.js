@@ -50,8 +50,8 @@ export class ListeEpicerie extends Component {
     render(){
         return (
             <div id="PageListe" className="pageListeEpicerie">
-                <h1>Liste d'épicerie de la famille pour la semaine</h1> 
-                    <button onClick={addIngredient}>Ajouter un ingrédient à la liste d'épicerie</button>
+                <h1>Liste d'ingrédients de la famille</h1> 
+                    <button onClick={addIngredient}>Ajouter un ingrédient à la liste</button>
                     <div id="PDF">  
                         <div id="liste"
                             style={{
