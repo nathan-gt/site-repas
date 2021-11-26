@@ -9,6 +9,7 @@ import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 import $, { data, get } from "jquery";
+import Avatar from 'react-avatar';
 
 export class Calendar extends Component {
 
@@ -162,6 +163,7 @@ export class Calendar extends Component {
               <p align="center">
                 <strong> Liste de repas</strong>
               </p>
+              <Avatar name="Foo Bar" />
               <a className="fc font-weight-bold mb-3" onClick={addRepas}>Ajouter un repas</a>
 
               <div className="d-flex">
