@@ -35,5 +35,10 @@ namespace SiteRepas.Models
         /// Identifiant d'une famille reliée au repas
         /// </summary>
         public int IdFamille { get; set; }
+
+        /// <summary>
+        /// Responsable du repas
+        /// </summary>
+        public string Responsable { get; set; }
     }
 }

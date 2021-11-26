@@ -10,7 +10,7 @@ using SiteRepas.Data;
 namespace SiteSiteRepas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211119064003_InitialCreate")]
+    [Migration("20211125013659_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -400,6 +400,9 @@ namespace SiteSiteRepas.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Responsable")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

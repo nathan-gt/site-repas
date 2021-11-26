@@ -113,7 +113,8 @@ namespace SiteSiteRepas.Migrations
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Categorie = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateCalendrier = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdFamille = table.Column<int>(type: "int", nullable: false)
+                    IdFamille = table.Column<int>(type: "int", nullable: false),
+                    Responsable = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

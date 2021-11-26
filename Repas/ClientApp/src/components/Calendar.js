@@ -41,7 +41,7 @@ export class Calendar extends Component {
                 id: element.Id,
                 title: element.Nom,
                 start: element.DateCalendrier,
-                classNames: element.Categorie,
+                classNames: [element.Categorie, element.Id, element.Responsable],
                 display: 'block'
             });
           }
@@ -81,49 +81,66 @@ export class Calendar extends Component {
    * Gestion du click sur le repas 
    */
     eventClick = eventClick => {
-    Alert.fire({
-      title: eventClick.event.title,
-      html:
-        `<div class="table-responsive">
-      <table class="table">
-      <tbody>
-      <tr>
-      <td>Repas</td>
-      <td><strong>` +
-        eventClick.event.title +
-        `</strong></td>
-      </tr>
-      <tr >
-      <td>Catégorie</td>
-        <td>` +
-        eventClick.event.classNames +
-        `</td>
-      </tr>
-      </tbody>
-      </table>
-      <a href="` +process.env.REACT_APP_BASE_URL+ `/plat/` + eventClick.event.id +`">Détail du repas</a>
-      </div>`,
+      fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + eventClick.event.id,
+      {
+          method: "get",
+          dataType: 'json',
+      })
+      .then((res) => res.json())
+      .then((data) => { 
+        var options = "";
+        localStorage.getItem('familleUser').split(",").forEach(element => {
+          if (data[0].Responsable == element){
+            options += '<option value='+ element + ' selected>'+ element +'</option>'
+          }else{
+            options += '<option value='+ element + '>'+ element +'</option>'
+          }
+        })
+        Alert.fire({
+          title: eventClick.event.title,
+          html:
+            `<div class="table-responsive">
+          <table class="table">
+          <tbody>
+          <tr >
+          <td>Catégorie</td>
+            <td>` +
+              eventClick.event.classNames[0] +
+            `</td>
+          </tr>
+          <td>Responsable</td>
+            <td>
+            <select name="`+ eventClick.event.id +`" id="respo">` +
+              options +
+            `</select>
+            </td>
+          </tr>
+          </tbody>
+          </table>
+          <a href="` +process.env.REACT_APP_BASE_URL+ `/plat/` + eventClick.event.id +`">Détail du repas</a>
+          </div>`,
 
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Supprimer repas",
-      cancelButtonText: "Close"
-    }).then(result => {
-      if (result.value) {
-        // Suppresion du repas à la base de donnée
-        fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
-          method: 'DELETE',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({Id: eventClick.event.id})
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Supprimer repas",
+          cancelButtonText: "Close"
+        }).then(result => {
+          if (result.value) {
+            // Suppresion du repas à la base de donnée
+            fetch(process.env.REACT_APP_BASE_URL + '/api/repas', {
+              method: 'DELETE',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({Id: eventClick.event.id})
+            });
+            eventClick.event.remove(); // It will remove event from the calendar
+            Alert.fire("Supprimé!", "Le repas a été supprimé.", "success");
+          }
         });
-        eventClick.event.remove(); // It will remove event from the calendar
-        Alert.fire("Supprimé!", "Le repas a été supprimé.", "success");
-      }
-    });
+      })
   };
 
 // Liste de repas à gauche et calendrier
@@ -188,16 +205,18 @@ export class Calendar extends Component {
                 weekends={this.state.calendarWeekends}
                 events={this.state.calendarEvents}
                 eventDrop={function(info){
-                  // Ajout du repas à la base de donnée
-                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + info.event.id, {
-                    method: 'POST',
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({Id: info.event.id, Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start})
-                  });
-                }}
+                  fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + info.event.id,
+                  {
+                      method: "get",
+                      dataType: 'json',
+                  })
+                  .then((res) => res.json())
+                  .then((data) => { 
+                    console.log(data);
+                    putRepas(data);
+                  })
+                  }
+                }
                 drop={this.drop}
                 eventReceive={function(info){
                   // Ajout du repas à la base de donnée
@@ -207,7 +226,7 @@ export class Calendar extends Component {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start, IdFamille: localStorage.getItem('familleId')})
+                    body: JSON.stringify({Nom: info.event.title, Categorie: info.event.classNames[0], DateCalendrier:info.event.start, IdFamille: localStorage.getItem('familleId'), Responsable: localStorage.getItem('currentUser')})
                   });
 
                   var events = this.getEvents();
@@ -269,7 +288,7 @@ function addRepas() {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({Nom: result.value[0], Categorie: result.value[1], DateCalendrier:'0001-01-01 00:00:00', IdFamille: localStorage.getItem('familleId')})
+            body: JSON.stringify({Nom: result.value[0], Categorie: result.value[1], DateCalendrier:'0001-01-01 00:00:00', IdFamille: localStorage.getItem('familleId'), Responsable: localStorage.getItem('currentUser')})
           });
 
           setTimeout(function(){
@@ -325,6 +344,18 @@ function addExternal(id, nom, cat){
   elements.appendChild(event);
 }
 
+function putRepas(repas){
+  // Modif du repas à la base de donnée
+  fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + repas[0].Id, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({Id: repas[0].Id, Nom: repas[0].Nom, Categorie: repas[0].Categorie, DateCalendrier: repas[0].DateCalendrier, Responsable: repas[0].Responsable})
+  });
+}
+
 function refreshBD(info, events, calendarApi){
 
   events[events.length - 1].remove();
@@ -350,7 +381,7 @@ function refreshBD(info, events, calendarApi){
           id: element.Id,
           title: element.Nom,
           start: date,
-          classNames: element.Categorie,
+          classNames: [element.Categorie, element.Id, element.Responsable],
           display: 'block'
         });
       }
@@ -358,6 +389,33 @@ function refreshBD(info, events, calendarApi){
   })
 }
 
+$(document).on("change", "#respo", () => {
+  fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + $('#respo').attr('name'),
+  {
+      method: "get",
+      dataType: 'json',
+  })
+  .then((res) => res.json())
+  .then((data) => { 
+      changeResponsable(data);
+  })
+
+  function changeResponsable(repas){
+    fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + repas[0].Id, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({Id: repas[0].Id, Nom: repas[0].Nom, Categorie: repas[0].Categorie, DateCalendrier: repas[0].DateCalendrier, Responsable: $('#respo').val()})
+    });
+
+    var lastClass = $("."+$('#respo').attr('name')).attr('class').split(' ').pop();
+    $("."+$('#respo').attr('name')).removeClass(lastClass);
+    $("."+$('#respo').attr('name')).addClass($('#respo').val());
+  }
+
+});
 
 $( document ).ready(function() {
 
@@ -395,7 +453,7 @@ $( document ).ready(function() {
     doSearch();
   });
 
-  $(document).on("change", "#categorie", (event) => {
+  $(document).on("change", "#categorie", () => {
     doSearch();
   });
 
