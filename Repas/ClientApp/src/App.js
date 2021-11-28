@@ -13,7 +13,6 @@ import test from './components/test';
 
 import './custom.css'
 
-
 export default class App extends Component {
   static displayName = App.name;
   

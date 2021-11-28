@@ -26,10 +26,13 @@ jobs:
         run: >-
           $JSON = Get-Content -Raw -Path appsettings.json | ConvertFrom-Json;
           $JSON.ConnectionStrings.DefaultConnection = '${{ secrets.CONNECTION_STRING }}';
-          $key = [ordered]@{key=@{Type="File";FilePath="./certificate.pfx";Password="localhost"}};
-          $JSON.IdentityServer | Add-Member -NotePropertyMembers $key;
-          ConvertTo-Json $json | Out-File appsettings.json;
+
+          ConvertTo-Json -InputObject $json -Depth 6 | Out-File appsettings.json;
           del appsettings.Development.json
+        # $key = [ordered]@{key=@{Type="File";FilePath="./certificate.pfx";Password="localhost"}};
+        # $Repas = [ordered]@{Repas=@{AllowAccessTokensViaBrowser=$true;Profile="IdentityServerSPA"}};
+        # $JSON.IdentityServer | Add-Member -Force -NotePropertyMembers $key;
+        # $JSON.IdentityServer.Clients | Add-Member -Force -NotePropertyMembers $Repas;
       
       ## Replacing base server URL in .env of frontend react app
       - name: Replacing REACT_APP_BASE_URL .env
@@ -79,8 +82,8 @@ jobs:
 
       - name: Replace faulty .dll to build folder
         run: >-
-          del ${{env.DOTNET_ROOT}}/myapp/Newtonsoft.Json.dll
-          mv Newtonsoft.Json.dll ${{env.DOTNET_ROOT}}/myapp
+          del ${{env.DOTNET_ROOT}}/myapp/Newtonsoft.Json.dll;
+          mv Newtonsoft.Json.dll ${{env.DOTNET_ROOT}}/myapp;
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
