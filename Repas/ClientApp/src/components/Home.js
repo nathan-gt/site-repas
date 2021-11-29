@@ -14,6 +14,7 @@ export class Home extends Component {
         <ul>
           <li>Description générale du site web</li>
           <li>Insérer la vidéo de présentation ici</li>
+          
         </ul>
       </div>
     );
