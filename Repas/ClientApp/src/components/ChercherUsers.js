@@ -10,6 +10,28 @@ export default function ChercherMembre() {
     // utility functions
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const handleChange = (event) => {
+      if($(event.target).val().length > 2)
+      {
+        fetch(process.env.REACT_APP_BASE_URL + '/api/user?email=' + $(event.target).val(),
+          {
+              method: "get",
+              headers: new Headers({
+                  'Content-Type': 'application/json',
+              }),
+          })
+          .then((res) =>res.json())
+          .then((data) => {
+            if(data.status == 404)
+            {
+              $("#message").text("not found").css("color", "red");
+            }
+            else {
+              $("#message").text("");
+            }
+          });
+      }
+    };
     const handleSave = () => {
       const userNom = $('#userNom').val();
       authService.getAccessToken()
@@ -32,7 +54,7 @@ export default function ChercherMembre() {
               }
           });
       }) 
-    }
+    };
   
     return (
       <>
@@ -42,11 +64,11 @@ export default function ChercherMembre() {
   
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Créer Famille</Modal.Title>
+            <Modal.Title>Inviter membre</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <h3 className="display-6">Nom de l'utilisateur: </h3>
-            <input style={{fontSize : '20px'}} type="text" id="userNom"></input> <br />
+            <input style={{fontSize : '20px'}} type="text" id="userNom" onChange={handleChange}></input> <br />
             Note: Aucune invitation ne sera envoyé si l'utilisateur spécifié n'existe pas ou a déjà reçu une invitation 
             d'une autre famille ou de la vôtre.
             <p id="message"></p>

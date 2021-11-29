@@ -51,7 +51,7 @@ namespace SiteSiteRepas.Controllers
         }
 
         [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
             string requete = @"
                             SELECT *
@@ -71,10 +71,16 @@ namespace SiteSiteRepas.Controllers
                 }
             }
 
-            return new JsonResult(table);
+            if (table.Rows.Count == 0) {
+                return NotFound();
+            }
+            else {
+                return new JsonResult(table);
+            }
         }
 
-        //Retourne la famille+users d'un user GET
+         /// Retourne la famille+users d'un user GET
+         /// Retourne toujours http 200
         [HttpGet("byUserId/{id}")]
         public JsonResult GetFamilleOfUser(string id)
         {
@@ -198,14 +204,14 @@ namespace SiteSiteRepas.Controllers
                 int familleId_A = infoUsers.Rows.Find(connectedUserId).Field<int>("FamilleId");
                 int familleId_B = infoUsers.Rows.Find(id).Field<int>("FamilleId");
 
-                if (isAdmin && familleId_A == familleId_B) {
+                if (isAdmin && familleId_A == familleId_B) { // checks if connected user is admin of user's family
                     requete = @"
                          UPDATE AspNetUsers
                          SET FamilleId = NULL
                          WHERE Id = '" + id + "'";
                 }
                 else {
-                    return NoContent();
+                    return Unauthorized();
                 }
             }
 

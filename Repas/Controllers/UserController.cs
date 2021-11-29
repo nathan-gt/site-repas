@@ -28,6 +28,41 @@ namespace SiteSiteRepas.Controllers
         }
 
         /// <summary>
+        /// Get users
+        /// </summary>
+        /// <returns>Famille</returns>
+        [HttpGet]
+        public IActionResult GetUsers(string email)
+        {
+            string requete = @"
+                SELECT Id, FamilleId, Email, FamilleInviteId 
+                FROM dbo.AspNetUsers";
+            if(email != null) {
+                requete += " WHERE CHARINDEX('" + email.ToUpper() + "' , NormalizedEmail) > 0";
+            }
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader); ;
+
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+
+            if (table.Rows.Count == 0) {
+                return NotFound();
+            }
+            else {
+                return new JsonResult(table);
+            }
+        }
+
+        /// <summary>
         /// Gets invited famille of currently connected user
         /// </summary>
         /// <returns>Famille</returns>
