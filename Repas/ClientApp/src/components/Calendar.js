@@ -9,7 +9,6 @@ import "@fullcalendar/timegrid/main.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
 import $, { data, get } from "jquery";
-import Avatar from 'react-avatar';
 
 export class Calendar extends Component {
 
@@ -48,6 +47,8 @@ export class Calendar extends Component {
           }
         }
       });
+
+      genererRespo();
     })
     .catch(err => console.log(err))
     
@@ -163,7 +164,6 @@ export class Calendar extends Component {
               <p align="center">
                 <strong> Liste de repas</strong>
               </p>
-              <Avatar name="Foo Bar" />
               <a className="fc font-weight-bold mb-3" onClick={addRepas}>Ajouter un repas</a>
 
               <div className="d-flex">
@@ -214,7 +214,9 @@ export class Calendar extends Component {
                   })
                   .then((res) => res.json())
                   .then((data) => { 
-                    putRepas(data);
+                    var events = this.getEvents();
+                    var calendarApi = this;
+                    putRepas(data, info, events, data[0], calendarApi);
                   })
                   }
                 }
@@ -233,7 +235,6 @@ export class Calendar extends Component {
                   var events = this.getEvents();
                   var calendarApi = this;
                   setTimeout(function(){refreshBD(info, events, calendarApi)},100);
-
                 }}
                 eventClick={this.eventClick}
                 selectable={true}
@@ -345,7 +346,7 @@ function addExternal(id, nom, cat){
   elements.appendChild(event);
 }
 
-function putRepas(repas){
+function putRepas(repas, info, events, data, api){
   // Modif du repas à la base de donnée
   fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + repas[0].Id, {
     method: 'POST',
@@ -353,8 +354,25 @@ function putRepas(repas){
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({Id: repas[0].Id, Nom: repas[0].Nom, Categorie: repas[0].Categorie, DateCalendrier: repas[0].DateCalendrier, Responsable: repas[0].Responsable})
+    body: JSON.stringify({Id: repas[0].Id, Nom: repas[0].Nom, Categorie: repas[0].Categorie, DateCalendrier: info.event.start, Responsable: repas[0].Responsable})
   });
+
+  //Recherche de l'évènement
+  events.forEach(element => {
+    if (element.id == info.event.id){
+      element.remove();
+    }
+  });
+
+  api.addEvent({
+    id: data.Id,
+    title: data.Nom,
+    start: info.event.start,
+    classNames: [data.Categorie, data.Id, data.Responsable],
+    display: 'block'
+  });
+
+  genererRespo();
 }
 
 function refreshBD(info, events, calendarApi){
@@ -386,6 +404,8 @@ function refreshBD(info, events, calendarApi){
           display: 'block'
         });
       }
+
+      genererRespo();
     });
   })
 }
@@ -399,6 +419,7 @@ $(document).on("change", "#respo", () => {
   .then((res) => res.json())
   .then((data) => { 
       changeResponsable(data);
+      genererRespo();
   })
 
   function changeResponsable(repas){
@@ -535,3 +556,25 @@ $( document ).ready(function() {
   }
 
 });
+
+function genererRespo(){
+
+  var elements = document.getElementsByClassName('respoTag');
+     while(elements.length > 0){
+         elements[0].parentNode.removeChild(elements[0]);
+  }
+
+  $('.fc-daygrid-event').each(function() {
+    var responsable = $(this).attr('class').split(' ').pop();
+    responsable = responsable.replace(/@.*$/,"");
+    responsable = responsable.replace(/\./g,' ');
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    responsable = responsable.split(' ').map(capitalize).join(' ');
+
+    $(this).prepend('<span class="respoTag">'+responsable+'</span>');
+
+  });
+}
