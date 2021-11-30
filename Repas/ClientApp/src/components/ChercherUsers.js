@@ -1,39 +1,18 @@
 import React, { Component, Fragment, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import UserSuggest from './UserSuggest';
 import authService from './api-authorization/AuthorizeService';
 import $ from 'jquery';
 
 export default function ChercherMembre() {
     const [show, setShow] = useState(false);
-  
     // utility functions
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleChange = (event) => {
-      if($(event.target).val().length > 2)
-      {
-        fetch(process.env.REACT_APP_BASE_URL + '/api/user?email=' + $(event.target).val(),
-          {
-              method: "get",
-              headers: new Headers({
-                  'Content-Type': 'application/json',
-              }),
-          })
-          .then((res) =>res.json())
-          .then((data) => {
-            if(data.status == 404)
-            {
-              $("#message").text("not found").css("color", "red");
-            }
-            else {
-              $("#message").text("");
-            }
-          });
-      }
-    };
     const handleSave = () => {
-      const userNom = $('#userNom').val();
+    
+      const userNom = $("#inputValue").val();
       authService.getAccessToken()
       .then((token) => {
           fetch(process.env.REACT_APP_BASE_URL + '/api/user/invite/' + userNom,
@@ -48,9 +27,14 @@ export default function ChercherMembre() {
               if(res.ok) {
                   $("#message").text("Invitation envoyée!").css("color", "green");
               }
+              else if(res.status == "409") {
+                $("#message").text("L'utilisateur a déjà une invitation associée à son compte").css("color", "#Cbbf00");
+              }
+              else if(res.status == "404") {
+                $("#message").text("L'utilisateur n'existe pas").css("color", "red");
+              }
               else {
-                $("#message").text("Une erreur s'est produite lors de la demande!").css("color", "red");
-                throw new Error("Un problème est arrivé lors de la demande");
+                $("#message").text("Une erreur s'est produite lors de la demande").css("color", "red");
               }
           });
       }) 
@@ -68,10 +52,8 @@ export default function ChercherMembre() {
           </Modal.Header>
           <Modal.Body>
             <h3 className="display-6">Nom de l'utilisateur: </h3>
-            <input style={{fontSize : '20px'}} type="text" id="userNom" onChange={handleChange}></input> <br />
-            Note: Aucune invitation ne sera envoyé si l'utilisateur spécifié n'existe pas ou a déjà reçu une invitation 
-            d'une autre famille ou de la vôtre.
-            <p id="message"></p>
+            <UserSuggest></UserSuggest> <br />
+            <p style={{fontSize: "20px"}} id="message"></p>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>

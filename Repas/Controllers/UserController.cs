@@ -34,11 +34,17 @@ namespace SiteSiteRepas.Controllers
         [HttpGet]
         public IActionResult GetUsers(string email)
         {
-            string requete = @"
+            string requete = "";  
+            if(email != null) {
+                requete = @"
+                SELECT TOP 10 Id, FamilleId, Email, FamilleInviteId 
+                FROM dbo.AspNetUsers
+                WHERE CHARINDEX('" + email.ToUpper() + "' , NormalizedEmail) > 0";
+            }
+            else {
+                requete = @"
                 SELECT Id, FamilleId, Email, FamilleInviteId 
                 FROM dbo.AspNetUsers";
-            if(email != null) {
-                requete += " WHERE CHARINDEX('" + email.ToUpper() + "' , NormalizedEmail) > 0";
             }
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("DefaultConnection");
@@ -119,23 +125,38 @@ namespace SiteSiteRepas.Controllers
             if (idFamille == null) {
                 return BadRequest();
             }
+            string getUser = "SELECT Id FROM dbo.AspNetUsers WHERE Email = '" + nomUser + "'"; //check if user exists
 
             string requete = @"
                                 UPDATE dbo.AspNetUsers SET FamilleInviteId = " + idFamille + @"
-                                WHERE Username = '" + nomUser + "' AND FamilleInviteId is NULL";
+                                WHERE Email = '" + nomUser + @"' AND FamilleInviteId is NULL
+                                SELECT @@ROWCOUNT AS result";
             DataTable table = new DataTable();
             SqlDataReader myReader;
             using (SqlConnection myCon = new SqlConnection(sqlDataSource)) {
                 myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
-                    myReader = myCommand.ExecuteReader();
-                    table.Load(myReader); ;
-
-                    myReader.Close();
-                    myCon.Close();
+                using SqlCommand getUserCmd = new SqlCommand(getUser, myCon); 
+                myReader = getUserCmd.ExecuteReader();
+                table.Load(myReader);
+                if (table.Rows.Count == 0) { 
+                    return NotFound(); 
                 }
+                else {
+                    using SqlCommand updateUserCmd = new SqlCommand(requete, myCon);
+                    myReader = updateUserCmd.ExecuteReader();
+                    table = new DataTable();
+                    table.Load(myReader);
+                }
+
+                myReader.Close();
+                myCon.Close();
             }
-            return Ok();
+            if (table.Rows[0]["result"].ToString() == "0") {
+                return Conflict();
+            }
+            else {
+                return Ok();
+            }
         }
 
         /// <summary>

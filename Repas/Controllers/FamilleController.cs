@@ -64,7 +64,7 @@ namespace SiteSiteRepas.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(requete, myCon)) {
                     myReader = myCommand.ExecuteReader();
-                    table.Load(myReader); ;
+                    table.Load(myReader);
 
                     myReader.Close();
                     myCon.Close();
