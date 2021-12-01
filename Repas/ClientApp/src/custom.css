@@ -93,6 +93,10 @@ code {
   font-weight: bold;
 }
 
+.fc-today-button{
+  visibility: hidden;
+}
+
 /*** DÉTAILS D'UN PLAT ***/
 
 

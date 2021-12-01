@@ -126,7 +126,7 @@ export class Calendar extends Component {
           confirmButtonColor: "#d33",
           cancelButtonColor: "#3085d6",
           confirmButtonText: "Supprimer repas",
-          cancelButtonText: "Close"
+          cancelButtonText: "Annuler"
         }).then(result => {
           if (result.value) {
             // Suppresion du repas à la base de donnée
@@ -199,6 +199,8 @@ export class Calendar extends Component {
             <div>
               <FullCalendar
                 rerenderDelay={10}
+                locale= 'fr'
+                buttonText= { 'today'}
                 eventDurationEditable={false}
                 editable={true}
                 droppable={true}
@@ -439,6 +441,7 @@ $(document).on("change", "#respo", () => {
 
 });
 
+
 $( document ).ready(function() {
 
   if ($(window).width() <= 995) {
@@ -453,6 +456,14 @@ $( document ).ready(function() {
     }else{
       $('#external-events').appendTo('#side');
     }
+  });
+
+  $('body').on('click', 'button.fc-prev-button', function() {
+    setTimeout(function(){genererRespo();},50);
+  });
+
+  $('body').on('click', 'button.fc-next-button', function() {
+    setTimeout(function(){genererRespo();},50);
   });
 
   $(document).on("click", ".del", function () {
@@ -554,7 +565,6 @@ $( document ).ready(function() {
       })
     }
   }
-
 });
 
 function genererRespo(){
