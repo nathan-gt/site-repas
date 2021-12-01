@@ -1,16 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
 import $, { data, get, nodeName } from "jquery";
 import AlertListe from "sweetalert2";
 
 export class ListeEpicerie extends Component {
+
     //JS et JQuery en dehors du render
     componentWillMount(){
 
         var date = new Date();
         var dateSemaineProchaine = new Date();
         dateSemaineProchaine.setDate(dateSemaineProchaine.getDate()+7);
+
+
+
 
         fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
         {
@@ -46,23 +50,46 @@ export class ListeEpicerie extends Component {
             })
         })
     }
-
+    // Rendu visuel de la page
     render(){
+
+//maudit de checkbox à marde TODO: À MODIFIER SEIGNEUR
+function handleOnChange () {
+    const [isChecked, setIsChecked] = useState(false);
+    setIsChecked(!isChecked);
+};
         return (
+            
             <div id="PageListe" className="pageListeEpicerie">
                 <h1>Liste d'ingrédients de la famille</h1> 
-                    <button onClick={addIngredient}>Ajouter un ingrédient à la liste</button>
-                    <div id="PDF">  
-                        <div id="liste"
-                            style={{
-                            padding: "8px",
-                            width: "85%",
-                            height: "auto",
-                            maxHeight: "-webkit-fill-available",
-                            }}
-                        >
+                    <form>
+                        <button onClick={addIngredient}>Ajouter un ingrédient à la liste</button>
+                        
+                        <input
+                            type="checkbox"
+                            id="topping"
+                            name="topping"
+                            value="Oui"
+                            checked={isChecked}
+                            onChange={handleOnChange}
+                        />
+                            Afficher les ingrédients non-disponibles
+                        <div id="PDF">  
+                            <div id="liste"
+                                style={{
+                                padding: "8px",
+                                width: "85%",
+                                height: "auto",
+                                maxHeight: "-webkit-fill-available",
+                                }}
+                            >
+                            </div>
+                            <div className="result">
+        Above checkbox is {isChecked ? "checked" : "unchecked"}.
+      </div>
                         </div>
-                    </div>
+                    </form>
+
                 <div>
                     <button onClick={generatePDF}>Télécharger la liste en PDF</button>
                 </div>
@@ -70,6 +97,8 @@ export class ListeEpicerie extends Component {
         );
     }
 }
+
+
 
 function afficherIngredients(id) {
 
