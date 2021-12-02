@@ -119,7 +119,8 @@ namespace SiteRepas.Models
                     Nom = "Pizza",
                     Categorie = "Italien",
                     IdFamille = 1,
-                    DateCalendrier = new DateTime(2021, 11, 19)
+                    DateCalendrier = new DateTime(2021, 11, 19),
+                    Responsable = "Test1@test.com"
                 });
 
             var familles = new Famille[] {

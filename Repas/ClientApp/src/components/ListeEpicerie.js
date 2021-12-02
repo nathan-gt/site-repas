@@ -13,6 +13,7 @@ export class ListeEpicerie extends Component {
         var dateSemaineProchaine = new Date();
         dateSemaineProchaine.setDate(dateSemaineProchaine.getDate()+7);
 
+
         fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
         {
             method: "get",
@@ -47,23 +48,28 @@ export class ListeEpicerie extends Component {
             })
         })
     }
-    //maudit de checkbox à marde TODO: À MODIFIER SEIGNEUR
-    handleOnChange () {
-        const [isChecked, setIsChecked] = useState(false);
-        setIsChecked(!isChecked);
-    };
+
     // Rendu visuel de la page
     render(){
         return (
-            
             <div id="PageListe" className="pageListeEpicerie">
                 <h1>Liste d'ingrédients de la famille</h1> 
                     <form>
-                        <button onClick={addIngredient}>Ajouter un ingrédient à la liste</button>
-                        <input type="checkbox" id="chkIngredients" name="topping" value="Oui" className="ml-2"/>
-                        <label for="chkIngredients" className="ml-1"> Afficher les ingrédients non-disponibles</label>
+                        <div className="mt-5">
+                            <button onClick={addIngredient} className="mt-2">Ajouter un ingrédient à la liste</button>
+                        </div>
+                        <div className="mt-3">
+                            <input type="checkbox" id="chkIngredients" name="topping" value="Oui" />
+                            <label htmlFor="chkIngredients" className="ml-3"> Afficher les ingrédients non-disponibles</label>
+                        </div>
+                        <div id="calendriers" className="mt-2">
+                            <label> Date début</label>
+                            <input className="ml-1" type="date" id="dateDebut"/>
+                            <label className="ml-3"> Date fin</label>
+                            <input className="ml-1" type="date" id="dateFin"/>
+                        </div>
                         <div id="PDF">  
-                            <div id="liste"
+                            <div id="liste" className="mt-2"
                                 style={{
                                 padding: "8px",
                                 width: "85%",
@@ -75,7 +81,7 @@ export class ListeEpicerie extends Component {
                         </div>
                     </form>
 
-                <div>
+                <div className="mt-3">
                     <button onClick={generatePDF}>Télécharger la liste en PDF</button>
                 </div>
             </div>
@@ -211,7 +217,15 @@ function addElement(id, nom, repasId){
     elements.appendChild(event2);
 }
 
+
 $( document ).ready(function() {
+
+    //$(document).load(function() {
+      //  var dt = new Date();
+        //console.log($('#dateDebut'));
+      //});
+
+    console.log(document.getElementById('dateFin'));  
     $(document).on("click", ".del2", function () {
         if (confirm("Êtes-vous certain de vouloir surprimmer l'ingrédient " + this.title.toLowerCase() + "?")){
             if(this.ariaAtomic == "0"){
@@ -245,7 +259,7 @@ $( document ).ready(function() {
         var date = new Date();
         var dateSemaineProchaine = new Date();
         dateSemaineProchaine.setDate(dateSemaineProchaine.getDate()+7);
-        
+
         while (element.firstChild){
             element.removeChild(element.firstChild);
         }
@@ -280,6 +294,7 @@ $( document ).ready(function() {
     
                 data.forEach(element =>{
                     if(element.IdFamille == localStorage.getItem('familleId')){
+                        //Remplacer par la date Debut/Fin
                         if(new Date(element.DateCalendrier) >= date && new Date(element.DateCalendrier) <= dateSemaineProchaine){
                             afficherIngredients(element.Id)
                         }
