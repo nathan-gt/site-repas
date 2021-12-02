@@ -47,6 +47,8 @@ export class Calendar extends Component {
           }
         }
       });
+
+      genererRespo();
     })
     .catch(err => console.log(err))
     
@@ -124,7 +126,7 @@ export class Calendar extends Component {
           confirmButtonColor: "#d33",
           cancelButtonColor: "#3085d6",
           confirmButtonText: "Supprimer repas",
-          cancelButtonText: "Close"
+          cancelButtonText: "Annuler"
         }).then(result => {
           if (result.value) {
             // Suppresion du repas à la base de donnée
@@ -197,6 +199,8 @@ export class Calendar extends Component {
             <div>
               <FullCalendar
                 rerenderDelay={10}
+                locale= 'fr'
+                buttonText= { 'today'}
                 eventDurationEditable={false}
                 editable={true}
                 droppable={true}
@@ -212,7 +216,9 @@ export class Calendar extends Component {
                   })
                   .then((res) => res.json())
                   .then((data) => { 
-                    putRepas(data);
+                    var events = this.getEvents();
+                    var calendarApi = this;
+                    putRepas(data, info, events, data[0], calendarApi);
                   })
                   }
                 }
@@ -231,7 +237,6 @@ export class Calendar extends Component {
                   var events = this.getEvents();
                   var calendarApi = this;
                   setTimeout(function(){refreshBD(info, events, calendarApi)},100);
-
                 }}
                 eventClick={this.eventClick}
                 selectable={true}
@@ -343,7 +348,7 @@ function addExternal(id, nom, cat){
   elements.appendChild(event);
 }
 
-function putRepas(repas){
+function putRepas(repas, info, events, data, api){
   // Modif du repas à la base de donnée
   fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + repas[0].Id, {
     method: 'POST',
@@ -351,8 +356,25 @@ function putRepas(repas){
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({Id: repas[0].Id, Nom: repas[0].Nom, Categorie: repas[0].Categorie, DateCalendrier: repas[0].DateCalendrier, Responsable: repas[0].Responsable})
+    body: JSON.stringify({Id: repas[0].Id, Nom: repas[0].Nom, Categorie: repas[0].Categorie, DateCalendrier: info.event.start, Responsable: repas[0].Responsable})
   });
+
+  //Recherche de l'évènement
+  events.forEach(element => {
+    if (element.id == info.event.id){
+      element.remove();
+    }
+  });
+
+  api.addEvent({
+    id: data.Id,
+    title: data.Nom,
+    start: info.event.start,
+    classNames: [data.Categorie, data.Id, data.Responsable],
+    display: 'block'
+  });
+
+  genererRespo();
 }
 
 function refreshBD(info, events, calendarApi){
@@ -384,6 +406,8 @@ function refreshBD(info, events, calendarApi){
           display: 'block'
         });
       }
+
+      genererRespo();
     });
   })
 }
@@ -397,6 +421,7 @@ $(document).on("change", "#respo", () => {
   .then((res) => res.json())
   .then((data) => { 
       changeResponsable(data);
+      genererRespo();
   })
 
   function changeResponsable(repas){
@@ -416,6 +441,7 @@ $(document).on("change", "#respo", () => {
 
 });
 
+
 $( document ).ready(function() {
 
   if ($(window).width() <= 995) {
@@ -430,6 +456,14 @@ $( document ).ready(function() {
     }else{
       $('#external-events').appendTo('#side');
     }
+  });
+
+  $('body').on('click', 'button.fc-prev-button', function() {
+    setTimeout(function(){genererRespo();},50);
+  });
+
+  $('body').on('click', 'button.fc-next-button', function() {
+    setTimeout(function(){genererRespo();},50);
   });
 
   $(document).on("click", ".del", function () {
@@ -531,5 +565,26 @@ $( document ).ready(function() {
       })
     }
   }
-
 });
+
+function genererRespo(){
+
+  var elements = document.getElementsByClassName('respoTag');
+     while(elements.length > 0){
+         elements[0].parentNode.removeChild(elements[0]);
+  }
+
+  $('.fc-daygrid-event').each(function() {
+    var responsable = $(this).attr('class').split(' ').pop();
+    responsable = responsable.replace(/@.*$/,"");
+    responsable = responsable.replace(/\./g,' ');
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    responsable = responsable.split(' ').map(capitalize).join(' ');
+
+    $(this).prepend('<span class="respoTag">'+responsable+'</span>');
+
+  });
+}
