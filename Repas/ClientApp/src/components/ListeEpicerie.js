@@ -13,9 +13,6 @@ export class ListeEpicerie extends Component {
         var dateSemaineProchaine = new Date();
         dateSemaineProchaine.setDate(dateSemaineProchaine.getDate()+7);
 
-
-
-
         fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
         {
             method: "get",
@@ -50,30 +47,21 @@ export class ListeEpicerie extends Component {
             })
         })
     }
+    //maudit de checkbox à marde TODO: À MODIFIER SEIGNEUR
+    handleOnChange () {
+        const [isChecked, setIsChecked] = useState(false);
+        setIsChecked(!isChecked);
+    };
     // Rendu visuel de la page
     render(){
-
-//maudit de checkbox à marde TODO: À MODIFIER SEIGNEUR
-function handleOnChange () {
-    const [isChecked, setIsChecked] = useState(false);
-    setIsChecked(!isChecked);
-};
         return (
             
             <div id="PageListe" className="pageListeEpicerie">
                 <h1>Liste d'ingrédients de la famille</h1> 
                     <form>
                         <button onClick={addIngredient}>Ajouter un ingrédient à la liste</button>
-                        
-                        <input
-                            type="checkbox"
-                            id="topping"
-                            name="topping"
-                            value="Oui"
-                            checked={isChecked}
-                            onChange={handleOnChange}
-                        />
-                            Afficher les ingrédients non-disponibles
+                        <input type="checkbox" id="chkIngredients" name="topping" value="Oui" className="ml-2"/>
+                        <label for="chkIngredients" className="ml-1"> Afficher les ingrédients non-disponibles</label>
                         <div id="PDF">  
                             <div id="liste"
                                 style={{
@@ -84,9 +72,6 @@ function handleOnChange () {
                                 }}
                             >
                             </div>
-                            <div className="result">
-        Above checkbox is {isChecked ? "checked" : "unchecked"}.
-      </div>
                         </div>
                     </form>
 
@@ -98,7 +83,23 @@ function handleOnChange () {
     }
 }
 
+function afficherTousIngredients(id) {
 
+    fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient',
+    {
+        method: "get",
+        dataType: 'json',
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        data.forEach(element =>{
+            if(element.UnRepasId == id){
+                addElement(element.Id, element.Nom, element.UnRepasId)
+            }
+        })
+    })
+    .catch(err => console.log(err))
+}
 
 function afficherIngredients(id) {
 
@@ -112,7 +113,6 @@ function afficherIngredients(id) {
         data.forEach(element =>{
             if(element.UnRepasId == id){
                 if(!element.Disponible){
-                    console.log(element)
                     addElement(element.Id, element.Nom, element.UnRepasId)
                 }
             }
@@ -154,7 +154,6 @@ function addIngredient() {
         }).then(function (result) {
           if(result.value && result.value[0] !== ""){
             // Ajout d'un ingrédient à la base de donnée
-            console.log(localStorage.getItem('familleId'))
             fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient', {
               method: 'POST',
               headers: {
@@ -239,4 +238,54 @@ $( document ).ready(function() {
           $(this).parent().remove();
         }
       });
+
+      //Fonction pour le checkbox
+      $(document).on("click", "#chkIngredients", function (){
+        var element = document.getElementById("liste");
+        var date = new Date();
+        var dateSemaineProchaine = new Date();
+        dateSemaineProchaine.setDate(dateSemaineProchaine.getDate()+7);
+        
+        while (element.firstChild){
+            element.removeChild(element.firstChild);
+        }
+
+        if(document.getElementById('chkIngredients').checked) {
+            console.log("YÉ")
+            fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+            {
+                method: "get",
+                dataType: 'json',
+            })
+            .then((res) => res.json())
+            .then((data) => {
+    
+                data.forEach(element =>{
+                    if(element.IdFamille == localStorage.getItem('familleId')){
+                        if(new Date(element.DateCalendrier) >= date && new Date(element.DateCalendrier) <= dateSemaineProchaine){
+                            afficherTousIngredients(element.Id)
+                        }
+                    }
+                })
+            })
+        } else {
+            console.log("NO")
+            fetch(process.env.REACT_APP_BASE_URL + '/api/repas',
+            {
+                method: "get",
+                dataType: 'json',
+            })
+            .then((res) => res.json())
+            .then((data) => {
+    
+                data.forEach(element =>{
+                    if(element.IdFamille == localStorage.getItem('familleId')){
+                        if(new Date(element.DateCalendrier) >= date && new Date(element.DateCalendrier) <= dateSemaineProchaine){
+                            afficherIngredients(element.Id)
+                        }
+                    }
+                })
+            })
+        }
+      })
 })
