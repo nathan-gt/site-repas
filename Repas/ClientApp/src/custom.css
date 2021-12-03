@@ -88,6 +88,15 @@ code {
   margin-top: 25px;
 }
 
+.respoTag{
+  color: white;
+  font-weight: bold;
+}
+
+.fc-today-button{
+  visibility: hidden;
+}
+
 /*** DÉTAILS D'UN PLAT ***/
 
 
