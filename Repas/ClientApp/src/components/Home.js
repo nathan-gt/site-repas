@@ -13,8 +13,7 @@ export class Home extends Component {
         <p>Bienvenue sur le meilleur site de gestion de repas quotidien!</p>
         <ul>
           <li>Description générale du site web</li>
-          <li>Insérer la vidéo de présentation ici</li>
-          
+          <li>*Insérer la vidéo de présentation ici*</li>
         </ul>
       </div>
     );
