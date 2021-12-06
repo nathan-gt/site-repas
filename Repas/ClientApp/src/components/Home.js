@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getFamilleId } from './Helper';
 import BackgroundSlider from 'react-background-slider';
+import $ from 'jquery';
 
 import burger from './food-bg/burger.jpg'
 import chili from './food-bg/chili.jpg'
@@ -16,7 +17,8 @@ var shuffle = require('knuth-shuffle').knuthShuffle;
 
 var images = [veggies, spageth, yogurt, burger, 
   chili, cake, table, steak, ramen, pancakes]
-images = shuffle(images);
+
+$("body").css({"background-color":"transparent"}); // use this line to override body or html css properties
 
 getFamilleId();
 
@@ -24,6 +26,7 @@ export class Home extends Component {
   static displayName = Home.name;
 
   render () {
+    images = shuffle(images);
     return (
       <>
       <div class="filter"/>
