@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import AjoutIngredient from './AjoutIngredient';
 import $ from "jquery";
 
-export class DetailPlat extends Component {
+export class DetailsRepas extends Component {
 
     constructor(props) {
         super(props);
@@ -26,9 +26,25 @@ export class DetailPlat extends Component {
     envoyerIngredients = () => {
         // TODO: Faire une requête pour aller chercher la liste des ingrédients
         //       du plat
+
+        let lstIngrRepas = [];
+
+        fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient', {
+            method: "get",
+            dataType: 'json',
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            data.forEach(element => {
+                if(element.UnRepasId == this.props.match.params.id) {
+                    lstIngrRepas.push(element.Nom);
+                }
+            })
+        });
+
         return {
             Id: this.props.match.params.id,
-            LesIngredients: []
+            LesIngredients: lstIngrRepas
         };
     }
     
@@ -70,10 +86,10 @@ export class DetailPlat extends Component {
         return (
             <div>
                 <h1 class="display-2 text-center" id="titre-plat">Détails sur le plat</h1>
-                <p class="text-center">(détails sur le plat)</p><br />
+                <p class="text-center">(détails sur le repas)</p><br />
 
                 <div id="details-plat">
-                    <h3>Type de plat : </h3>
+                    <h3>Type de repas : </h3>
                     <select value={this.state.value} onChange={this.handleChange}>
                         <option value="none">Sélectionnez un type</option>
                         <option value="americain">Américain</option>

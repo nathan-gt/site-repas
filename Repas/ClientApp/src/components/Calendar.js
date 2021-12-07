@@ -119,7 +119,7 @@ export class Calendar extends Component {
           </tr>
           </tbody>
           </table>
-          <a href="` +process.env.REACT_APP_BASE_URL+ `/plat/` + eventClick.event.id +`">Détail du repas</a>
+          <a href="` +process.env.REACT_APP_BASE_URL+ `/repas/` + eventClick.event.id +`">Détail du repas</a>
           </div>`,
 
           showCancelButton: true,

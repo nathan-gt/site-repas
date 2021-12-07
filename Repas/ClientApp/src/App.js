@@ -3,7 +3,7 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { Calendar } from './components/Calendar';
-import { DetailPlat } from './components/DetailPlat';
+import { DetailsRepas } from './components/DetailsRepas';
 import { ListeEpicerie } from './components/ListeEpicerie';
 import { DetailsFamille } from './components/DetailsFamille';
 import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
@@ -21,7 +21,7 @@ export default class App extends Component {
       <Layout>
         <Route exact path='/' component={Home} />
         <AuthorizeRoute path='/calendar' component={Calendar} />
-        <AuthorizeRoute path='/plat/:id' component={DetailPlat} />
+        <AuthorizeRoute path='/repas/:id' component={DetailsRepas} />
         <AuthorizeRoute path='/ListeEpicerie' component={ListeEpicerie} />
         <AuthorizeRoute path='/DetailsFamille' component={DetailsFamille} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
