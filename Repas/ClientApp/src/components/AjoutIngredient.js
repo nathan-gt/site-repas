@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import ListeIngredients from "./ListeIngredients";
 import Autocomplete from "./Autocomplete";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { uuid } from 'uuidv4';
 import "../custom.css";
+import Ingredient from "./Ingredient";
 
 // Clé pour le local storage des ingrédients
 var LOCAL_STORAGE_KEY = null;
@@ -12,9 +12,12 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
 
     LOCAL_STORAGE_KEY = String(listeIngredients['Id']);
 
-    // Liste des ingrédients de la famille du user.
+    // Liste des noms des ingrédients de la famille.
     const tabNomIngrFamille = [];
+    // Liste des ingrédients de la famille du user.
     const lstIngrFamille = [];
+    // Liste des ingrédients du repas.
+    const ingredientsRepas = [];
 
     // Requête pour récupérer les ingrédients de la famille
     // dans le but de templir l'autocomplete.
@@ -25,25 +28,34 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
     })
     .then((res) => res.json())
     .then((data) => {
-        // Tri des ingredients en fonction du d'identifiant
-        // de la famille 
         data.forEach(ingredient => {
+            // Tri des ingredients en fonction du d'identifiant
+            // de la famille 
             if (ingredient.FamilleId === idFamille) {
                 tabNomIngrFamille.push(ingredient.Nom);
                 lstIngrFamille.push(ingredient);
             }
+            // Tri des ingrédients pour récupérer ceux du repas affiché
+            if (ingredient.UnRepasId == listeIngredients['Id']) {
+                ingredientsRepas.push(ingredient);
+            }
         });
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
 
     // Création d'une liste d'ingrédients fictive
     const [ingredients, setIngredients] = useState(listeIngredients['LesIngredients']);
 
+    console.log(ingredientsRepas);
+
     // Autre utilisation du useEffect pour conserver les ingrédients 
     useEffect(() => {
         const storedIngredients = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-        if (storedIngredients) setIngredients(storedIngredients);
-    }, [])
+        if (storedIngredients.length < 1 /*|| storedIngredients.length != listeIngredients['LesIngredients'].length*/) {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(listeIngredients['LesIngredients']));
+        }
+        setIngredients(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)));
+    }, []);
 
     /* ***************
         useEffect() : 
@@ -57,12 +69,10 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
 
     *****************/
     useEffect(() => {
-        // TODO: Faire la requête pour ajouter l'ingrédient
-        //       à la BD ICI !
-        // NOTE: La solution adoptée est temporaire.
+        // Ajout de l'ingrédient au localstorage pour l'affichage.
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(ingredients));
 
-    }, [ingredients])
+    }, [ingredients]);
 
     // Fonction qui gère le click sur 
     // le bouton d'ajout d'un ingrédient.
@@ -84,7 +94,7 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({Id: uuid(), Nom: String(nomIngr), Categorie: "None", Disponible: false, UnRepasId: listeIngredients['Id'], FamilleId: idFamille})
+            body: JSON.stringify({Nom: String(nomIngr), Categorie: "None", Disponible: false, UnRepasId: listeIngredients['Id'], FamilleId: idFamille})
         });
     }
 
@@ -103,7 +113,19 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
         /*
         *   Suppression de l'ingrédient dans la BD.
         */
-        
+        // Récupération de l'ingrédient à supprimer
+        const ingrASuprr = ingredientsRepas.find(element => element.Nom == nomIngredient);
+        console.log(ingrASuprr);
+
+        // Suppression de l'ingrédient
+        fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient/', {
+            method: 'DELETE',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({Id: ingrASuprr.Id})
+        });
     }
 
     function AfficherListeIngr () {
