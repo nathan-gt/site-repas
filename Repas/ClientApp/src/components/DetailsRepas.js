@@ -102,7 +102,7 @@ export class DetailsRepas extends Component {
                         <option value="vegetalien">Végétalien</option>
                     </select><br /><br />
 
-                    <AjoutIngredient listeIngredients={ this.envoyerIngredients() } ifFamille={this.state.IdFamille}/>
+                    <AjoutIngredient listeIngredients={ this.envoyerIngredients() } idFamille={this.state.IdFamille}/>
                 </div>
             </div>
         )

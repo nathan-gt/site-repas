@@ -30,7 +30,9 @@
     "reactjs-popup": "^2.0.5",
     "reactstrap": "^8.4.1",
     "rimraf": "^2.6.2",
-    "sweetalert2": "^11.1.7"
+    "sweetalert2": "^11.1.7",
+    "uuid": "^8.3.2",
+    "uuidv4": "^6.2.12"
   },
   "devDependencies": {
     "ajv": "^6.9.1",
