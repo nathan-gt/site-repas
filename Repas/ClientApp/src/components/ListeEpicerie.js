@@ -58,7 +58,7 @@ export class ListeEpicerie extends Component {
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" id="chkIngredients" name="dispo" value="Oui" />
-                            <label htmlFor="chkIngredients" className="ml-3"> Afficher les ingrédients non-disponibles</label>
+                            <label htmlFor="chkIngredients" className="ml-3"> Afficher les ingrédients disponibles</label>
                         </div>
                         <div id="calendriers" className="mt-2">
                             <label> Date début</label>
@@ -98,6 +98,7 @@ function afficherTousIngredients(id) {
     })
     .then((res) => res.json())
     .then((data) => {
+        //gestion des upper case et lower case ici?
         data.forEach(element =>{
             if(element.UnRepasId == id){
                 addElement(element.Id, element.Nom, element.UnRepasId)
@@ -117,6 +118,7 @@ function afficherIngredients(id) {
     })
     .then((res) => res.json())
     .then((data) => {
+        //gestion des upper case et lower case ici?
         data.forEach(element =>{
             if(element.UnRepasId == id){
                 if(!element.Disponible){
