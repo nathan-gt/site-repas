@@ -6,7 +6,7 @@ import AlertListe from "sweetalert2";
 
 export class ListeEpicerie extends Component {
 
-    componentDidMount(){
+    componentWillMount(){
 
         var date = new Date();
         var dateSemaineProchaine = new Date();
@@ -52,9 +52,9 @@ export class ListeEpicerie extends Component {
         return (
             <div id="PageListe" className="pageListeEpicerie">
                 <h1>Liste d'ingrédients de la famille</h1> 
-                    <form>
+                    <div>
                         <div className="mt-5">
-                            <button onClick={addIngredient} className="mt-2 btn btn-primary">Ajouter un ingrédient à la liste</button>
+                            <a onClick={addIngredient} className="mt-2 btn btn-primary">Ajouter un ingrédient à la liste</a>
                         </div>
                         <div className="mt-3">
                             <input type="checkbox" id="chkIngredients" name="dispo" value="Oui" />
@@ -77,11 +77,11 @@ export class ListeEpicerie extends Component {
                             >
                             </div>
                         </div>
-                    </form>
+                    </div>
 
                 <div className="mt-3">
                     <p id="test"></p>
-                    <button onClick={generatePDF} className="btn btn-primary">Télécharger la liste en PDF</button>
+                    <a onClick={generatePDF} className="btn btn-primary">Télécharger la liste en PDF</a>
                 </div>
             </div>
         );
@@ -118,7 +118,6 @@ function afficherIngredients(id) {
     })
     .then((res) => res.json())
     .then((data) => {
-        //gestion des upper case et lower case ici?
         data.forEach(element =>{
             if(element.UnRepasId == id){
                 if(!element.Disponible){
@@ -142,6 +141,27 @@ function generatePDF() {
         });
 }
 
+function verifierListe(nomIngredient){
+
+    var nonTrouve = true;
+    nomIngredient;
+    nomIngredient = nomIngredient.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    nomIngredient = nomIngredient.toLocaleLowerCase();
+    $(".elem-liste").each(function() {
+
+        var value = $(this).text();
+        value = value.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        value = value.toLocaleLowerCase();
+
+
+        if(value === nomIngredient){
+            nonTrouve = false;
+        }
+    });
+
+    return nonTrouve;
+} 
+
 // Fonction d'ajout d'un ingrédient à la liste
 function addIngredient() {
     AlertListe.fire({
@@ -164,26 +184,31 @@ function addIngredient() {
         cancelButtonText: 'Annuler',
         }).then(function (result) {
           if(result.value && result.value[0] !== ""){
-            // Ajout d'un ingrédient à la base de donnée
-            fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({Nom: result.value[0], Categorie: 'None', Disponible: 0, FamilleId: localStorage.getItem('familleId'), UnRepasId : 0})
-            });
-  
-            setTimeout(function(){
-            fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient',
-            {
-                method: "get",
-                dataType: 'json',
-            })
-            .then((res) => res.json())
-            .then((data) => {
-                addElement(data[data.length-1].Id, result.value[0], 0);
-            })},100);
+              if(verifierListe(result.value[0])){
+                  console.log(verifierListe(result.value[0]));
+                // Ajout d'un ingrédient à la base de donnée
+                fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({Nom: result.value[0], Categorie: 'None', Disponible: 0, FamilleId: localStorage.getItem('familleId'), UnRepasId : 0})
+                });
+    
+                setTimeout(function(){
+                fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient',
+                {
+                    method: "get",
+                    dataType: 'json',
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    addElement(data[data.length-1].Id, result.value[0], 0);
+                })},100);
+              }else{
+                alert("Impssible d'ajouter un ingrédient déjà existant à la liste.");
+              }
           }
         }).catch()
 };
@@ -195,6 +220,7 @@ function addElement(id, nom, repasId){
     var tag2 = document.createElement("div");
     tag2.classList.add("d-inline")
     tag2.classList.add("p-1");
+    tag2.classList.add("elem-liste");
     tag2.title = nom;
     tag2.id = id;
 
