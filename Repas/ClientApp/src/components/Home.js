@@ -39,7 +39,9 @@ export class Home extends Component {
         <h1>Site de gestion de repas</h1>
         <p>Bienvenue sur le meilleur site de gestion de repas quotidien!</p>
         <ul>
-          <li>Description générale du site web</li>
+          <li>Ce site à comme objectif de vous aider à mieux planifier les repas de votre domicile. 
+              Que ce soit de les visualiser dans un calendrier, produire une liste d'épicerie ou 
+              gérer les ingrédients d'un plat précis, ce site est fait pour vous!</li>
           <li>*Insérer la vidéo de présentation ici*</li>
         </ul>
       </div>
