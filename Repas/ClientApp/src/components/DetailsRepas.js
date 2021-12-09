@@ -7,7 +7,7 @@ export class DetailsRepas extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 'none',
+            value: 'None',
             IdFamille: 0
         };
         this.handleChange = this.handleChange.bind(this);
@@ -16,17 +16,38 @@ export class DetailsRepas extends Component {
     // Méthode ayant pour but de gérer le
     // changement de valeur du type de plat
     handleChange(event) {
-        // TODO: Mettre à jour le type de plat dans la BD ICI
+        // Mise à jour de la propriété du composant.
         this.setState({value: event.target.value});
-        console.log("La valeur est maintenant à " + event.target.value);
+        
+        // Récupération du plat à modifier
+        fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + this.props.match.params.id, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            data.forEach(repas => {
+                // Modification de la catégorie du repas.
+                fetch(process.env.REACT_APP_BASE_URL + '/api/repas/' + repas.Id, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({Id: repas.Id, Nom: repas.Nom, Categorie: this.state.value, DateCalendrier: repas.DateCalendrier, IdFamille: repas.IdFamille, Responsable: repas.Responsable})
+                });
+            });
+        })
+        .catch(err => console.log(err));
     }
 
     // Fonction ayant pour but de transférer les ingrédients à celle
     // qui s'occupe de les afficher sur la page (AjoutIngregient.js).
     envoyerIngredients = () => {
-        // TODO: Faire une requête pour aller chercher la liste des ingrédients
-        //       du plat
-
+        // Liste des ingrédients du repas
         let lstIngrRepas = [];
 
         fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient', {
@@ -74,8 +95,8 @@ export class DetailsRepas extends Component {
                 if (plat['Id'] == GET_ID_PLAT) {
                     // Modifier le titre du plat dans la page
                     $("#titre-plat").text(plat['Nom']);
-                    this.state = {value: plat['Categorie']};
-                    this.state = {IdFamille: plat['IdFamille']}
+                    this.setState({value: plat['Categorie']});
+                    this.state = {IdFamille: plat['IdFamille']};
                 }
             });
         });
@@ -91,15 +112,15 @@ export class DetailsRepas extends Component {
                 <div id="details-plat">
                     <h3>Type de repas : </h3>
                     <select value={this.state.value} onChange={this.handleChange}>
-                        <option value="none">Sélectionnez un type</option>
-                        <option value="americain">Américain</option>
-                        <option value="italien">Italien</option>
-                        <option value="mexicain">Méxicain</option>
-                        <option value="asiatique">Asiatique</option>
-                        <option value="libanais">Libanais</option>
-                        <option value="fruits-mer">Fruits de mer</option>
-                        <option value="vegetarien">Végétarien</option>
-                        <option value="vegetalien">Végétalien</option>
+                        <option value="None">Sélectionnez un type</option>
+                        <option value="Végétarien">Végétarien</option>
+                        <option value="Végétalien">Végétalien</option>
+                        <option value="Américain">Américain</option>
+                        <option value="Italien">Italien</option>
+                        <option value="Méxicain">Méxicain</option>
+                        <option value="Asiatique">Asiatique</option>
+                        <option value="Libanais">Libanais</option>
+                        <option value="Fruits de mer">Fruits de mer</option>
                     </select><br /><br />
 
                     <AjoutIngredient listeIngredients={ this.envoyerIngredients() } idFamille={this.state.IdFamille}/>

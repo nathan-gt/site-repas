@@ -3,7 +3,6 @@ import ListeIngredients from "./ListeIngredients";
 import Autocomplete from "./Autocomplete";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../custom.css";
-import Ingredient from "./Ingredient";
 
 // Clé pour le local storage des ingrédients
 var LOCAL_STORAGE_KEY = null;
@@ -46,8 +45,6 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
     // Création d'une liste d'ingrédients fictive
     const [ingredients, setIngredients] = useState(listeIngredients['LesIngredients']);
 
-    console.log(ingredientsRepas);
-
     // Autre utilisation du useEffect pour conserver les ingrédients 
     useEffect(() => {
         const storedIngredients = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
@@ -85,8 +82,6 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
         // Ajout de l'ingrédient à la liste
         setIngredients(ingredientsPrec => [...ingredientsPrec, [name]]);
 
-        console.log(ingredients);
-
         // Ajout de l'ingrédient à la BD
         fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient/', {
             method: 'POST',
@@ -115,8 +110,6 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
         */
         // Récupération de l'ingrédient à supprimer
         const ingrASuprr = ingredientsRepas.find(element => element.Nom == nomIngredient);
-        console.log(ingrASuprr);
-
         // Suppression de l'ingrédient
         fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient/', {
             method: 'DELETE',
