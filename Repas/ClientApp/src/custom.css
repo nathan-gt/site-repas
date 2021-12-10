@@ -127,6 +127,13 @@ code {
   color:whitesmoke;
 }
 
+.home-element{
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  text-align: center;
+}
+
 .container {
   display:grid;
 }

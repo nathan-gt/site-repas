@@ -98,9 +98,10 @@ function afficherTousIngredients(id) {
     })
     .then((res) => res.json())
     .then((data) => {
-        //gestion des upper case et lower case ici?
         data.forEach(element =>{
+            
             if(element.UnRepasId == id){
+                
                 addElement(element.Id, element.Nom, element.UnRepasId)
             }
         })
@@ -119,6 +120,7 @@ function afficherIngredients(id) {
     .then((res) => res.json())
     .then((data) => {
         data.forEach(element =>{
+            console.log(element.UnRepasId);
             if(element.UnRepasId == id){
                 if(!element.Disponible){
                     addElement(element.Id, element.Nom, element.UnRepasId)
@@ -185,7 +187,6 @@ function addIngredient() {
         }).then(function (result) {
           if(result.value && result.value[0] !== ""){
               if(verifierListe(result.value[0])){
-                  console.log(verifierListe(result.value[0]));
                 // Ajout d'un ingrédient à la base de donnée
                 fetch(process.env.REACT_APP_BASE_URL + '/api/ingredient', {
                 method: 'POST',
