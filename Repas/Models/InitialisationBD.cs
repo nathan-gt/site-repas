@@ -41,28 +41,49 @@ namespace SiteRepas.Models
                 new Ingredient {
                     Nom = "Pâte à pizza",
                     Categorie = "Pâte",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
                     FamilleId = 1,
                     Disponible = true
                 },
                 new Ingredient {
                     Nom = "Sauce marinara",
                     Categorie = "Sauce",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
                     FamilleId = 1,
                     Disponible = false
                 },
                 new Ingredient {
                     Nom = "Poivron vert",
                     Categorie = "Légume",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
                     FamilleId = 1,
                     Disponible = true
                 },
                 new Ingredient {
                     Nom = "Fromage",
                     Categorie = "Laitié",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
+                    FamilleId = 1,
+                    Disponible = false
+                },
+                new Ingredient {
+                    Nom = "Viande",
+                    Categorie = "Viande",
+                    UnRepasId = 12,
+                    FamilleId = 1,
+                    Disponible = false
+                },
+                new Ingredient {
+                    Nom = "Fromage Craft",
+                    Categorie = "Laitié",
+                    UnRepasId = 12,
+                    FamilleId = 1,
+                    Disponible = false
+                },
+                new Ingredient {
+                    Nom = "Pain",
+                    Categorie = "Laitié",
+                    UnRepasId = 12,
                     FamilleId = 1,
                     Disponible = false
                 }
@@ -119,7 +140,22 @@ namespace SiteRepas.Models
                     Nom = "Pizza",
                     Categorie = "Italien",
                     IdFamille = 1,
-                    DateCalendrier = new DateTime(2021, 11, 19)
+                    DateCalendrier = new DateTime(2021, 11, 19),
+                    Responsable = "Test1@test.com"
+                },
+                new UnRepas {
+                    Nom = "Hamburger",
+                    Categorie = "Américain",
+                    IdFamille = 1,
+                    DateCalendrier = new DateTime(2021, 12, 19),
+                    Responsable = "Test2@test.com"
+                },
+                new UnRepas {
+                    Nom = "Hamburger",
+                    Categorie = "Américain",
+                    IdFamille = 1,
+                    DateCalendrier = new DateTime(2021, 12, 20),
+                    Responsable = "Test2@test.com"
                 });
 
             var familles = new Famille[] {

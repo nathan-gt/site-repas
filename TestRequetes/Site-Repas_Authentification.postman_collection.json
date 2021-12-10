@@ -6,7 +6,20 @@
 	},
 	"item": [
 		{
-			"name": "UserInfo",
+			"name": "Tester si connexion avec postman fonctionne",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 201\"] = responseCode.code === 200;\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"tests[\"UserInfo returned token user info\"] = jsonData.sub != null"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -26,7 +39,27 @@
 			"response": []
 		},
 		{
-			"name": "Repas",
+			"name": "Get tous les ingredients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/ingredient",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tous les repas",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -46,12 +79,35 @@
 			"response": []
 		},
 		{
-			"name": "get repas id=1",
+			"name": "Get ingrédients d'un repas",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/repas/1",
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get un repas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\":1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/repas/recherche",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -60,19 +116,345 @@
 					"path": [
 						"api",
 						"repas",
-						"1"
+						"recherche"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "New Request",
+			"name": "Ajout d'un repas",
 			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Nom\":\"Test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/repas",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"repas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get toutes les familles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/famille",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"famille"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RepasModif",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\":17,\r\n    \"Nom\":\"Test\",\r\n    \"Categorie\":\"Américain\",\r\n    \"DateCalendrier\":\"0001-01-01 00:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/repas/id",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"repas",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'un ingrédient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Nom\" : \"Test\",\r\n    \"Categorie\" : \"Test\",\r\n    \"Disponible\" : 1,\r\n    \"FamilleId\" : 1,\r\n    \"UnRepasId\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/ingredient",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IngrédientModif",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\":12,\r\n    \"Nom\" : \"Test\",\r\n    \"Categorie\" : \"Test\",\r\n    \"Disponible\" : 0\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/ingredient/12",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ingredient",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modification disponibilité ingrédient pour épicerie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\" : 5,\r\n    \"Disponible\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/jointure/id",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"jointure",
+						"id"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ajout d'une famille",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Nom\": \"Ross\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/famille",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"famille"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FamilleModif",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\":2,\r\n    \"Nom\":\"Legault\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/famille/2",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"famille",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Repas",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\" : 19\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/repas/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"repas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Famille",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\" : 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/famille",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"famille"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ingredent",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Id\" : 12\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/api/ingredient/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"ingredient",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove user from famille",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkJFMzc0NThBMUM2QzIxNzBBMDUxMzZBNUEyMDVFQkNCQjk4QjNGREEiLCJ0eXAiOiJhdCtqd3QiLCJ4NXQiOiJ2amRGaWh4c0lYQ2dVVGFsb2dYcnk3bUxQOW8ifQ.eyJuYmYiOjE2MzY3NDAwNjQsImV4cCI6MTYzNjc0MzY2NCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6IlNpdGVSZXBhc0FQSSIsImNsaWVudF9pZCI6IlJlcGFzIiwic3ViIjoiNzUwODMwYjYtMzhkNi00OWIzLWI4Y2MtZTU5MWJkYjllNzU4IiwiYXV0aF90aW1lIjoxNjM2NzMyODc0LCJpZHAiOiJsb2NhbCIsImp0aSI6IjZFN0YxQkM5RkJEMTUzMDQ4NzZFQTY1RDk5NUIxQjFGIiwic2lkIjoiRUE1NTBCN0Y5QkQ4QkY2MEE5MUQ5MUVDRDNCMUYxOTEiLCJpYXQiOjE2MzY3NDAwNjQsInNjb3BlIjpbIlNpdGVSZXBhc0FQSSIsIm9wZW5pZCIsInByb2ZpbGUiXSwiYW1yIjpbInB3ZCJdfQ.bAUitJFE8az7JZQFROSjCoQIIV3IqSwOXzy8GkDercOT4hRVbzfl4-GwEh-E2RQKJNAYc8XsNh3xsSMHV3kYrKJcQ6S9V90d2Dm0NpmmFTaIBpfRds-Gqyp6eubl7ywNvM6II5B8NpzUV_DXjw53LYq5-KaL2Ubf4s3AFv1De_Z70rPU4BGiRiosafH-ChiAJs3s_HNkuO3IjkZIfdIU6gbjDNgoiDOXYOBlRJ0GrPP21ELMvHzQTcwuorWVFcURAKNlcAWkQ67uWETuXFMY6eSAg-fumbWgLFGSSaSpYlrkkmZa7PXIEr2j6FpTD7vnl-r1MJfuMBJ9zH4KRlHCKdTDyVuLRGtBdQ61V40PYCY9akXnmCr24mJMxO5vaeyCktFXVHRaONekek4ZSEXTySSAWr4OYRSCPh-0EizGid7SPOTbQnZCmOFch9dC6kjey1RPVz7GmDjO9brXs7CXsQIEjVORvuWMCYlierf1OsvYIEfu6K0X0ymFoXGY0xSIuPoPNC5z4ytepIksmCa8cwwwPysJqSqDDE4J3a2A84f1RuMyZT_WAfvT4FhmEK5cI6BHC2bwdi82i94pmnfhxVEK4G12e374FuF-n_PwR-mzaCSUnBK75bHYFWKYbKV8uC8fznx1tACjn8TbZz7D8RMYZcJi_qnD6FgxY6Bcuxg\n",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PATCH",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/famille/removeFromFamily/b70b33d6-a52d-4e48-afb4-219e72cc29d2",
+					"raw": "https://localhost:5001/api/famille/removeFromFamily/<insert_id_here>",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -82,7 +464,172 @@
 						"api",
 						"famille",
 						"removeFromFamily",
-						"b70b33d6-a52d-4e48-afb4-219e72cc29d2"
+						"<insert_id_here>"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Current Invite",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200 or 404\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/user/current/invite",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"user",
+						"current",
+						"invite"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/user",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search for users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200 or 404\"] = responseCode.code === 200 || responseCode.code === 404;\r",
+							"if(responseCode.code === 200)\r",
+							"{\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    tests[\"Number of users returned is 10 or less\"] = jsonData.length <= 10;\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/user?email=<query>",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"user"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "<query>"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inviter User à famille du user présentement connecté",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200 or 404\"] = responseCode.code === 200 || responseCode.code === 404;\r",
+							"if( responseCode.code === 404)\r",
+							"{\r",
+							"    tests[\"API returned 404 because of no email was found and not because route does not exist\"] = \r",
+							"            JSON.parse(responseBody).status === 404;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/user/invite/<email_invité>",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"user",
+						"invite",
+						"<email_invité>"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Accepter invitation que son propre compte a",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Status code is 200 or 404\"] = responseCode.code === 200 || responseCode.code === 404;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/user",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"user"
 					]
 				}
 			},

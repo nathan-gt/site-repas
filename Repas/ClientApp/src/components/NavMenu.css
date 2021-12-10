@@ -1,4 +1,9 @@
-﻿a.navbar-brand {
+﻿a {
+  text-decoration: black !important;
+  color: black;
+}
+
+a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
@@ -15,4 +20,5 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  background-color: rgba(118, 136, 40, 0.877);
 }

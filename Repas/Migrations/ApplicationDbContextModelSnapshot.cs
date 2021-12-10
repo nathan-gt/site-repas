@@ -400,6 +400,9 @@ namespace SiteSiteRepas.Migrations
                     b.Property<string>("Nom")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Responsable")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Repas");

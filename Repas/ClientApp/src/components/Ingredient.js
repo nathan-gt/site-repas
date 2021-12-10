@@ -4,7 +4,6 @@ export default function Ingredient({ ingredient, gererSuppressionIngr }) {
 
     function handleClick() {
         gererSuppressionIngr(ingredient);
-        console.log("L'ingrédient '" + ingredient + "' a bien été supprimé !");
     }
 
     return (
