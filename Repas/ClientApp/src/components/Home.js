@@ -29,27 +29,28 @@ export class Home extends Component {
     images = shuffle(images);
     return (
       <>
-      <div class="filter"/>
+      <div className="filter">
       <BackgroundSlider
           images={images}
           duration={6} transition={4} />
-      <div class="black-bg"/>
+      <div className="black-bg"/>
+      </div>
 
-      <div class="home-panel">
-        <h1 class="home-element">Site de gestion de repas</h1>
+      <div className="home-panel">
+        <h1 className="home-element">Site de gestion de repas</h1>
         <div>
-          <h4 class="home-element">Bienvenue sur le meilleur site de gestion de repas quotidien!</h4>
+          <h4 className="home-element">Bienvenue sur le meilleur site de gestion de repas quotidien!</h4>
         </div>
-        <p class="home-element">
+        <p className="home-element">
               Ce site à comme objectif de vous aider à mieux planifier les repas de votre domicile. 
               Que ce soit de les visualiser dans un calendrier, produire une liste d'épicerie ou 
               gérer les ingrédients d'un plat précis, ce site est fait pour vous.
         </p>
-        <div class="home-element">
+        <div className="home-element">
           <iframe 
-            class="home-element" width="560" height="315" src="https://www.youtube.com/embed/cumlRlhIbeE" title="YouTube video player" 
-            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
+            className="home-element" width="560" height="315" src="https://www.youtube.com/embed/cumlRlhIbeE" title="YouTube video player" 
+            frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen>
           </iframe>
         </div>
       </div>
