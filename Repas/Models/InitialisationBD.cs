@@ -41,28 +41,28 @@ namespace SiteRepas.Models
                 new Ingredient {
                     Nom = "Pâte à pizza",
                     Categorie = "Pâte",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
                     FamilleId = 1,
                     Disponible = true
                 },
                 new Ingredient {
                     Nom = "Sauce marinara",
                     Categorie = "Sauce",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
                     FamilleId = 1,
                     Disponible = false
                 },
                 new Ingredient {
                     Nom = "Poivron vert",
                     Categorie = "Légume",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
                     FamilleId = 1,
                     Disponible = true
                 },
                 new Ingredient {
                     Nom = "Fromage",
                     Categorie = "Laitié",
-                    UnRepasId = 10,
+                    UnRepasId = 1,
                     FamilleId = 1,
                     Disponible = false
                 },

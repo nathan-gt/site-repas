@@ -36,13 +36,22 @@ export class Home extends Component {
       <div class="black-bg"/>
 
       <div class="home-panel">
-        <h1>Site de gestion de repas</h1>
-        <p>Bienvenue sur le meilleur site de gestion de repas quotidien!</p>
-        <ul>
-          <li>Ce site à comme objectif de vous aider à mieux planifier les repas de votre domicile. 
+        <h1 class="home-element">Site de gestion de repas</h1>
+        <div>
+          <h4 class="home-element">Bienvenue sur le meilleur site de gestion de repas quotidien!</h4>
+        </div>
+        <p class="home-element">
+              Ce site à comme objectif de vous aider à mieux planifier les repas de votre domicile. 
               Que ce soit de les visualiser dans un calendrier, produire une liste d'épicerie ou 
-              gérer les ingrédients d'un plat précis, ce site est fait pour vous!</li>
-        </ul>
+              gérer les ingrédients d'un plat précis, ce site est fait pour vous.
+        </p>
+        <div class="home-element">
+          <iframe 
+            class="home-element" width="560" height="315" src="https://www.youtube.com/embed/cumlRlhIbeE" title="YouTube video player" 
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+          </iframe>
+        </div>
       </div>
       </>
     );

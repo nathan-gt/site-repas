@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SiteSiteRepas.Migrations
 {
-    public partial class yourMigrationName : Migration
+    public partial class yourMigrationNam : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
