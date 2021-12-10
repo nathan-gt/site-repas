@@ -96,7 +96,7 @@ export class DetailsRepas extends Component {
                     // Modifier le titre du plat dans la page
                     $("#titre-plat").text(plat['Nom']);
                     this.setState({value: plat['Categorie']});
-                    this.state = {IdFamille: plat['IdFamille']};
+                    this.state = {IdFamille: localStorage.getItem('familleId')};
                 }
             });
         });
