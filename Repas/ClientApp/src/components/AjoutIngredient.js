@@ -48,7 +48,7 @@ export default function AjoutIngredient({ listeIngredients, idFamille }) {
     // Autre utilisation du useEffect pour conserver les ingrédients 
     useEffect(() => {
         const storedIngredients = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-        if (storedIngredients.length < 1 /*|| storedIngredients.length != listeIngredients['LesIngredients'].length*/) {
+        if (storedIngredients && storedIngredients.length < 1) {
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(listeIngredients['LesIngredients']));
         }
         setIngredients(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)));
