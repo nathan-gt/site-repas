@@ -4,9 +4,10 @@ Lien GitHub: https://github.com/nathan-gt/site-repas
 
 Lien vers l'environnement en production: https://site-repas.azurewebsites.net/
 
-Utilisateur test pour l'environnement production: 
-- Email --> test@test.com
-- Mot de passe  --> SV!3ydxZ.+vZfaT
+Utilisateurs test: 
+- Email --> Test1@test.com
+- Mot de passe  --> Test1@test.com
+puis Test2@test.com, Test3@test.com, etc
 
 ### Étapes de la configuration de l'environnement de développement local (windows 10):
 ------------------------------------------------------
